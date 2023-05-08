@@ -28,6 +28,8 @@ class MyApp extends StatelessWidget {
         ],
         theme: AppTheme.lightTheme,
         // ignore: prefer_const_constructors
-        home: SplashView());
+        home: MainView(
+          clientType: ClientType.EMPLOYEE,
+        ));
   }
 }

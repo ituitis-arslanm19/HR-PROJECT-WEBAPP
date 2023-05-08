@@ -110,13 +110,13 @@ class AppTheme {
   static const TextStyle _lightScreenBodyMediumTextStyle = TextStyle(
       fontWeight: FontWeight.w500,
       color: _lightPrimaryTextColor,
-      fontSize: 20,
+      fontSize: 14,
       fontFamily: "OpenSans");
 
   static const TextStyle _lightScreenBodySmallTextStyle = TextStyle(
       fontWeight: FontWeight.w500,
       color: _lightPrimaryTextColor,
-      fontSize: 14,
+      fontSize: 10,
       fontFamily: "OpenSans");
 
   static final TextStyle _darkScreenHeading1TextStyle =
