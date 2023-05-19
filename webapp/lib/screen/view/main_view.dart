@@ -270,7 +270,7 @@ class MainView extends StatelessWidget {
           },
           icon: Icons.logout,
           title: 'Çıkış Yap',
-          isSelected: mainViewModel.bnbIndex == 5 ? true : false);
+          isSelected: mainViewModel.bnbIndex == 6 ? true : false);
     });
   }
 

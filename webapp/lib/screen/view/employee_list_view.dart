@@ -50,13 +50,14 @@ class EmployeeListView extends StatelessWidget {
               case DataState.READY:
                 return buildEmployeeList(employeeListViewModel.employeeList!);
               case DataState.ERROR:
-                return Center(child: Text("Hata meydana geldi."));
+                return const Center(child: Text("Hata meydana geldi."));
               case DataState.LOADING:
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               case DataState.EMPTY:
-                return Center(child: Text("Kayıtılı çalışan bulunmamakta"));
+                return const Center(
+                    child: Text("Kayıtılı çalışan bulunmamakta"));
             }
           }),
         ),
