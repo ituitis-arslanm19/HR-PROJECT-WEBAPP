@@ -29,7 +29,7 @@ class NavItem extends StatelessWidget {
     if (isSelected) {
       color = colorScheme.primary;
       startingColor = color;
-      containerColor = color.withOpacity(0.1);
+      containerColor = colorScheme.secondary;
     } else {
       color = Colors.grey;
       containerColor = Colors.transparent;

@@ -11,20 +11,9 @@ class Button extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            blurRadius: 2,
-            offset: const Offset(0, 5), // changes position of shadow
-          ),
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            blurRadius: 2,
-            offset: const Offset(0, 0), // changes position of shadow
-          ),
-        ],
         color: theme.colorScheme.primary,
-        borderRadius: BorderRadius.circular(50),
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Material(
         color: Colors.transparent,

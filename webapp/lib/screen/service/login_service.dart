@@ -6,7 +6,7 @@ import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/network/model/response_model.dart';
 import 'package:webapp/core/network/network_manager.dart';
 
-import '../model/employee.dart';
+import '../model/mobile_client.dart';
 
 class LoginService {
   final NetworkManager networkManager;
@@ -16,12 +16,13 @@ class LoginService {
     required this.networkManager,
   });
 
-  Future<ResponseModel<Employee?>> login(String email, String password) async {
-    ResponseModel<Employee> result =
-        await networkManager.send<Employee, Employee>(
+  Future<ResponseModel<MobileClient?>> login(
+      String email, String password) async {
+    ResponseModel<MobileClient> result =
+        await networkManager.send<MobileClient, MobileClient>(
             "/login",
             HttpMethod.POST,
-            Employee(),
+            MobileClient(),
             json.encode({'email': email, 'password': password}),
             null);
     if (result.data != null && !result.error!) {
@@ -31,14 +32,15 @@ class LoginService {
     return result;
   }
 
-  //Employee modeli model boş yollanamayacağı için yollandı. Normalde response dönülmüyor.
+  //MobileClient modeli model boş yollanamayacağı için yollandı. Normalde response dönülmüyor.
   Future<ResponseModel> register(String email, String password) async {
-    ResponseModel result = await networkManager.send<Employee, Employee>(
-        "/auth/register",
-        HttpMethod.POST,
-        Employee(),
-        json.encode({'email': email, 'password': password}),
-        null);
+    ResponseModel result =
+        await networkManager.send<MobileClient, MobileClient>(
+            "/auth/register",
+            HttpMethod.POST,
+            MobileClient(),
+            json.encode({'email': email, 'password': password}),
+            null);
 
     return result;
   }

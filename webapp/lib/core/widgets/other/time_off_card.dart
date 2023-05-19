@@ -31,21 +31,9 @@ class TimeOffCard extends StatelessWidget {
         .copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold);
     return Container(
       decoration: BoxDecoration(
-        color: colorScheme.background,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            blurRadius: 2,
-            offset: const Offset(0, 5), // changes position of shadow
-          ),
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            blurRadius: 2,
-            offset: const Offset(0, 0), // changes position of shadow
-          ),
-        ],
-      ),
+          color: colorScheme.background,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.grey.shade300)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

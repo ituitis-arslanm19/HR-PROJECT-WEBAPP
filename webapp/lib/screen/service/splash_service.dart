@@ -6,7 +6,7 @@ import 'package:webapp/core/network/model/response_model.dart';
 import 'package:webapp/core/network/network_manager.dart';
 
 import '../../core/cache/secure_storage.dart';
-import '../model/employee.dart';
+import '../model/mobile_client.dart';
 
 class SplashService {
   final NetworkManager networkManager;
@@ -17,12 +17,16 @@ class SplashService {
     required this.networkManager,
   });
 
-  Future<ResponseModel<Employee?>> authenticate() async {
+  Future<ResponseModel<MobileClient?>> authenticate() async {
     String? refreshToken = await secureStorage.readSecureData("refreshToken");
 
-    ResponseModel<Employee?> result =
-        await networkManager.send<Employee, Employee>("/auth/newAccessToken",
-            HttpMethod.GET, Employee(), null, '$refreshToken');
+    ResponseModel<MobileClient?> result =
+        await networkManager.send<MobileClient, MobileClient>(
+            "/auth/newAccessToken",
+            HttpMethod.GET,
+            MobileClient(),
+            null,
+            '$refreshToken');
 
     if (!result.error! && result.data != null) {
       secureStorage.writeSecureData("refreshToken", result.data!.refreshToken!);

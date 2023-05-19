@@ -18,4 +18,16 @@ class SizeConfig {
     blockSizeHorizontal = screenWidth / 100;
     blockSizeVertical = screenHeight / 100;
   }
+
+  static SizedBox verticalSpace() {
+    return SizedBox(
+      height: blockSizeVertical * 1,
+    );
+  }
+
+  static SizedBox horizontalSpace() {
+    return SizedBox(
+      width: blockSizeVertical * 1,
+    );
+  }
 }

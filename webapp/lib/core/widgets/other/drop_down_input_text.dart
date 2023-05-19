@@ -69,15 +69,9 @@ class _DropDownInputTextState extends State<DropDownInputText> {
 
   Widget buildOverlay() => Container(
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              blurRadius: 2,
-              offset: const Offset(0, 5), // changes position of shadow
-            ),
-          ],
+          color: Theme.of(context).colorScheme.background,
+          border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(10),
-          color: const Color.fromARGB(255, 245, 245, 245),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -136,15 +130,9 @@ class _DropDownInputTextState extends State<DropDownInputText> {
               link: layerLink,
               child: Container(
                 decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      blurRadius: 2,
-                      offset: const Offset(0, 5), // changes position of shadow
-                    ),
-                  ],
+                  color: Theme.of(context).colorScheme.background,
+                  border: Border.all(color: Colors.grey.shade300),
                   borderRadius: BorderRadius.circular(10),
-                  color: const Color.fromARGB(255, 245, 245, 245),
                 ),
                 child: TextFormField(
                   validator: widget.validator,
@@ -156,6 +144,10 @@ class _DropDownInputTextState extends State<DropDownInputText> {
                       iconColor: Theme.of(context).colorScheme.primary,
                       prefixIcon: Icon(Icons.arrow_drop_down),
                       border: InputBorder.none,
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(color: Theme.of(context).hintColor),
                       labelText: widget.hintText),
                 ),
               ),

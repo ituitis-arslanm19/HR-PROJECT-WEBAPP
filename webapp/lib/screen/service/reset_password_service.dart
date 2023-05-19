@@ -9,7 +9,7 @@ import 'package:webapp/screen/model/request/get_password_change_token_request.da
 import 'package:webapp/screen/model/request/update_password_request.dart';
 
 import '../../core/cache/secure_storage.dart';
-import '../model/employee.dart';
+import '../model/mobile_client.dart';
 
 class ResetPasswordService {
   final NetworkManager networkManager;
@@ -20,11 +20,11 @@ class ResetPasswordService {
 
   Future<ResponseModel> updatePassword(
       UpdatePasswordRequest updatePasswordRequest) async {
-    ResponseModel<Employee?> result =
-        await networkManager.send<Employee, Employee>(
+    ResponseModel<MobileClient?> result =
+        await networkManager.send<MobileClient, MobileClient>(
             "/auth/passwordReset",
             HttpMethod.PUT,
-            Employee(),
+            MobileClient(),
             json.encode(updatePasswordRequest.toJson()),
             null);
 

@@ -4,6 +4,6 @@ enum HttpMethod { GET, POST, PUT }
 
 enum DataState { LOADING, READY, ERROR, EMPTY }
 
-enum ClientType { MANAGER, EMPLOYEE, USER }
+enum ClientType { MANAGER, EMPLOYEE, HR, ADMIN }
 
 enum TimeOffStatus { APPROVED, PENDING, DENIED }

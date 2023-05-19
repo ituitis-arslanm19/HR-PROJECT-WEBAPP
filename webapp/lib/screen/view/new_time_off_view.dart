@@ -48,12 +48,6 @@ class NewTimeOffView extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Yeni İzin Talebi +",
-              style: theme.textTheme.headlineMedium!
-                  .copyWith(color: colorScheme.primary),
-            ),
-            const Divider(thickness: 2),
             Container(
               child: Form(
                 key: newTimeOffViewModel.formKeyNewTimeOff,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   AppTheme._();
@@ -6,7 +7,7 @@ class AppTheme {
   static final Color _iconColor = Color.fromARGB(255, 43, 38, 77);
   static const Color _lightPrimaryColor = Color.fromARGB(255, 69, 55, 161);
 
-  static const Color _lightSecondaryColor = Color(0xFF8F71AC);
+  static final Color _lightSecondaryColor = _lightPrimaryColor.withOpacity(0.1);
   static const Color _lightPrimaryVariantColor = Color(0xFFFCFDFE);
   //static const Color _lightSecondaryColor = Color(0xFF707A8B);
   static const Color _lightOnPrimaryColor = Colors.white;
@@ -40,7 +41,7 @@ class AppTheme {
         color: _lightPrimaryVariantColor,
         iconTheme: IconThemeData(color: _lightOnPrimaryColor),
       ),
-      colorScheme: const ColorScheme.light(
+      colorScheme: ColorScheme.light(
           primary: _lightPrimaryColor,
           primaryContainer: _lightPrimaryVariantColor,
           secondary: _lightSecondaryColor,
@@ -71,7 +72,7 @@ class AppTheme {
       textTheme: _darkTextTheme,
       dividerTheme: const DividerThemeData(color: Colors.black));
 
-  static const TextTheme _lightTextTheme = TextTheme(
+  static final TextTheme _lightTextTheme = TextTheme(
       headlineLarge: _lightScreenHeadingLargeTextStyle,
       headlineMedium: _lightScreenHeadingMediumTextStyle,
       headlineSmall: _lightScreenHeadingSmallTextStyle,
@@ -84,21 +85,21 @@ class AppTheme {
   );
 
   static const TextStyle _lightScreenHeadingLargeTextStyle = TextStyle(
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.bold,
       color: _lightPrimaryTextColor,
-      fontSize: 40,
+      fontSize: 20,
       fontFamily: "OpenSans");
 
   static const TextStyle _lightScreenHeadingMediumTextStyle = TextStyle(
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.bold,
       color: _lightPrimaryTextColor,
-      fontSize: 24,
+      fontSize: 18,
       fontFamily: "OpenSans");
 
   static const TextStyle _lightScreenHeadingSmallTextStyle = TextStyle(
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.bold,
       color: _lightPrimaryTextColor,
-      fontSize: 18,
+      fontSize: 16,
       fontFamily: "OpenSans");
 
   static const TextStyle _lightScreenBodyLargeTextStyle = TextStyle(
@@ -108,15 +109,15 @@ class AppTheme {
       fontFamily: "OpenSans");
 
   static const TextStyle _lightScreenBodyMediumTextStyle = TextStyle(
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.bold,
       color: _lightPrimaryTextColor,
       fontSize: 14,
       fontFamily: "OpenSans");
 
   static const TextStyle _lightScreenBodySmallTextStyle = TextStyle(
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.bold,
       color: _lightPrimaryTextColor,
-      fontSize: 10,
+      fontSize: 12,
       fontFamily: "OpenSans");
 
   static final TextStyle _darkScreenHeading1TextStyle =

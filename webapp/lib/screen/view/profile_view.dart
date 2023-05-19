@@ -38,22 +38,25 @@ class ProfileView extends StatelessWidget {
     });
   }
 
-  Column buildPage(ColorScheme colorScheme, ThemeData theme) {
-    return Column(
-      children: [
-        Expanded(
-          flex: 3,
-          child: buildProfileImage(
-              colorScheme,
-              theme,
-              profileViewModel.profile!.firstName![0] +
-                  profileViewModel.profile!.lastName![0]),
-        ),
-        Expanded(
-          flex: 5,
-          child: buildProfileInfos(),
-        ),
-      ],
+  SizedBox buildPage(ColorScheme colorScheme, ThemeData theme) {
+    return SizedBox(
+      height: SizeConfig.blockSizeVertical * 60,
+      child: Column(
+        children: [
+          Expanded(
+            flex: 3,
+            child: buildProfileImage(
+                colorScheme,
+                theme,
+                profileViewModel.profile!.firstName![0] +
+                    profileViewModel.profile!.lastName![0]),
+          ),
+          Expanded(
+            flex: 5,
+            child: buildProfileInfos(),
+          ),
+        ],
+      ),
     );
   }
 

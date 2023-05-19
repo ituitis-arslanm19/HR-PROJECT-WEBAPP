@@ -7,7 +7,7 @@ import 'package:webapp/core/cache/secure_storage.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/constant/strings.dart';
 import 'package:webapp/core/network/model/response_model.dart';
-import 'package:webapp/screen/model/employee.dart';
+import 'package:webapp/screen/model/mobile_client.dart';
 
 class NetworkManager {
   final SecureStorage secureStorage;
@@ -36,8 +36,8 @@ class NetworkManager {
             'Accept': '*/*',
             'Authorization': "Bearer " + refreshToken,
           });
-          var result = handleResponse<Employee, Employee>(
-              refreshTokenResponse, Employee());
+          var result = handleResponse<MobileClient, MobileClient>(
+              refreshTokenResponse, MobileClient());
           if (!result.error! && result.data != null) {
             //Yeni alınan token eski tokenın üzerine yazılıp istek tekrar yollanıyor.
             token = result.data!.accessToken;

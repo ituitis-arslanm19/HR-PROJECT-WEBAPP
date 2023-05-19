@@ -21,19 +21,14 @@ class InputText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              blurRadius: 2,
-              offset: const Offset(0, 5), // changes position of shadow
-            ),
-          ],
+          color: theme.colorScheme.background,
+          border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(10),
-          color: const Color.fromARGB(255, 245, 245, 245),
         ),
         child: TextFormField(
           obscureText: obscure ?? false,
@@ -59,6 +54,8 @@ class InputText extends StatelessWidget {
                   )),
               iconColor: Theme.of(context).colorScheme.primary,
               prefixIcon: icon,
+              labelStyle:
+                  theme.textTheme.bodySmall!.copyWith(color: theme.hintColor),
               border: InputBorder.none,
               labelText: hintText),
         ),

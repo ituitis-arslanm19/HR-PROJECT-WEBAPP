@@ -34,24 +34,12 @@ class ProductView extends StatelessWidget {
       ProductViewModel productViewModel) {
     return Column(
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "Üzerime Zimmetli Ürünler",
-            style: theme.textTheme.headlineMedium!
-                .copyWith(color: colorScheme.primary),
-            textAlign: TextAlign.start,
-          ),
-        ),
-        const Divider(
-          thickness: 2,
-        ),
         Observer(builder: (_) {
           switch (productViewModel.dataState) {
             case DataState.READY:
               return buildProductList(productViewModel);
             case DataState.ERROR:
-              return Center(child: Text("hata meydana geldi."));
+              return Center(child: Text("Hata meydana geldi."));
             case DataState.LOADING:
               return Center(
                 child: CircularProgressIndicator(),

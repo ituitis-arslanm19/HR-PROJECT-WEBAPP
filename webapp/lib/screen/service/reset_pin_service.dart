@@ -8,7 +8,7 @@ import 'package:webapp/screen/model/password_change_token.dart';
 import 'package:webapp/screen/model/request/get_password_change_token_request.dart';
 
 import '../../core/cache/secure_storage.dart';
-import '../model/employee.dart';
+import '../model/mobile_client.dart';
 
 class ResetPinService {
   final NetworkManager networkManager;

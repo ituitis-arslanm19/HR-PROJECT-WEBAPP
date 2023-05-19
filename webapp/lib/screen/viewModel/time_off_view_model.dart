@@ -27,6 +27,9 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
   @observable
   ObservableList<TimeOff>? previousTimeOffList;
 
+  @observable
+  ObservableList<TimeOffType>? timeOffTypeList;
+
   late List<TextEditingController> controllers;
 
   @observable
@@ -34,6 +37,9 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
 
   @observable
   DataState dataState2 = DataState.LOADING;
+
+  @observable
+  DataState dataStateTimeOffType = DataState.LOADING;
 
   @observable
   String? description;
@@ -48,6 +54,8 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
   @override
   Future<void> init() async {
     controllers = List.generate(3, (i) => TextEditingController());
+
+    await getTimeOffTypes();
 
     ResponseModel<Iterable<TimeOff>?> result =
         await timeOffService.getTimeOffs();
@@ -75,12 +83,54 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
   }
 
   @action
+  Future<void> getTimeOffTypes() async {
+    ResponseModel<Iterable<TimeOffType>?> result =
+        await timeOffService.getTimeOffTypes();
+
+    if (((!result.error!) || result.data != null)) {
+      timeOffTypeList = ObservableList.of(result.data!);
+      dataStateTimeOffType = DataState.READY;
+    } else {
+      description = result.description;
+      dataStateTimeOffType = DataState.ERROR;
+    }
+  }
+
+  @action
   changeTimeOffTypeSelected() {
     timeOffTypeSelected = !timeOffTypeSelected;
   }
 
   String? inputTextValidator(String? value) {
     if (value != null) if (value.isEmpty) return 'Bu değer boş olamaz.';
+    return null;
+  }
+
+  @action
+  requestNewTimeOff() async {
+    if (formKeyNewTimeOff.currentState!.validate()) {
+      ResponseModel<TimeOff?> result = await timeOffService.requestNewTimeOff(
+          CreateTimeOffRequest(
+              startDate: controllers[0].text,
+              endDate: controllers[1].text,
+              timeOffTypeId: _getTimeOffTypeId(controllers[2].text)));
+      if ((!result.error!) || result.data != null) {
+        pendingTimeOffList!.add(result.data!);
+      }
+      ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
+          content: Text(
+        result.description!,
+        textAlign: TextAlign.center,
+      )));
+    }
+  }
+
+  int? _getTimeOffTypeId(String name) {
+    for (TimeOffType timeOffType in timeOffTypeList!) {
+      if (timeOffType.name == name) {
+        return timeOffType.id!;
+      }
+    }
     return null;
   }
 }

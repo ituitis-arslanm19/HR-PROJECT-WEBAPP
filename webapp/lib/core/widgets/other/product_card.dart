@@ -27,17 +27,12 @@ class ProductCard extends StatelessWidget {
             child: Container(
               height: SizeConfig.blockSizeVertical * 12,
               decoration: BoxDecoration(
-                  color: colorScheme.primary,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      blurRadius: 2,
-                      offset: const Offset(0, 5), // changes position of shadow
-                    ),
-                  ]),
+                color: colorScheme.primary,
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10)),
+              ),
               child: Icon(
                 Icons.computer,
                 color: colorScheme.background,
@@ -50,17 +45,12 @@ class ProductCard extends StatelessWidget {
             child: Container(
               height: SizeConfig.blockSizeVertical * 12,
               decoration: BoxDecoration(
-                  color: colorScheme.background,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      bottomRight: Radius.circular(20)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      blurRadius: 2,
-                      offset: const Offset(0, 5), // changes position of shadow
-                    ),
-                  ]),
+                color: colorScheme.background,
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(10),
+                    bottomRight: Radius.circular(10)),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

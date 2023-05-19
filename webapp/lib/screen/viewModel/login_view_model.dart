@@ -9,7 +9,7 @@ import 'package:webapp/screen/view/reset_email_view.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../core/network/model/response_model.dart';
-import '../model/employee.dart';
+import '../model/mobile_client.dart';
 import '../view/main_view.dart';
 part 'login_view_model.g.dart';
 
@@ -37,7 +37,7 @@ abstract class _LoginViewModelBase extends BaseViewModel with Store {
   login() async {
     if (formKeyLogin.currentState!.validate()) {
       dataState = DataState.LOADING;
-      ResponseModel<Employee?> result = await loginService.login(
+      ResponseModel<MobileClient?> result = await loginService.login(
           controllers.elementAt(3).text, controllers.elementAt(4).text);
 
       if (result.data != null && !result.error!) {

@@ -41,6 +41,22 @@ mixin _$TimeOffViewModel on _TimeOffViewModelBase, Store {
     });
   }
 
+  late final _$timeOffTypeListAtom =
+      Atom(name: '_TimeOffViewModelBase.timeOffTypeList', context: context);
+
+  @override
+  ObservableList<TimeOffType>? get timeOffTypeList {
+    _$timeOffTypeListAtom.reportRead();
+    return super.timeOffTypeList;
+  }
+
+  @override
+  set timeOffTypeList(ObservableList<TimeOffType>? value) {
+    _$timeOffTypeListAtom.reportWrite(value, super.timeOffTypeList, () {
+      super.timeOffTypeList = value;
+    });
+  }
+
   late final _$dataState1Atom =
       Atom(name: '_TimeOffViewModelBase.dataState1', context: context);
 
@@ -70,6 +86,23 @@ mixin _$TimeOffViewModel on _TimeOffViewModelBase, Store {
   set dataState2(DataState value) {
     _$dataState2Atom.reportWrite(value, super.dataState2, () {
       super.dataState2 = value;
+    });
+  }
+
+  late final _$dataStateTimeOffTypeAtom = Atom(
+      name: '_TimeOffViewModelBase.dataStateTimeOffType', context: context);
+
+  @override
+  DataState get dataStateTimeOffType {
+    _$dataStateTimeOffTypeAtom.reportRead();
+    return super.dataStateTimeOffType;
+  }
+
+  @override
+  set dataStateTimeOffType(DataState value) {
+    _$dataStateTimeOffTypeAtom.reportWrite(value, super.dataStateTimeOffType,
+        () {
+      super.dataStateTimeOffType = value;
     });
   }
 
@@ -129,6 +162,22 @@ mixin _$TimeOffViewModel on _TimeOffViewModelBase, Store {
     return _$initAsyncAction.run(() => super.init());
   }
 
+  late final _$getTimeOffTypesAsyncAction =
+      AsyncAction('_TimeOffViewModelBase.getTimeOffTypes', context: context);
+
+  @override
+  Future<void> getTimeOffTypes() {
+    return _$getTimeOffTypesAsyncAction.run(() => super.getTimeOffTypes());
+  }
+
+  late final _$requestNewTimeOffAsyncAction =
+      AsyncAction('_TimeOffViewModelBase.requestNewTimeOff', context: context);
+
+  @override
+  Future requestNewTimeOff() {
+    return _$requestNewTimeOffAsyncAction.run(() => super.requestNewTimeOff());
+  }
+
   late final _$_TimeOffViewModelBaseActionController =
       ActionController(name: '_TimeOffViewModelBase', context: context);
 
@@ -148,8 +197,10 @@ mixin _$TimeOffViewModel on _TimeOffViewModelBase, Store {
     return '''
 pendingTimeOffList: ${pendingTimeOffList},
 previousTimeOffList: ${previousTimeOffList},
+timeOffTypeList: ${timeOffTypeList},
 dataState1: ${dataState1},
 dataState2: ${dataState2},
+dataStateTimeOffType: ${dataStateTimeOffType},
 description: ${description},
 selectedDate: ${selectedDate},
 timeOffTypeSelected: ${timeOffTypeSelected}

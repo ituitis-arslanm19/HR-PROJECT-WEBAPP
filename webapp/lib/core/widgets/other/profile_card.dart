@@ -28,20 +28,9 @@ class ProfileCard extends StatelessWidget {
               height: SizeConfig.blockSizeVertical * 5,
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.background,
+                border: Border.all(color: Colors.grey.shade300),
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    blurRadius: 2,
-                    offset: const Offset(0, 5), // changes position of shadow
-                  ),
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    blurRadius: 2,
-                    offset: const Offset(0, 0), // changes position of shadow
-                  ),
-                ],
               ),
               child: Padding(
                 padding: const EdgeInsets.only(
