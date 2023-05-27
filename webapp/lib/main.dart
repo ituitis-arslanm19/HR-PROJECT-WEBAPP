@@ -16,8 +16,6 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  var list = [1, 2, 3, 4];
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);

@@ -29,13 +29,13 @@ mixin _$DepartmentListViewModel on _DepartmentListViewModelBase, Store {
       name: '_DepartmentListViewModelBase.departmentList', context: context);
 
   @override
-  List<Department>? get departmentList {
+  List<DepartmentListItem>? get departmentList {
     _$departmentListAtom.reportRead();
     return super.departmentList;
   }
 
   @override
-  set departmentList(List<Department>? value) {
+  set departmentList(List<DepartmentListItem>? value) {
     _$departmentListAtom.reportWrite(value, super.departmentList, () {
       super.departmentList = value;
     });

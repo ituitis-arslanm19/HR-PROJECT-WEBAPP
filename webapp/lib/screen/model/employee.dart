@@ -1,43 +1,42 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import '../../core/base/base_model.dart';
 
 class Employee extends BaseModel<Employee> {
   int? id;
-  String? email;
   String? firstName;
   String? lastName;
+  String? email;
   String? departmentName;
-  Employee({
-    this.id,
-    this.email,
-    this.firstName,
-    this.lastName,
-    this.departmentName,
-  });
+
+  Employee(
+      {this.id,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.departmentName});
 
   @override
   Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'id': id,
-      'email': email,
-      'firstName': firstName,
-      'lastName': lastName,
-      'departmentName': departmentName,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = id;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['email'] = email;
+    data['departmentName'] = departmentName;
+    return data;
   }
 
   @override
-  fromJson(Map<String, dynamic> json) {
+  Employee fromJson(Map<String, dynamic> json) {
     return Employee(
-      id: json['id'] != null ? json['id'] as int : null,
-      email: json['email'] != null ? json['email'] as String : null,
-      firstName: json['firstName'] != null ? json['firstName'] as String : null,
-      lastName: json['lastName'] != null ? json['lastName'] as String : null,
-      departmentName: json['departmentName'] != null
-          ? json['departmentName'] as String
-          : null,
-    );
+        id: json['id'],
+        firstName: json['firstName'],
+        lastName: json['lastName'],
+        email: json['email'],
+        departmentName: json['departmentName']);
+  }
+
+  @override
+  String toString() {
+    return 'Employee(id: $id, firstName: $firstName, lastName: $lastName, email: $email, department: $departmentName)';
   }
 }

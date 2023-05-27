@@ -5,15 +5,25 @@ import 'package:webapp/core/base/base_model.dart';
 class TimeOffType extends BaseModel<TimeOffType> {
   int? id;
   String? name;
-  TimeOffType({this.id, this.name});
+  String? description;
+  TimeOffType({
+    this.id,
+    this.name,
+    this.description,
+  });
 
   @override
   TimeOffType fromJson(Map<String, dynamic> json) {
-    return TimeOffType(id: json['id'], name: json['name']);
+    return TimeOffType(
+        id: json['id'], name: json['name'], description: json['description']);
   }
 
   @override
   Map<String, dynamic> toJson() {
-    return <String, dynamic>{'id': id, 'name': name};
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'description': description
+    };
   }
 }

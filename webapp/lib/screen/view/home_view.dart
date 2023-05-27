@@ -82,7 +82,7 @@ class HomeView extends StatelessWidget {
       child: Observer(builder: (_) {
         switch (homeViewModel.dataState) {
           case DataState.READY:
-            return buildReadyGendePieChart(colorScheme, theme, homeViewModel);
+            return buildReadyGenderPieChart(colorScheme, theme, homeViewModel);
           case DataState.ERROR:
             return const Center(child: Text("Hata meydana geldi."));
           case DataState.LOADING:
@@ -90,13 +90,13 @@ class HomeView extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           default:
-            return const Center(child: Text("Hata meydana geldi."));
+            return buildReadyGenderPieChart(colorScheme, theme, homeViewModel);
         }
       }),
     );
   }
 
-  SizedBox buildReadyGendePieChart(
+  SizedBox buildReadyGenderPieChart(
       ColorScheme colorScheme, ThemeData theme, HomeViewModel homeViewModel) {
     return SizedBox(
       child: SizedBox(
@@ -106,25 +106,37 @@ class HomeView extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Observer(builder: (_) {
-                return PieChart(
-                  PieChartData(
-                    centerSpaceRadius: SizeConfig.blockSizeVertical * 4,
-                    sections: showingGenderSections(
-                        colorScheme, theme, homeViewModel),
-                    pieTouchData: PieTouchData(
-                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                        if (!event.isInterestedForInteractions ||
-                            pieTouchResponse == null ||
-                            pieTouchResponse.touchedSection == null) {
-                          homeViewModel.pieChartIndex1 = -1;
-                          return;
-                        }
-                        homeViewModel.changePieChartIndex1(pieTouchResponse
-                            .touchedSection!.touchedSectionIndex);
-                      },
-                    ),
-                  ),
-                );
+                return homeViewModel
+                                .dashboard!.genderPieChart!.femaleEmployeeNum !=
+                            0 ||
+                        homeViewModel
+                                .dashboard!.genderPieChart!.maleEmployeeNum !=
+                            0
+                    ? PieChart(
+                        PieChartData(
+                          centerSpaceRadius: SizeConfig.blockSizeVertical * 4,
+                          sections: showingGenderSections(
+                              colorScheme, theme, homeViewModel),
+                          pieTouchData: PieTouchData(
+                            touchCallback:
+                                (FlTouchEvent event, pieTouchResponse) {
+                              if (!event.isInterestedForInteractions ||
+                                  pieTouchResponse == null ||
+                                  pieTouchResponse.touchedSection == null) {
+                                homeViewModel.pieChartIndex1 = -1;
+                                return;
+                              }
+                              homeViewModel.changePieChartIndex1(
+                                  pieTouchResponse
+                                      .touchedSection!.touchedSectionIndex);
+                            },
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        height: 0,
+                        width: 0,
+                      );
               }),
             ),
             Expanded(
@@ -145,7 +157,7 @@ class HomeView extends StatelessWidget {
                           ),
                           Text(
                             homeViewModel
-                                .dashboard!.genderPieChart!.maleMobileClientNum
+                                .dashboard!.genderPieChart!.maleEmployeeNum
                                 .toString(),
                             style: theme.textTheme.bodySmall,
                           ),
@@ -162,8 +174,8 @@ class HomeView extends StatelessWidget {
                             width: SizeConfig.blockSizeHorizontal * 2,
                           ),
                           Text(
-                            homeViewModel.dashboard!.genderPieChart!
-                                .femaleMobileClientNum
+                            homeViewModel
+                                .dashboard!.genderPieChart!.femaleEmployeeNum
                                 .toString(),
                             style: theme.textTheme.bodySmall,
                           ),
@@ -315,7 +327,7 @@ class HomeView extends StatelessWidget {
           return PieChartSectionData(
             showTitle: false,
             color: colorScheme.primary,
-            value: homeViewModel.dashboard!.genderPieChart!.maleMobileClientNum!
+            value: homeViewModel.dashboard!.genderPieChart!.maleEmployeeNum!
                 .toDouble(),
             radius: radius,
           );
@@ -323,8 +335,7 @@ class HomeView extends StatelessWidget {
           return PieChartSectionData(
             showTitle: false,
             color: colorScheme.secondary,
-            value: homeViewModel
-                .dashboard!.genderPieChart!.femaleMobileClientNum!
+            value: homeViewModel.dashboard!.genderPieChart!.femaleEmployeeNum!
                 .toDouble(),
             radius: radius,
           );

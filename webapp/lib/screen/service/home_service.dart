@@ -1,3 +1,4 @@
+import 'package:webapp/core/constant/strings.dart';
 import 'package:webapp/core/network/network_manager.dart';
 import 'package:webapp/screen/model/dashboard/dashboard.dart';
 
@@ -12,7 +13,7 @@ class HomeService {
   Future<ResponseModel<Dashboard?>> getDashBoardInfos() async {
     ResponseModel<Dashboard> result =
         await networkManager.send<Dashboard, Dashboard>(
-            "/dashboard", HttpMethod.GET, Dashboard(), null, null);
+            "/dashboard", HttpMethod.GET, Dashboard(), null, TOKEN);
 
     return result;
   }

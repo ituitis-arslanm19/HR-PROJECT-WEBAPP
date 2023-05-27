@@ -29,13 +29,13 @@ mixin _$EmployeeListViewModel on _EmployeeListViewModelBase, Store {
       Atom(name: '_EmployeeListViewModelBase.employeeList', context: context);
 
   @override
-  List<Employee>? get employeeList {
+  List<EmployeeListItem>? get employeeList {
     _$employeeListAtom.reportRead();
     return super.employeeList;
   }
 
   @override
-  set employeeList(List<Employee>? value) {
+  set employeeList(List<EmployeeListItem>? value) {
     _$employeeListAtom.reportWrite(value, super.employeeList, () {
       super.employeeList = value;
     });

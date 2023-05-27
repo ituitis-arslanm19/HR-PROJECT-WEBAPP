@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +6,6 @@ import 'package:webapp/core/network/network_manager.dart';
 import 'package:webapp/core/widgets/other/drop_down_input_text.dart';
 import 'package:webapp/core/widgets/other/input_text.dart';
 import 'package:webapp/core/widgets/other/list_widget.dart';
-import 'package:webapp/core/widgets/other/shadow_container.dart';
 import 'package:webapp/screen/service/time_off_service.dart';
 import 'package:webapp/screen/viewModel/time_off_view_model.dart';
 
@@ -17,7 +14,6 @@ import '../../core/util/size_config.dart';
 import '../../core/widgets/other/button.dart';
 import '../../core/widgets/other/simple_container.dart';
 import '../../core/widgets/other/time_off_card.dart';
-import '../model/time_off.dart';
 
 class TimeOffView extends StatelessWidget {
   // List of items in our dropdown menu
@@ -91,13 +87,13 @@ class TimeOffView extends StatelessWidget {
                 return buildPendingList(timeOffViewModel);
 
               case DataState.LOADING:
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               case DataState.ERROR:
-                return Center(child: Text("Hata meydana geldi"));
+                return const Center(child: Text("Hata meydana geldi"));
               case DataState.EMPTY:
-                return Center(
+                return const Center(
                     child: Text("Onay bekleyen izniniz bulunmamakta"));
             }
           })
@@ -144,15 +140,15 @@ class TimeOffView extends StatelessWidget {
             return buildPreviousList(timeOffViewModel, colorScheme, theme);
 
           case DataState.LOADING:
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           case DataState.ERROR:
             //return Center(child: Text("Hata meydana geldi"));
-            return buildPreviousList(timeOffViewModel, colorScheme, theme);
+            return const Center(child: Text("Hata meydana geldi"));
           case DataState.EMPTY:
             //return Center(child: Text("Geçmiş izniniz bulunmamakta"));
-            return buildPreviousList(timeOffViewModel, colorScheme, theme);
+            return const Center(child: Text("Geçmiş izniniz bulunmamakta"));
         }
       }),
     );
@@ -163,240 +159,33 @@ class TimeOffView extends StatelessWidget {
     TextStyle textStyle =
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     return ListWidget(
-      data: [
-        [
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "3",
-            style: textStyle,
-          ),
-          Icon(Icons.check),
-          Text(
-            "Yıllık İzin",
-            style: textStyle,
-          )
-        ],
-        [
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "3",
-            style: textStyle,
-          ),
-          Icon(Icons.check),
-          Text(
-            "Yıllık İzin",
-            style: textStyle,
-          )
-        ],
-        [
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "3",
-            style: textStyle,
-          ),
-          Icon(Icons.check),
-          Text(
-            "Yıllık İzin",
-            style: textStyle,
-          )
-        ],
-        [
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "3",
-            style: textStyle,
-          ),
-          Icon(Icons.check),
-          Text(
-            "Yıllık İzin",
-            style: textStyle,
-          )
-        ],
-        [
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "3",
-            style: textStyle,
-          ),
-          Icon(Icons.check),
-          Text(
-            "Yıllık İzin",
-            style: textStyle,
-          )
-        ],
-        [
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "3",
-            style: textStyle,
-          ),
-          Icon(Icons.check),
-          Text(
-            "Yıllık İzin",
-            style: textStyle,
-          )
-        ],
-        [
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "3",
-            style: textStyle,
-          ),
-          Icon(Icons.check),
-          Text(
-            "Yıllık İzin",
-            style: textStyle,
-          )
-        ],
-        [
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "3",
-            style: textStyle,
-          ),
-          Icon(Icons.check),
-          Text(
-            "Yıllık İzin",
-            style: textStyle,
-          )
-        ],
-        [
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "3",
-            style: textStyle,
-          ),
-          Icon(Icons.check),
-          Text(
-            "Yıllık İzin",
-            style: textStyle,
-          )
-        ],
-        [
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "3",
-            style: textStyle,
-          ),
-          Icon(Icons.check),
-          Text(
-            "Yıllık İzin",
-            style: textStyle,
-          )
-        ],
-        [
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "3",
-            style: textStyle,
-          ),
-          Icon(Icons.check),
-          Text(
-            "Yıllık İzin",
-            style: textStyle,
-          )
-        ],
-        [
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "15/12/2000",
-            style: textStyle,
-          ),
-          Text(
-            "3",
-            style: textStyle,
-          ),
-          Icon(Icons.check),
-          Text(
-            "Yıllık İzin",
-            style: textStyle,
-          )
-        ],
-      ],
-      titles: [
+      data: timeOffViewModel.previousTimeOffList!
+          .map((e) => [
+                Text(
+                  e.startDate ?? "Hata",
+                  style: textStyle,
+                ),
+                Text(
+                  e.endDate ?? "Hata",
+                  style: textStyle,
+                ),
+                Icon(
+                  e.status == TimeOffStatus.APPROVED
+                      ? Icons.check
+                      : Icons.close,
+                  color: e.status == TimeOffStatus.APPROVED
+                      ? Colors.green
+                      : Colors.red,
+                ),
+                Text(
+                  e.timeOffType ?? "Hata",
+                  style: textStyle,
+                )
+              ])
+          .toList(),
+      titles: const [
         "Başlangıç Tarihi",
         "Bitiş Tarihi",
-        "Gün Sayısı",
         "Onay Durumu",
         "İzin tipi"
       ],
@@ -414,13 +203,13 @@ class TimeOffView extends StatelessWidget {
                 return buildNewTimeOffForm(timeOffViewModel, context);
 
               case DataState.LOADING:
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               case DataState.ERROR:
-                return Center(child: Text("Hata meydana geldi"));
+                return const Center(child: Text("Hata meydana geldi"));
               case DataState.EMPTY:
-                return Center(child: Text("İzin tipleri belirlenmeli"));
+                return const Center(child: Text("İzin tipleri belirlenmeli"));
             }
           },
         ));
@@ -433,54 +222,52 @@ class TimeOffView extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              child: Form(
-                key: timeOffViewModel.formKeyNewTimeOff,
-                child: Column(
-                  children: [
-                    InputText(
-                      icon: const Icon(Icons.calendar_month),
-                      textEditingController: timeOffViewModel.controllers[0],
-                      hintText: "Başlangıç tarihi",
-                      enabled: true,
-                      validator: timeOffViewModel.inputTextValidator,
-                      onTap: () => _showCalendar(
-                          context, timeOffViewModel.controllers[0]),
+            Form(
+              key: timeOffViewModel.formKeyNewTimeOff,
+              child: Column(
+                children: [
+                  InputText(
+                    icon: const Icon(Icons.calendar_month),
+                    textEditingController: timeOffViewModel.controllers[0],
+                    hintText: "Başlangıç tarihi",
+                    enabled: true,
+                    validator: timeOffViewModel.inputTextValidator,
+                    onTap: () =>
+                        _showCalendar(context, timeOffViewModel.controllers[0]),
+                  ),
+                  InputText(
+                    icon: const Icon(Icons.calendar_month),
+                    textEditingController: timeOffViewModel.controllers[1],
+                    hintText: "Bitiş Tarihi",
+                    enabled: true,
+                    validator: timeOffViewModel.inputTextValidator,
+                    onTap: () =>
+                        _showCalendar(context, timeOffViewModel.controllers[1]),
+                  ),
+                  DropDownInputText(
+                    selected: timeOffViewModel.timeOffTypeSelected,
+                    textEditingController: timeOffViewModel.controllers[2],
+                    hintText: "İzin Tipi",
+                    validator: timeOffViewModel.inputTextValidator,
+                    items: timeOffViewModel.timeOffTypeList!
+                        .map((e) => e.name)
+                        .toList(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 6.0,
                     ),
-                    InputText(
-                      icon: const Icon(Icons.calendar_month),
-                      textEditingController: timeOffViewModel.controllers[1],
-                      hintText: "Bitiş Tarihi",
-                      enabled: true,
-                      validator: timeOffViewModel.inputTextValidator,
-                      onTap: () => _showCalendar(
-                          context, timeOffViewModel.controllers[1]),
-                    ),
-                    DropDownInputText(
-                      selected: timeOffViewModel.timeOffTypeSelected,
-                      textEditingController: timeOffViewModel.controllers[2],
-                      hintText: "İzin Tipi",
-                      validator: timeOffViewModel.inputTextValidator,
-                      items: timeOffViewModel.timeOffTypeList!
-                          .map((e) => e.name)
-                          .toList(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 6.0,
+                    child: SizedBox(
+                      height: SizeConfig.blockSizeVertical * 5,
+                      child: Button(
+                        onPressed: () {
+                          timeOffViewModel.requestNewTimeOff();
+                        },
+                        text: "İZİN TALEBİ OLUŞTUR",
                       ),
-                      child: SizedBox(
-                        height: SizeConfig.blockSizeVertical * 5,
-                        child: Button(
-                          onPressed: () {
-                            timeOffViewModel.requestNewTimeOff();
-                          },
-                          text: "İZİN TALEBİ OLUŞTUR",
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
             )
           ],

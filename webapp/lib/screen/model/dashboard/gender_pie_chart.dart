@@ -4,30 +4,25 @@ import 'dart:convert';
 import 'package:webapp/core/base/base_model.dart';
 
 class GenderPieChart extends BaseModel<GenderPieChart> {
-  int? maleMobileClientNum;
-  int? femaleMobileClientNum;
+  int? maleEmployeeNum;
+  int? femaleEmployeeNum;
   GenderPieChart({
-    this.maleMobileClientNum,
-    this.femaleMobileClientNum,
+    this.maleEmployeeNum,
+    this.femaleEmployeeNum,
   });
 
   @override
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'maleMobileClientNum': maleMobileClientNum,
-      'femaleMobileClientNum': femaleMobileClientNum,
+      'maleEmployeeNum': maleEmployeeNum,
+      'femaleEmployeeNum': femaleEmployeeNum,
     };
   }
 
   @override
   GenderPieChart fromJson(Map<String, dynamic> json) {
     return GenderPieChart(
-      maleMobileClientNum: json['maleMobileClientNum'] != null
-          ? json['maleMobileClientNum'] as int
-          : null,
-      femaleMobileClientNum: json['femaleMobileClientNum'] != null
-          ? json['femaleMobileClientNum'] as int
-          : null,
-    );
+        maleEmployeeNum: json['maleEmployeeNum'] as int,
+        femaleEmployeeNum: json['femaleEmployeeNum'] as int);
   }
 }

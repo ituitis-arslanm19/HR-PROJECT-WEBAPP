@@ -39,7 +39,7 @@ abstract class _HomeViewModelBase extends BaseViewModel with Store {
   @action
   Future<void> init() async {
     ResponseModel<Dashboard?> result = await homeService.getDashBoardInfos();
-    if ((!result.error!) || result.data != null) {
+    if ((!result.error!) && result.data != null) {
       dashboard = result.data;
       dashboard!.birthdays!.isEmpty
           ? dataState = DataState.EMPTY

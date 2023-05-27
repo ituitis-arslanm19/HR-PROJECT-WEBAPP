@@ -1,319 +1,291 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:webapp/core/util/size_config.dart';
-import 'package:webapp/core/widgets/other/list_widget.dart';
-import 'package:webapp/core/widgets/other/profile_card.dart';
-import 'package:webapp/core/widgets/other/simple_container.dart';
+import 'package:webapp/core/cache/secure_storage.dart';
 
-import '../../core/widgets/other/indicator.dart';
+import '../../core/constant/enum/enums.dart';
+import '../../core/network/network_manager.dart';
+import '../../core/util/size_config.dart';
+import '../../core/widgets/other/input_text.dart';
+import '../model/employee.dart';
+import '../service/department_service.dart';
+import '../service/employee_service.dart';
+import '../viewModel/department_detail_view_model.dart';
+import 'main_view.dart';
 
-class DepartmentdDetailView extends StatelessWidget {
-  const DepartmentdDetailView({super.key});
+class DepartmentDetailView extends StatelessWidget {
+  final int? id;
+  final BuildContext buildContext;
+  const DepartmentDetailView({super.key, this.id, required this.buildContext});
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    ColorScheme colorScheme = theme.colorScheme;
-    return Column(
-      children: [
-        Expanded(
-          flex: 1,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
-                SizeConfig.horizontalSpace(),
-                Text(
-                  "İnsan Kaynakları",
-                  style: theme.textTheme.headlineLarge!
-                      .copyWith(color: colorScheme.primary),
-                ),
-                SizeConfig.horizontalSpace(),
-                IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-              ],
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 9,
-          child: Row(
-            children: [
-              Expanded(
-                  flex: 5,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 5,
-                        child: SimpleContainer(
-                            title: "Departman Bilgileri",
-                            child: Column(
-                              children: [
-                                ProfileCard(
-                                  tittle: "Çalışan Sayısı",
-                                ),
-                                ProfileCard(
-                                  tittle: "Üst Departman",
-                                ),
-                                ProfileCard(
-                                  tittle: "Alt Departman",
-                                )
-                              ],
-                            )),
-                      ),
-                      Expanded(
-                        flex: 5,
-                        child: SimpleContainer(
-                            title: "Yönetici Bilgileri",
-                            child: Column(
-                              children: [
-                                ProfileCard(
-                                  tittle: "İsim",
-                                ),
-                                ProfileCard(
-                                  tittle: "E-posta",
-                                ),
-                                ProfileCard(
-                                  tittle: "Başlangıç Tarihi",
-                                )
-                              ],
-                            )),
-                      ),
-                    ],
-                  )),
-              Expanded(
-                  flex: 5,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 5,
-                        child: SimpleContainer(
-                            title: "Çalışan Listesi",
-                            child: Container(
-                                height: SizeConfig.blockSizeVertical * 26,
-                                child: ListWidget(
-                                  titles: [],
-                                  data: [
-                                    [
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: CircleAvatar(
-                                          backgroundColor: colorScheme.primary,
-                                          child: Text("Çİ",
-                                              style: theme
-                                                  .textTheme.headlineSmall!
-                                                  .copyWith(
-                                                      color: colorScheme
-                                                          .background)),
-                                          radius:
-                                              SizeConfig.blockSizeHorizontal *
-                                                  3,
-                                        ),
-                                      ),
-                                      Text("Çalışan İsmi"),
-                                      Text("01/01/2000")
-                                    ],
-                                    [
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: CircleAvatar(
-                                          backgroundColor: colorScheme.primary,
-                                          child: Text("Çİ",
-                                              style: theme
-                                                  .textTheme.headlineSmall!
-                                                  .copyWith(
-                                                      color: colorScheme
-                                                          .background)),
-                                          radius:
-                                              SizeConfig.blockSizeHorizontal *
-                                                  3,
-                                        ),
-                                      ),
-                                      Text("Çalışan İsmi"),
-                                      Text("01/01/2000")
-                                    ],
-                                    [
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: CircleAvatar(
-                                          backgroundColor: colorScheme.primary,
-                                          child: Text("Çİ",
-                                              style: theme
-                                                  .textTheme.headlineSmall!
-                                                  .copyWith(
-                                                      color: colorScheme
-                                                          .background)),
-                                          radius:
-                                              SizeConfig.blockSizeHorizontal *
-                                                  3,
-                                        ),
-                                      ),
-                                      Text("Çalışan İsmi"),
-                                      Text("01/01/2000")
-                                    ],
-                                    [
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: CircleAvatar(
-                                          backgroundColor: colorScheme.primary,
-                                          child: Text("Çİ",
-                                              style: theme
-                                                  .textTheme.headlineSmall!
-                                                  .copyWith(
-                                                      color: colorScheme
-                                                          .background)),
-                                          radius:
-                                              SizeConfig.blockSizeHorizontal *
-                                                  3,
-                                        ),
-                                      ),
-                                      Text("Çalışan İsmi"),
-                                      Text("01/01/2000")
-                                    ]
-                                  ],
-                                ))),
-                      ),
-                      Expanded(
-                        flex: 5,
-                        child: Center(
-                            child: buildGenderPieChart(colorScheme, theme)),
-                      ),
-                    ],
-                  ))
-            ],
-          ),
-        ),
-      ],
+    DepartmentDetailViewModel viewModel = DepartmentDetailViewModel(
+        DepartmentService(networkManager: NetworkManager(SecureStorage())),
+        id,
+        EmployeeService(networkManager: NetworkManager(SecureStorage())),
+        context);
+    viewModel.init();
+    return SizedBox(
+      width: SizeConfig.blockSizeHorizontal * 50,
+      height: SizeConfig.blockSizeVertical * 35,
+      child: Scaffold(
+          body: MyStatelessWidget(
+        viewModel: viewModel,
+        buildContext: buildContext,
+      )),
     );
   }
+}
 
-  SimpleContainer buildGenderPieChart(
-      ColorScheme colorScheme, ThemeData theme) {
-    return SimpleContainer(
-        title: "Cinsiyet Dağılımı",
-        child: SizedBox(
-          child: SizedBox(
-            height: SizeConfig.blockSizeVertical * 25,
-            child: Row(
+class MyStatelessWidget extends StatelessWidget {
+  final DepartmentDetailViewModel viewModel;
+  final BuildContext buildContext;
+  MyStatelessWidget(
+      {super.key, required this.viewModel, required this.buildContext});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Observer(builder: (_) {
+        switch (viewModel.dataState) {
+          case DataState.LOADING:
+            return Center(child: CircularProgressIndicator());
+          case DataState.ERROR:
+            return Center(
+                child:
+                    Text("Departman detayı görüntülenirken bir hata oluştu"));
+          default:
+            return Column(
               children: [
-                Expanded(
-                  flex: 5,
-                  child: Observer(builder: (_) {
-                    return PieChart(
-                      PieChartData(
-                        centerSpaceRadius: SizeConfig.blockSizeVertical * 6,
-                        sections: showingGenderSections(
-                          colorScheme,
-                          theme,
-                        ),
-                        pieTouchData: PieTouchData(
-                          touchCallback:
-                              (FlTouchEvent event, pieTouchResponse) {
-                            if (!event.isInterestedForInteractions ||
-                                pieTouchResponse == null ||
-                                pieTouchResponse.touchedSection == null) {
-                              //homeViewModel.pieChartIndex1 = -1;
-                              return;
-                            }
-                            // homeViewModel.changePieChartIndex1(pieTouchResponse
-                            //   .touchedSection!.touchedSectionIndex);
-                          },
-                        ),
-                      ),
-                    );
-                  }),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.075,
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Departman",
+                        style: TextStyle(
+                            fontSize: 35, fontWeight: FontWeight.bold)),
+                  ),
                 ),
-                Expanded(
-                    flex: 5,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
+                Row(
+                  children: [
+                    Expanded(
+                        flex: 5,
+                        child: InputText(
+                            icon: Icon(Icons.work),
+                            hintText: "Departman Adı",
+                            textEditingController:
+                                viewModel.textEditingControllerList[0])),
+                    Expanded(
+                      flex: 5,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Departman Yöneticisi")),
+                          DropdownButtonFormField(
+                              value: viewModel.departmentDetail!.managerId,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.grey)),
+                                  iconColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  prefixIcon: Icon(Icons.person)),
+                              isExpanded: true,
+                              items:
+                                  viewModel.employeeList!.map((Employee items) {
+                                return DropdownMenuItem(
+                                  value: items.id,
+                                  child: Text(
+                                      items.firstName! + " " + items.lastName!),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                viewModel.departmentDetail!.managerId = value;
+                              }),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Yönetici")),
                           Row(
                             children: [
-                              Indicator(
-                                  color: colorScheme.primary,
-                                  text: "Erkek",
-                                  isSquare: true),
-                              SizedBox(
-                                width: SizeConfig.blockSizeHorizontal * 2,
+                              Expanded(
+                                flex: 8,
+                                child: Container(
+                                  height: 50,
+                                  child: DropdownButtonFormField(
+                                      decoration: InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 1,
+                                                  color: Colors.grey)),
+                                          iconColor: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          prefixIcon: Icon(Icons.people)),
+                                      isExpanded: true,
+                                      items: viewModel.employeeList!
+                                          .map((Employee items) {
+                                        return DropdownMenuItem(
+                                          value: items.id,
+                                          child: Text(items.firstName! +
+                                              " " +
+                                              items.lastName!),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) =>
+                                          viewModel.changeEmployeeId(value!)),
+                                ),
                               ),
-                              Text(
-                                "40",
-                                style: theme.textTheme.bodySmall,
-                              ),
-                              SizedBox(
-                                width: SizeConfig.blockSizeHorizontal * 2,
-                              ),
-                              Text(
-                                "%40",
-                                style: theme.textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: SizeConfig.blockSizeVertical * 1),
-                          Row(
-                            children: [
-                              Indicator(
-                                  color: colorScheme.secondary,
-                                  text: "Kadın",
-                                  isSquare: true),
-                              SizedBox(
-                                width: SizeConfig.blockSizeHorizontal * 2,
-                              ),
-                              Text(
-                                "40",
-                                style: theme.textTheme.bodySmall,
-                              ),
-                              SizedBox(
-                                width: SizeConfig.blockSizeHorizontal * 2,
-                              ),
-                              Text(
-                                "%40",
-                                style: theme.textTheme.bodySmall,
-                              ),
+                              Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.only(left: 4.0, bottom: 2.0),
+                                    height: 50,
+                                    child: TextButton(
+                                        onPressed: () => viewModel
+                                            .addEmployee(viewModel.employeeId!),
+                                        child: Text("Ekle",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                        style: TextButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(
+                                                255, 55, 107, 251))),
+                                  )),
                             ],
                           ),
                         ],
                       ),
-                    ))
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: EdgeInsets.all(4.0),
+                  height: MediaQuery.of(context).size.height * 0.032,
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: Text("İzin İsteğini Onaylaması Gereken Yöneticiler",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.30,
+                  height: MediaQuery.of(context).size.height * 0.18,
+                  child: SingleChildScrollView(
+                      child: viewModel.employeeListDataState == DataState.READY
+                          ? DataTable(
+                              columns: const <DataColumn>[
+                                DataColumn(
+                                  label: Expanded(
+                                    child: Text(
+                                      'Id',
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Expanded(
+                                    child: Text(
+                                      'Ad',
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Expanded(
+                                    child: Text(
+                                      '',
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              rows: viewModel
+                                  .managersToSign! // Loops through dataColumnText, each iteration assigning the value to element
+                                  .map(
+                                    ((element) => DataRow(
+                                          cells: <DataCell>[
+                                            DataCell(
+                                                Text(element.id!.toString())),
+                                            DataCell(Text(element.firstName! +
+                                                " " +
+                                                element
+                                                    .lastName!)), //Extracting fro
+                                            DataCell(Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () => viewModel
+                                                        .removeEmployee(
+                                                            element.id!),
+                                                    icon: Icon(Icons.close))
+                                              ],
+                                            ))
+                                          ],
+                                        )),
+                                  )
+                                  .toList(),
+                            )
+                          : Center(child: CircularProgressIndicator())),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.04,
+                        width: MediaQuery.of(context).size.width * 0.05,
+                        child: TextButton(
+                            onPressed: () async {
+                              if (await viewModel.updateDepartment()) {
+                                Navigator.pop(buildContext);
+                              }
+                            },
+                            child: Text("Kaydet",
+                                style: TextStyle(color: Colors.white)),
+                            style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 55, 107, 251))),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.04,
+                        width: MediaQuery.of(context).size.width * 0.05,
+                        child: TextButton(
+                            onPressed: () => Navigator.of(buildContext).pop(),
+                            child: Text("İptal",
+                                style: TextStyle(color: Colors.white)),
+                            style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 55, 107, 251))),
+                      ),
+                    ),
+                  ],
+                )
               ],
-            ),
-          ),
-        ));
-  }
-
-  List<PieChartSectionData> showingGenderSections(
-    ColorScheme colorScheme,
-    ThemeData theme,
-  ) {
-    return List.generate(2, (i) {
-      final isTouched = 3 == i;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 50.0 : 40.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            showTitle: false,
-            color: colorScheme.primary,
-            value: 40,
-            radius: radius,
-          );
-        case 1:
-          return PieChartSectionData(
-            showTitle: false,
-            color: colorScheme.secondary,
-            value: 60,
-            radius: radius,
-          );
-
-        default:
-          throw Error();
-      }
-    });
+            );
+        }
+      }),
+    );
   }
 }

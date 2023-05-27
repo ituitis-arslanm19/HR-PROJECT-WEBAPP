@@ -21,7 +21,8 @@ class NetworkManager {
 
     try {
       token ??= await secureStorage.readSecureData("accessToken");
-
+      //TODO: kaldırılacak
+      token = TOKEN;
       var res = await getResponse(httpMethod, url, token, data);
 
       //Refresh token mekanizması için

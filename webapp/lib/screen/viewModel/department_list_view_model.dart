@@ -7,8 +7,8 @@ import 'package:webapp/screen/service/employee_list_service.dart';
 import 'package:webapp/screen/service/home_service.dart';
 
 import '../model/dashboard/dashboard.dart';
-import '../model/department.dart';
-import '../model/employee.dart';
+import '../model/department_list_item.dart';
+import '../model/employee_list_item.dart';
 part 'department_list_view_model.g.dart';
 
 class DepartmentListViewModel = _DepartmentListViewModelBase
@@ -21,14 +21,14 @@ abstract class _DepartmentListViewModelBase extends BaseViewModel with Store {
   DataState dataState = DataState.LOADING;
 
   @observable
-  List<Department>? departmentList;
+  List<DepartmentListItem>? departmentList;
 
   _DepartmentListViewModelBase(this.departmentListService);
 
   @override
   @action
   Future<void> init() async {
-    ResponseModel<List<Department>?> result =
+    ResponseModel<List<DepartmentListItem>?> result =
         await departmentListService.getDepartmentList();
     if ((!result.error!) || result.data != null) {
       departmentList = result.data;

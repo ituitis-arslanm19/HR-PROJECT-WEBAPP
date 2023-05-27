@@ -6,7 +6,7 @@ import 'package:webapp/screen/service/employee_list_service.dart';
 import 'package:webapp/screen/service/home_service.dart';
 
 import '../model/dashboard/dashboard.dart';
-import '../model/employee.dart';
+import '../model/employee_list_item.dart';
 part 'employee_list_view_model.g.dart';
 
 class EmployeeListViewModel = _EmployeeListViewModelBase
@@ -19,14 +19,14 @@ abstract class _EmployeeListViewModelBase extends BaseViewModel with Store {
   DataState dataState = DataState.LOADING;
 
   @observable
-  List<Employee>? employeeList;
+  List<EmployeeListItem>? employeeList;
 
   _EmployeeListViewModelBase(this.employeeListService);
 
   @override
   @action
   Future<void> init() async {
-    ResponseModel<List<Employee>?> result =
+    ResponseModel<List<EmployeeListItem>?> result =
         await employeeListService.getEmployeeList();
     if ((!result.error!) || result.data != null) {
       employeeList = result.data;

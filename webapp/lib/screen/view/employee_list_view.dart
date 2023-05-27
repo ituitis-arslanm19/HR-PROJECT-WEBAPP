@@ -9,15 +9,16 @@ import 'package:webapp/screen/service/employee_list_service.dart';
 import 'package:webapp/screen/viewModel/employee_list_view_model.dart';
 
 import '../../core/constant/enum/enums.dart';
-import '../model/employee.dart';
+import '../model/employee_list_item.dart';
 
 class EmployeeListView extends StatelessWidget {
-  EmployeeListView({super.key});
+  final ClientType clientType;
+  const EmployeeListView({super.key, required this.clientType});
 
   @override
   Widget build(BuildContext context) {
     EmployeeListViewModel employeeListViewModel = EmployeeListViewModel(
-        EmployeeListService(NetworkManager(SecureStorage())));
+        EmployeeListService(NetworkManager(SecureStorage()), clientType));
     employeeListViewModel.init();
     return Padding(
       padding: EdgeInsets.only(
@@ -65,41 +66,39 @@ class EmployeeListView extends StatelessWidget {
     );
   }
 
-  ListView buildEmployeeList(List<Employee> employeeList) {
+  ListView buildEmployeeList(List<EmployeeListItem> employeeList) {
     return ListView.builder(
         itemCount: employeeList.length ~/ 3 + 1,
         itemBuilder: ((context, index) {
-          return Container(
-            child: Row(
-              children: [
-                ...index * 3 + 3 < employeeList.length
-                    ? employeeList
-                        .sublist(index * 3, index * 3 + 3)
-                        .map((e) => Padding(
-                              padding: EdgeInsets.all(
-                                SizeConfig.blockSizeHorizontal * 3,
-                              ),
-                              child: ListCard(
-                                  onTap: () {},
-                                  name: e.firstName! + e.lastName!,
-                                  secondTxt: e.departmentName,
-                                  thirdTxt: e.email),
-                            ))
-                    : employeeList
-                        .sublist(index * 3, employeeList.length)
-                        .map((e) => Padding(
-                              padding: EdgeInsets.all(
-                                SizeConfig.blockSizeHorizontal * 3,
-                              ),
-                              child: ListCard(
-                                  onTap: () {},
-                                  name: (e.firstName ?? "Hata") +
-                                      (e.lastName ?? "Hata"),
-                                  secondTxt: e.departmentName,
-                                  thirdTxt: e.email),
-                            ))
-              ],
-            ),
+          return Row(
+            children: [
+              ...index * 3 + 3 < employeeList.length
+                  ? employeeList
+                      .sublist(index * 3, index * 3 + 3)
+                      .map((e) => Padding(
+                            padding: EdgeInsets.all(
+                              SizeConfig.blockSizeHorizontal * 3,
+                            ),
+                            child: ListCard(
+                                onTap: () {},
+                                name: e.firstName! + e.lastName!,
+                                secondTxt: e.departmentName,
+                                thirdTxt: e.email),
+                          ))
+                  : employeeList
+                      .sublist(index * 3, employeeList.length)
+                      .map((e) => Padding(
+                            padding: EdgeInsets.all(
+                              SizeConfig.blockSizeHorizontal * 3,
+                            ),
+                            child: ListCard(
+                                onTap: () {},
+                                name: (e.firstName ?? "Hata") +
+                                    (e.lastName ?? "Hata"),
+                                secondTxt: e.departmentName,
+                                thirdTxt: e.email),
+                          ))
+            ],
           );
         }));
   }

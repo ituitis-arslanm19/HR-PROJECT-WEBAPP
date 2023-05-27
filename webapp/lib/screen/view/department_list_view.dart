@@ -9,15 +9,16 @@ import 'package:webapp/screen/viewModel/department_list_view_model.dart';
 import '../../core/cache/secure_storage.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
-import '../model/department.dart';
+import '../model/department_list_item.dart';
 
 class DepartmentListView extends StatelessWidget {
-  DepartmentListView({super.key});
+  const DepartmentListView({super.key});
 
   @override
   Widget build(BuildContext context) {
     DepartmentListViewModel departmentListViewModel = DepartmentListViewModel(
         DepartmentListService(NetworkManager(SecureStorage())));
+    departmentListViewModel.init();
     return Padding(
       padding: EdgeInsets.only(
         left: SizeConfig.blockSizeHorizontal * 10.5,
@@ -64,42 +65,40 @@ class DepartmentListView extends StatelessWidget {
     );
   }
 
-  ListView buildDepartmentList(List<Department> departmentList) {
+  ListView buildDepartmentList(List<DepartmentListItem> departmentList) {
     return ListView.builder(
         itemCount: departmentList.length ~/ 3 + 1,
         itemBuilder: ((context, index) {
-          return Container(
-            child: Row(
-              children: [
-                ...index * 3 + 3 < departmentList.length
-                    ? departmentList
-                        .sublist(index * 3, index * 3 + 3)
-                        .map((e) => Padding(
-                              padding: EdgeInsets.all(
-                                SizeConfig.blockSizeHorizontal * 3,
-                              ),
-                              child: ListCard(
-                                  onTap: () {},
-                                  name: e.name,
-                                  secondTxt: e.managerName,
-                                  thirdTxt:
-                                      e.employeeNum.toString() + "Çalışan"),
-                            ))
-                    : departmentList
-                        .sublist(index * 3, departmentList.length)
-                        .map((e) => Padding(
-                              padding: EdgeInsets.all(
-                                SizeConfig.blockSizeHorizontal * 3,
-                              ),
-                              child: ListCard(
-                                  onTap: () {},
-                                  name: e.name,
-                                  secondTxt: e.managerName,
-                                  thirdTxt:
-                                      e.employeeNum.toString() + "Çalışan"),
-                            ))
-              ],
-            ),
+          return Row(
+            children: [
+              ...index * 3 + 3 < departmentList.length
+                  ? departmentList
+                      .sublist(index * 3, index * 3 + 3)
+                      .map((e) => Padding(
+                            padding: EdgeInsets.all(
+                              SizeConfig.blockSizeHorizontal * 3,
+                            ),
+                            child: ListCard(
+                                onTap: () {},
+                                name: e.name,
+                                secondTxt: e.managerName,
+                                thirdTxt:
+                                    e.employeeNum.toString() + " Çalışan"),
+                          ))
+                  : departmentList
+                      .sublist(index * 3, departmentList.length)
+                      .map((e) => Padding(
+                            padding: EdgeInsets.all(
+                              SizeConfig.blockSizeHorizontal * 3,
+                            ),
+                            child: ListCard(
+                                onTap: () {},
+                                name: e.name,
+                                secondTxt: e.managerName,
+                                thirdTxt:
+                                    e.employeeNum.toString() + " Çalışan"),
+                          ))
+            ],
           );
         }));
   }

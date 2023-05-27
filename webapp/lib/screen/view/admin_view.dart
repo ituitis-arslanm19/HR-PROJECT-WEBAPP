@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:webapp/core/util/size_config.dart';
 import 'package:webapp/core/widgets/other/list_widget.dart';
 import 'package:webapp/core/widgets/other/simple_container.dart';
+import 'package:webapp/screen/model/access_location.dart';
+import 'package:webapp/screen/viewModel/access_location_view_model.dart';
+
+import 'access_location_view.dart';
+import 'department_admin_view.dart';
 
 class AdminView extends StatelessWidget {
   const AdminView({super.key});
@@ -12,11 +17,11 @@ class AdminView extends StatelessWidget {
     ColorScheme colorScheme = theme.colorScheme;
     return Scaffold(
       body: DefaultTabController(
-        length: 6,
+        length: 5,
         child: Column(
           children: [
             SizedBox(
-              height: SizeConfig.blockSizeVertical * 6,
+              height: SizeConfig.blockSizeVertical * 4,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -26,12 +31,11 @@ class AdminView extends StatelessWidget {
                   indicatorColor: colorScheme.primary,
                   unselectedLabelColor: Colors.grey,
                   tabs: [
-                    const Tab(text: "Zimmet"),
+                    const Tab(text: "Departman"),
                     const Tab(text: "Alan"),
                     const Tab(text: "Giriş Noktası"),
                     const Tab(text: "Okuyucular"),
                     const Tab(text: "Vardiya"),
-                    const Tab(text: "İzin Tipi"),
                   ]),
             ),
             Expanded(child: LayoutBuilder(
@@ -46,51 +50,8 @@ class AdminView extends StatelessWidget {
                       color: theme.colorScheme.background,
                       border: Border.all(color: Colors.grey.shade300)),
                   child: TabBarView(children: [
-                    ListWidget(titles: [
-                      "Id",
-                      "Ad",
-                      "Yön"
-                    ], data: [
-                      [Text("1"), Text("Reader1"), Text("Dışarı")],
-                      [Text("1"), Text("Reader1"), Text("Dışarı")],
-                      [Text("1"), Text("Reader1"), Text("Dışarı")],
-                      [Text("1"), Text("Reader1"), Text("Dışarı")]
-                    ]),
-                    ListWidget(titles: [
-                      "Id",
-                      "Ad",
-                      "Yön"
-                    ], data: [
-                      [Text("1"), Text("Reader1"), Text("Dışarı")]
-                    ]),
-                    ListWidget(titles: [
-                      "Id",
-                      "Ad",
-                      "Yön"
-                    ], data: [
-                      [Text("1"), Text("Reader1"), Text("Dışarı")]
-                    ]),
-                    ListWidget(titles: [
-                      "Id",
-                      "Ad",
-                      "Yön"
-                    ], data: [
-                      [Text("1"), Text("Reader1"), Text("Dışarı")]
-                    ]),
-                    ListWidget(titles: [
-                      "Id",
-                      "Ad",
-                      "Yön"
-                    ], data: [
-                      [Text("1"), Text("Reader1"), Text("Dışarı")]
-                    ]),
-                    ListWidget(titles: [
-                      "Id",
-                      "Ad",
-                      "Yön"
-                    ], data: [
-                      [Text("1"), Text("Reader1"), Text("Dışarı")]
-                    ]),
+                    DepartmentView(),
+                    AccessLocationView(),
                   ]),
                 ),
               );

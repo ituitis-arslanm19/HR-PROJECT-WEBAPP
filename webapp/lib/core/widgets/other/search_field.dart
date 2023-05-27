@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:webapp/core/util/size_config.dart';
 
 class SearchField extends StatelessWidget {
-  final TextEditingController textEditingController;
+  final TextEditingController? textEditingController;
   void Function(String)? onChanged;
 
   SearchField({
     super.key,
-    required this.textEditingController,
+    this.textEditingController,
     this.onChanged,
   });
 
@@ -23,7 +23,6 @@ class SearchField extends StatelessWidget {
       ),
       child: TextFormField(
         onChanged: onChanged,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         controller: textEditingController,
         decoration: InputDecoration(
             border: InputBorder.none,

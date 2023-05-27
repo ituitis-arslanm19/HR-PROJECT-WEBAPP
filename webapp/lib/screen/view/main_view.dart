@@ -10,9 +10,9 @@ import 'package:webapp/core/widgets/other/nav_item.dart';
 import 'package:webapp/core/widgets/other/shadow_container.dart';
 import 'package:webapp/core/widgets/other/simple_container.dart';
 import 'package:webapp/screen/view/admin_view.dart';
-import 'package:webapp/screen/view/department_detail_view.dart';
+import 'package:webapp/screen/view/department_view.dart';
 import 'package:webapp/screen/view/department_list_view.dart';
-import 'package:webapp/screen/view/employee_detail_view.dart';
+import 'package:webapp/screen/view/employee_view.dart';
 import 'package:webapp/screen/view/employee_list_view.dart';
 import 'package:webapp/screen/view/home_view.dart';
 import 'package:webapp/screen/view/product_view.dart';
@@ -72,7 +72,9 @@ class MainView extends StatelessWidget {
 
                 case 3:
                   //return TimeOffApprovalView();
-                  return EmployeeListView();
+                  return EmployeeListView(
+                    clientType: clientType,
+                  );
 
                 case 4:
                   //return TimeOffApprovalView();
