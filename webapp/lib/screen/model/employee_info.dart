@@ -5,7 +5,7 @@ import 'package:webapp/core/base/base_model.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/screen/model/time_off.dart';
 
-class MobileClientDetail extends BaseModel<MobileClientDetail> {
+class EmployeeInfo extends BaseModel<EmployeeInfo> {
   int? id;
   String? email;
   String? firstName;
@@ -16,7 +16,7 @@ class MobileClientDetail extends BaseModel<MobileClientDetail> {
   String? startDate;
   List<TimeOff>? previousTimeOffs;
   List<TimeOff>? waitingTimeOffs;
-  MobileClientDetail({
+  EmployeeInfo({
     this.id,
     this.email,
     this.firstName,
@@ -50,8 +50,8 @@ class MobileClientDetail extends BaseModel<MobileClientDetail> {
   }
 
   @override
-  MobileClientDetail fromJson(Map<String, dynamic> json) {
-    return MobileClientDetail(
+  EmployeeInfo fromJson(Map<String, dynamic> json) {
+    return EmployeeInfo(
       id: json['id'] != null ? json['id'] as int : null,
       email: json['email'] != null ? json['email'] as String : null,
       firstName: json['firstName'] != null ? json['firstName'] as String : null,

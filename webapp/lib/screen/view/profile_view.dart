@@ -137,7 +137,7 @@ class ProfileView extends StatelessWidget {
         child: Text(nameInitials.toUpperCase(),
             style: theme.textTheme.headlineLarge!
                 .copyWith(color: colorScheme.background)),
-        radius: SizeConfig.blockSizeHorizontal * 5,
+        radius: SizeConfig.blockSizeVertical * 5,
       ),
     );
   }

@@ -8,12 +8,11 @@ import 'package:webapp/screen/viewModel/access_location_view_model.dart';
 import 'access_location_view.dart';
 import 'department_admin_view.dart';
 
-class AdminView extends StatelessWidget {
-  const AdminView({super.key});
+class HrView extends StatelessWidget {
+  const HrView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    print("object");
     ThemeData theme = Theme.of(context);
     ColorScheme colorScheme = theme.colorScheme;
     return Scaffold(
@@ -32,11 +31,9 @@ class AdminView extends StatelessWidget {
                   indicatorColor: colorScheme.primary,
                   unselectedLabelColor: Colors.grey,
                   tabs: [
-                    const Tab(text: "Departman"),
-                    const Tab(text: "Alan"),
-                    const Tab(text: "Giriş Noktası"),
-                    const Tab(text: "Okuyucular"),
-                    const Tab(text: "Vardiya"),
+                    const Tab(text: "Çalışan"),
+                    const Tab(text: "Zimmet"),
+                    const Tab(text: "İzin Tipi"),
                   ]),
             ),
             Expanded(
@@ -50,9 +47,6 @@ class AdminView extends StatelessWidget {
                 child: TabBarView(children: [
                   DepartmentView(),
                   AccessLocationView(),
-                  Container(),
-                  Container(),
-                  Container()
                 ]),
               ),
             ))

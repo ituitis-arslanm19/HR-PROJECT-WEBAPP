@@ -25,6 +25,56 @@ mixin _$EmployeeListViewModel on _EmployeeListViewModelBase, Store {
     });
   }
 
+  late final _$pageStateAtom =
+      Atom(name: '_EmployeeListViewModelBase.pageState', context: context);
+
+  @override
+  int get pageState {
+    _$pageStateAtom.reportRead();
+    return super.pageState;
+  }
+
+  @override
+  set pageState(int value) {
+    _$pageStateAtom.reportWrite(value, super.pageState, () {
+      super.pageState = value;
+    });
+  }
+
+  late final _$selectedEmployeeIdAtom = Atom(
+      name: '_EmployeeListViewModelBase.selectedEmployeeId', context: context);
+
+  @override
+  int get selectedEmployeeId {
+    _$selectedEmployeeIdAtom.reportRead();
+    return super.selectedEmployeeId;
+  }
+
+  @override
+  set selectedEmployeeId(int value) {
+    _$selectedEmployeeIdAtom.reportWrite(value, super.selectedEmployeeId, () {
+      super.selectedEmployeeId = value;
+    });
+  }
+
+  late final _$filteredEmployeeListAtom = Atom(
+      name: '_EmployeeListViewModelBase.filteredEmployeeList',
+      context: context);
+
+  @override
+  List<EmployeeListItem>? get filteredEmployeeList {
+    _$filteredEmployeeListAtom.reportRead();
+    return super.filteredEmployeeList;
+  }
+
+  @override
+  set filteredEmployeeList(List<EmployeeListItem>? value) {
+    _$filteredEmployeeListAtom.reportWrite(value, super.filteredEmployeeList,
+        () {
+      super.filteredEmployeeList = value;
+    });
+  }
+
   late final _$employeeListAtom =
       Atom(name: '_EmployeeListViewModelBase.employeeList', context: context);
 
@@ -49,10 +99,50 @@ mixin _$EmployeeListViewModel on _EmployeeListViewModelBase, Store {
     return _$initAsyncAction.run(() => super.init());
   }
 
+  late final _$_EmployeeListViewModelBaseActionController =
+      ActionController(name: '_EmployeeListViewModelBase', context: context);
+
+  @override
+  dynamic changePageState(dynamic value) {
+    final _$actionInfo = _$_EmployeeListViewModelBaseActionController
+        .startAction(name: '_EmployeeListViewModelBase.changePageState');
+    try {
+      return super.changePageState(value);
+    } finally {
+      _$_EmployeeListViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeSelectedEmployeeId(dynamic value) {
+    final _$actionInfo =
+        _$_EmployeeListViewModelBaseActionController.startAction(
+            name: '_EmployeeListViewModelBase.changeSelectedEmployeeId');
+    try {
+      return super.changeSelectedEmployeeId(value);
+    } finally {
+      _$_EmployeeListViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic filter(dynamic name) {
+    final _$actionInfo = _$_EmployeeListViewModelBaseActionController
+        .startAction(name: '_EmployeeListViewModelBase.filter');
+    try {
+      return super.filter(name);
+    } finally {
+      _$_EmployeeListViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 dataState: ${dataState},
+pageState: ${pageState},
+selectedEmployeeId: ${selectedEmployeeId},
+filteredEmployeeList: ${filteredEmployeeList},
 employeeList: ${employeeList}
     ''';
   }

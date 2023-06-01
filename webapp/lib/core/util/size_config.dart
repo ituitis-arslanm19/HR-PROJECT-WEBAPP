@@ -13,7 +13,8 @@ class SizeConfig {
 
   void init(BuildContext context) {
     screenWidth = html.window.screen!.width!.toDouble();
-    screenHeight = screenWidth = html.window.screen!.height!.toDouble();
+
+    screenHeight = html.window.screen!.height!.toDouble();
 
     blockSizeHorizontal = screenWidth / 100;
     blockSizeVertical = screenHeight / 100;

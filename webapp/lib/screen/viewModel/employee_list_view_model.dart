@@ -19,6 +19,15 @@ abstract class _EmployeeListViewModelBase extends BaseViewModel with Store {
   DataState dataState = DataState.LOADING;
 
   @observable
+  int pageState = 0;
+
+  @observable
+  int selectedEmployeeId = 0;
+
+  @observable
+  List<EmployeeListItem>? filteredEmployeeList;
+
+  @observable
   List<EmployeeListItem>? employeeList;
 
   _EmployeeListViewModelBase(this.employeeListService);
@@ -30,11 +39,30 @@ abstract class _EmployeeListViewModelBase extends BaseViewModel with Store {
         await employeeListService.getEmployeeList();
     if ((!result.error!) || result.data != null) {
       employeeList = result.data;
+      filteredEmployeeList = employeeList;
       employeeList!.isEmpty
           ? dataState = DataState.EMPTY
           : dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;
     }
+  }
+
+  @action
+  changePageState(value) {
+    pageState = value;
+  }
+
+  @action
+  changeSelectedEmployeeId(value) {
+    selectedEmployeeId = value;
+  }
+
+  @action
+  filter(name) {
+    filteredEmployeeList = employeeList
+        ?.where(
+            (e) => e.firstName!.toLowerCase().startsWith(name.toLowerCase()))
+        .toList();
   }
 }

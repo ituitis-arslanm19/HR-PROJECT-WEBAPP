@@ -125,6 +125,25 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
     }
   }
 
+  @action
+  deleteTimeOff() async {
+    if (formKeyNewTimeOff.currentState!.validate()) {
+      ResponseModel<TimeOff?> result = await timeOffService.requestNewTimeOff(
+          CreateTimeOffRequest(
+              startDate: controllers[0].text,
+              endDate: controllers[1].text,
+              timeOffTypeId: _getTimeOffTypeId(controllers[2].text)));
+      if ((!result.error!) || result.data != null) {
+        pendingTimeOffList!.add(result.data!);
+      }
+      ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
+          content: Text(
+        result.description!,
+        textAlign: TextAlign.center,
+      )));
+    }
+  }
+
   int? _getTimeOffTypeId(String name) {
     for (TimeOffType timeOffType in timeOffTypeList!) {
       if (timeOffType.name == name) {

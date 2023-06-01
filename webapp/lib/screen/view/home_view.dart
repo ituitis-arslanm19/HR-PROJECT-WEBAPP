@@ -6,7 +6,10 @@ import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/network/network_manager.dart';
 import 'package:webapp/core/util/size_config.dart';
 import 'package:webapp/core/widgets/other/indicator.dart';
+import 'package:webapp/core/widgets/other/list_widget.dart';
 import 'package:webapp/core/widgets/other/simple_container.dart';
+import 'package:webapp/screen/model/dashboard/department_pie_chart.dart';
+import 'package:webapp/screen/model/dashboard/upcoming_birthday.dart';
 import 'package:webapp/screen/service/home_service.dart';
 import 'package:webapp/screen/view/new_time_off_view.dart';
 import 'package:webapp/screen/view/product_view.dart';
@@ -29,48 +32,91 @@ class HomeView extends StatelessWidget {
     ColorScheme colorScheme = theme.colorScheme;
     return Row(
       children: [
-        Expanded(
+        Flexible(
           flex: 1,
           child: Column(
             children: [
-              Expanded(
+              Flexible(
                   flex: 6,
                   child:
                       SimpleContainer(title: "Profil", child: ProfileView())),
             ],
           ),
         ),
-        Expanded(
+        Flexible(
           flex: 1,
           child: Column(
             children: [
-              Expanded(
+              Flexible(
                   flex: 4,
                   child:
                       buildGenderPieChart(colorScheme, theme, homeViewModel)),
-              Expanded(
+              Flexible(
                   flex: 6,
                   child: SimpleContainer(
                       title: "Üzerime Zimmetli Ürünler", child: ProductView())),
             ],
           ),
         ),
-        Expanded(
+        Flexible(
           flex: 1,
           child: Column(
             children: [
-              Expanded(
+              Flexible(
                   flex: 4,
                   child: buildDepartmentPieChart(
                       colorScheme, theme, homeViewModel)),
-              Expanded(
+              Flexible(
                   flex: 6,
                   child: SimpleContainer(
-                      title: "Yeni İzin Talebi +",
-                      child: const NewTimeOffView())),
+                    title: "Yaklaşan Doğum Günleri",
+                    child: Observer(builder: (_) {
+                      switch (homeViewModel.dataState) {
+                        case DataState.READY:
+                          return buildUpcomingBirthdayList(
+                              homeViewModel, colorScheme, theme);
+                        case DataState.ERROR:
+                          return const Center(
+                              child: Text("Hata meydana geldi."));
+                        case DataState.LOADING:
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        case DataState.EMPTY:
+                          return const Center(
+                              child: Text("Yaklaşan doğum günü bulunmamakta"));
+                      }
+                    }),
+                  )),
             ],
           ),
         ),
+      ],
+    );
+  }
+
+  Column buildUpcomingBirthdayList(
+      HomeViewModel homeViewModel, ColorScheme colorScheme, ThemeData theme) {
+    List<UpcomingBirthday> upcomingBirthdayList =
+        homeViewModel.dashboard!.birthdays!;
+    return Column(
+      children: [
+        ListWidget(titles: const [], data: [
+          ...upcomingBirthdayList.map((e) => [
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: CircleAvatar(
+                    backgroundColor: colorScheme.primary,
+                    child: Text(homeViewModel.getInitials(e.name!),
+                        style: theme.textTheme.headlineSmall!
+                            .copyWith(color: colorScheme.background)),
+                    radius: SizeConfig.blockSizeHorizontal * 3,
+                  ),
+                ),
+                Text(e.name!),
+                Text(e.birthday!)
+              ])
+        ])
       ],
     );
   }
@@ -89,7 +135,7 @@ class HomeView extends StatelessWidget {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          default:
+          case DataState.EMPTY:
             return buildReadyGenderPieChart(colorScheme, theme, homeViewModel);
         }
       }),
@@ -193,126 +239,97 @@ class HomeView extends StatelessWidget {
   SimpleContainer buildDepartmentPieChart(
       ColorScheme colorScheme, ThemeData theme, HomeViewModel homeViewModel) {
     return SimpleContainer(
-        title: "Departmanlar",
-        child: SizedBox(
-          height: SizeConfig.blockSizeVertical * 15,
-          child: Row(
-            children: [
-              Expanded(
-                flex: 5,
-                child: Observer(builder: (_) {
-                  return PieChart(
-                    PieChartData(
-                      centerSpaceRadius: SizeConfig.blockSizeVertical * 4,
-                      sections: showingDepartmentSections(
-                          colorScheme, theme, homeViewModel),
-                      pieTouchData: PieTouchData(
-                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                          if (!event.isInterestedForInteractions ||
-                              pieTouchResponse == null ||
-                              pieTouchResponse.touchedSection == null) {
-                            homeViewModel.pieChartIndex1 = -1;
-                            return;
-                          }
-                          homeViewModel.changePieChartIndex2(pieTouchResponse
-                              .touchedSection!.touchedSectionIndex);
-                        },
-                      ),
-                    ),
-                  );
-                }),
-              ),
-              Expanded(
-                  flex: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+      title: "Departmanlar",
+      child: Observer(builder: (_) {
+        switch (homeViewModel.dataState) {
+          case DataState.READY:
+            return buildReadyDepartmentPieChart(
+                colorScheme, theme, homeViewModel);
+          case DataState.ERROR:
+            return const Center(child: Text("Hata meydana geldi."));
+          case DataState.LOADING:
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          case DataState.EMPTY:
+            return buildReadyDepartmentPieChart(
+                colorScheme, theme, homeViewModel);
+        }
+      }),
+    );
+  }
+
+  SizedBox buildReadyDepartmentPieChart(
+      ColorScheme colorScheme, ThemeData theme, HomeViewModel homeViewModel) {
+    List<DepartmentPieChart> departmentList =
+        homeViewModel.dashboard!.departmentPieChart!;
+    return SizedBox(
+      height: SizeConfig.blockSizeVertical * 15,
+      child: Row(
+        children: [
+          Expanded(
+            flex: 5,
+            child: Observer(builder: (_) {
+              return PieChart(
+                PieChartData(
+                  centerSpaceRadius: SizeConfig.blockSizeVertical * 4,
+                  sections: showingDepartmentSections(
+                      colorScheme, theme, homeViewModel),
+                  pieTouchData: PieTouchData(
+                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                      if (!event.isInterestedForInteractions ||
+                          pieTouchResponse == null ||
+                          pieTouchResponse.touchedSection == null) {
+                        homeViewModel.pieChartIndex1 = -1;
+                        return;
+                      }
+                      homeViewModel.changePieChartIndex2(
+                          pieTouchResponse.touchedSection!.touchedSectionIndex);
+                    },
+                  ),
+                ),
+              );
+            }),
+          ),
+          Expanded(
+              flex: 5,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Indicator(
-                                color: colorScheme.primary,
-                                text: "İK",
-                                isSquare: true),
-                            SizeConfig.verticalSpace(),
-                            Indicator(
-                                color: colorScheme.secondary,
-                                text: "Yazılım",
-                                isSquare: true),
-                            SizeConfig.verticalSpace(),
-                            Indicator(
-                                color: colorScheme.primary.withOpacity(0.3),
-                                text: "IT",
-                                isSquare: true),
-                            SizeConfig.verticalSpace(),
-                            Indicator(
-                                color: colorScheme.primary.withOpacity(0.6),
-                                text: "Yönetim",
-                                isSquare: true),
-                          ],
-                        ),
-                        SizeConfig.horizontalSpace(),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "40",
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            SizeConfig.verticalSpace(),
-                            Text(
-                              "40",
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            SizeConfig.verticalSpace(),
-                            Text(
-                              "40",
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            SizeConfig.verticalSpace(),
-                            Text(
-                              "40",
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                        SizeConfig.horizontalSpace(),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "%40",
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            SizeConfig.verticalSpace(),
-                            Text(
-                              "%40",
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            SizeConfig.verticalSpace(),
-                            Text(
-                              "%40",
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            SizeConfig.verticalSpace(),
-                            Text(
-                              "%40",
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
+                        ...departmentList.asMap().entries.map((e) => Indicator(
+                            color: colorScheme.primary.withOpacity(
+                                0.5 + e.key * 1 / departmentList.length),
+                            text: e.value.departmentName!,
+                            isSquare: true))
                       ],
                     ),
-                  )),
-            ],
-          ),
-        ));
+                    SizeConfig.horizontalSpace(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ...departmentList.map(
+                          (e) => Text(
+                            e.employeeNum.toString(),
+                            style: theme.textTheme.bodySmall,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizeConfig.horizontalSpace(),
+                  ],
+                ),
+              )),
+        ],
+      ),
+    );
   }
 
   List<PieChartSectionData> showingGenderSections(
@@ -348,46 +365,21 @@ class HomeView extends StatelessWidget {
 
   List<PieChartSectionData> showingDepartmentSections(
       ColorScheme colorScheme, ThemeData theme, HomeViewModel homeViewModel) {
-    return List.generate(4, (i) {
+    List<DepartmentPieChart> departmentList =
+        homeViewModel.dashboard!.departmentPieChart!;
+    return List.generate(departmentList.length, (i) {
       final isTouched = homeViewModel.pieChartIndex2 == i;
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 50.0 : 40.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            showTitle: false,
-            color: colorScheme.primary,
-            value: 40,
-            radius: radius,
-          );
-        case 1:
-          return PieChartSectionData(
-            showTitle: false,
-            color: colorScheme.secondary,
-            value: 60,
-            radius: radius,
-          );
 
-        case 2:
-          return PieChartSectionData(
-            showTitle: false,
-            color: colorScheme.primary.withOpacity(0.3),
-            value: 60,
-            radius: radius,
-          );
-
-        case 3:
-          return PieChartSectionData(
-            showTitle: false,
-            color: colorScheme.primary.withOpacity(0.6),
-            value: 40,
-            radius: radius,
-          );
-
-        default:
-          throw Error();
-      }
+      return PieChartSectionData(
+        showTitle: false,
+        color: colorScheme.primary
+            .withOpacity(0.5 + i * 1 / departmentList.length),
+        value: departmentList[i].employeeNum!.toDouble(),
+        radius: radius,
+      );
     });
   }
 

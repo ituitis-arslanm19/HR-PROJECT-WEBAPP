@@ -1,30 +1,25 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:webapp/core/cache/secure_storage.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
-import 'package:webapp/core/theme/app_theme.dart';
 import 'package:webapp/core/util/size_config.dart';
 import 'package:webapp/core/widgets/other/nav_item.dart';
-import 'package:webapp/core/widgets/other/shadow_container.dart';
-import 'package:webapp/core/widgets/other/simple_container.dart';
 import 'package:webapp/screen/view/admin_view.dart';
-import 'package:webapp/screen/view/department_view.dart';
 import 'package:webapp/screen/view/department_list_view.dart';
-import 'package:webapp/screen/view/employee_view.dart';
 import 'package:webapp/screen/view/employee_list_view.dart';
 import 'package:webapp/screen/view/home_view.dart';
-import 'package:webapp/screen/view/product_view.dart';
-import 'package:webapp/screen/view/profile_view.dart';
-import 'package:webapp/screen/view/qr_view.dart';
-import 'package:webapp/screen/view/time_off_view.dart';
+import 'package:webapp/screen/view/hr_view.dart';
 import 'package:webapp/screen/view/time_off_approval_view.dart';
+
+import 'package:webapp/screen/view/time_off_view.dart';
 import 'package:webapp/screen/viewModel/main_view_model.dart';
 
+import '../../core/base/base_view.dart';
+
 class MainView extends StatelessWidget {
-  final ClientType clientType;
-  MainView({super.key, required this.clientType});
+  final List<ClientType> roles;
+  const MainView({super.key, required this.roles});
   @override
   Widget build(BuildContext context) {
     MainViewModel mainViewModel = MainViewModel(context, SecureStorage());
@@ -51,46 +46,61 @@ class MainView extends StatelessWidget {
         //   ),
         //   backgroundColor: colorScheme.primary,
         // ),
-        body: Row(
-      children: [
-        Expanded(
-            flex: 3,
-            child:
-                buildNavigationBar(mainViewModel, theme, colorScheme, context)),
-        Expanded(
-          flex: 16,
-          child: Container(
-            color: Colors.grey[50],
-            child: Observer(builder: (context) {
-              switch (mainViewModel.bnbIndex) {
-                case 0:
-                  return HomeView();
+        body: SingleChildScrollView(
+      child: SizedBox(
+        height: SizeConfig.screenHeight * 7 / 8,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              SizedBox(
+                  width: 3 / 19 * SizeConfig.screenWidth,
+                  child: buildNavigationBar(
+                      mainViewModel, theme, colorScheme, context)),
+              SizedBox(
+                width: 16 / 19 * SizeConfig.screenWidth,
+                child: Container(
+                  color: Colors.grey[50],
+                  child: Observer(builder: (context) {
+                    switch (mainViewModel.bnbIndex) {
+                      case 0:
+                        return const HomeView();
 
-                case 1:
-                  //return TimeOffView();
-                  return TimeOffView();
+                      case 1:
+                        return TimeOffView();
 
-                case 3:
-                  //return TimeOffApprovalView();
-                  return EmployeeListView(
-                    clientType: clientType,
-                  );
+                      case 2:
+                        return TimeOffApprovalView();
 
-                case 4:
-                  //return TimeOffApprovalView();
-                  return DepartmentListView();
+                      case 3:
+                        //return TimeOffApprovalView();
+                        return EmployeeListView(
+                          clientType: roles.contains(ClientType.MANAGER)
+                              ? ClientType.MANAGER
+                              : ClientType.HR,
+                        );
 
-                case 5:
-                  return AdminView();
+                      case 4:
+                        //return TimeOffApprovalView();
+                        return const DepartmentListView();
 
-                default:
-                  //return HomeView();
-                  return HomeView();
-              }
-            }),
+                      case 5:
+                        return const HrView();
+
+                      case 6:
+                        return const AdminView();
+
+                      default:
+                        //return HomeView();
+                        return const HomeView();
+                    }
+                  }),
+                ),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     ));
   }
 
@@ -127,7 +137,7 @@ class MainView extends StatelessWidget {
                   title: 'İzin',
                   isSelected: mainViewModel.bnbIndex == 1 ? true : false);
             }),
-            if (clientType == ClientType.MANAGER)
+            if (roles.contains(ClientType.MANAGER))
               Observer(builder: (_) {
                 return NavItem(
                     onTap: () {
@@ -137,7 +147,7 @@ class MainView extends StatelessWidget {
                     title: 'Onay',
                     isSelected: mainViewModel.bnbIndex == 2 ? true : false);
               }),
-            if (clientType != ClientType.EMPLOYEE)
+            if (!roles.contains(ClientType.EMPLOYEE))
               Observer(builder: (_) {
                 return NavItem(
                     onTap: () {
@@ -147,7 +157,7 @@ class MainView extends StatelessWidget {
                     title: 'Çalışanlar',
                     isSelected: mainViewModel.bnbIndex == 3 ? true : false);
               }),
-            if (clientType == ClientType.ADMIN)
+            if (roles.contains(ClientType.ADMIN))
               Observer(builder: (_) {
                 return NavItem(
                     onTap: () {
@@ -157,15 +167,25 @@ class MainView extends StatelessWidget {
                     title: 'Departmanlar',
                     isSelected: mainViewModel.bnbIndex == 4 ? true : false);
               }),
-            if (clientType == ClientType.ADMIN)
+            if (roles.contains(ClientType.HR))
               Observer(builder: (_) {
                 return NavItem(
                     onTap: () {
                       _onItemTapped(5, mainViewModel);
                     },
                     icon: Icons.edit,
-                    title: 'Admin',
+                    title: 'İK',
                     isSelected: mainViewModel.bnbIndex == 5 ? true : false);
+              }),
+            if (roles.contains(ClientType.ADMIN))
+              Observer(builder: (_) {
+                return NavItem(
+                    onTap: () {
+                      _onItemTapped(6, mainViewModel);
+                    },
+                    icon: Icons.edit,
+                    title: 'Admin',
+                    isSelected: mainViewModel.bnbIndex == 6 ? true : false);
               }),
             buildLogout(mainViewModel, context, theme, colorScheme)
           ]
@@ -184,11 +204,11 @@ class MainView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 20.0),
         child: Text(
-          clientType == ClientType.ADMIN
+          roles.contains(ClientType.ADMIN)
               ? "ADMIN"
-              : clientType == ClientType.HR
+              : roles.contains(ClientType.HR)
                   ? "İK"
-                  : clientType == ClientType.MANAGER
+                  : roles.contains(ClientType.MANAGER)
                       ? "YÖNETİCİ"
                       : "PERSONEL",
           style: theme.textTheme.bodyMedium!
@@ -219,13 +239,13 @@ class MainView extends StatelessWidget {
     return Observer(builder: (_) {
       return NavItem(
           onTap: () {
-            _onItemTapped(6, mainViewModel);
+            _onItemTapped(7, mainViewModel);
             showDialog(
               context: context,
               builder: (_) => Dialog(
                 child: Container(
                   height: SizeConfig.blockSizeVertical * 15,
-                  width: SizeConfig.blockSizeHorizontal * 40,
+                  width: SizeConfig.blockSizeVertical * 40,
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(20)),
                   child: Column(
@@ -265,14 +285,13 @@ class MainView extends StatelessWidget {
                       )
                     ],
                   ),
-                ) //Your buttons here
-                ,
+                ),
               ),
             );
           },
           icon: Icons.logout,
           title: 'Çıkış Yap',
-          isSelected: mainViewModel.bnbIndex == 6 ? true : false);
+          isSelected: mainViewModel.bnbIndex == 7 ? true : false);
     });
   }
 

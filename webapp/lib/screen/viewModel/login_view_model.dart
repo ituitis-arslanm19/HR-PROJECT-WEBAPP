@@ -45,7 +45,7 @@ abstract class _LoginViewModelBase extends BaseViewModel with Store {
             buildContext,
             MaterialPageRoute(
                 builder: (BuildContext context) =>
-                    MainView(clientType: result.data!.clientType!)));
+                    MainView(roles: result.data!.roles!)));
       } else {
         dataState = DataState.ERROR;
         ScaffoldMessenger.of(buildContext).showSnackBar(const SnackBar(

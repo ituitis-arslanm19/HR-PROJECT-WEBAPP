@@ -4,11 +4,13 @@ import 'package:webapp/core/util/size_config.dart';
 import 'package:webapp/core/widgets/other/list_card.dart';
 import 'package:webapp/core/widgets/other/search_field.dart';
 import 'package:webapp/screen/service/department_list_service.dart';
+import 'package:webapp/screen/view/department_info_view.dart';
 import 'package:webapp/screen/viewModel/department_list_view_model.dart';
 
 import '../../core/cache/secure_storage.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
+import '../model/department.dart';
 import '../model/department_list_item.dart';
 
 class DepartmentListView extends StatelessWidget {
@@ -19,10 +21,21 @@ class DepartmentListView extends StatelessWidget {
     DepartmentListViewModel departmentListViewModel = DepartmentListViewModel(
         DepartmentListService(NetworkManager(SecureStorage())));
     departmentListViewModel.init();
+    return Observer(builder: (_) {
+      switch (departmentListViewModel.pageState) {
+        case 1:
+          return buildPageState1(departmentListViewModel);
+        default:
+          return buildPageState0(departmentListViewModel);
+      }
+    });
+  }
+
+  Padding buildPageState0(DepartmentListViewModel departmentListViewModel) {
     return Padding(
       padding: EdgeInsets.only(
-        left: SizeConfig.blockSizeHorizontal * 10.5,
-        right: SizeConfig.blockSizeHorizontal * 10.5,
+        left: SizeConfig.blockSizeHorizontal * 3.5,
+        right: SizeConfig.blockSizeHorizontal * 3.5,
       ),
       child: Column(children: [
         Expanded(
@@ -38,7 +51,9 @@ class DepartmentListView extends StatelessWidget {
                 children: [
                   SearchField(
                     textEditingController: TextEditingController(),
-                    onChanged: (text) {},
+                    onChanged: (text) {
+                      departmentListViewModel.filter(text);
+                    },
                   ),
                 ],
               ),
@@ -48,8 +63,7 @@ class DepartmentListView extends StatelessWidget {
             child: Observer(builder: (_) {
               switch (departmentListViewModel.dataState) {
                 case DataState.READY:
-                  return buildDepartmentList(
-                      departmentListViewModel.departmentList!);
+                  return buildDepartmentList(departmentListViewModel);
                 case DataState.ERROR:
                   return const Center(child: Text("Hata meydana geldi."));
                 case DataState.LOADING:
@@ -58,33 +72,38 @@ class DepartmentListView extends StatelessWidget {
                   );
                 case DataState.EMPTY:
                   return const Center(
-                      child: Text("Kayıtılı çalışan bulunmamakta"));
+                      child: Text("Kayıtılı departman bulunmamakta"));
               }
             })),
       ]),
     );
   }
 
-  ListView buildDepartmentList(List<DepartmentListItem> departmentList) {
+  ListView buildDepartmentList(
+      DepartmentListViewModel departmentListViewModel) {
+    List<DepartmentListItem> departmentList =
+        departmentListViewModel.filteredDepartmanList!;
     return ListView.builder(
         itemCount: departmentList.length ~/ 3 + 1,
         itemBuilder: ((context, index) {
           return Row(
             children: [
               ...index * 3 + 3 < departmentList.length
-                  ? departmentList
-                      .sublist(index * 3, index * 3 + 3)
-                      .map((e) => Padding(
-                            padding: EdgeInsets.all(
-                              SizeConfig.blockSizeHorizontal * 3,
-                            ),
-                            child: ListCard(
-                                onTap: () {},
-                                name: e.name,
-                                secondTxt: e.managerName,
-                                thirdTxt:
-                                    e.employeeNum.toString() + " Çalışan"),
-                          ))
+                  ? departmentList.sublist(index * 3, index * 3 + 3).map((e) =>
+                      Padding(
+                        padding: EdgeInsets.all(
+                          SizeConfig.blockSizeHorizontal * 3,
+                        ),
+                        child: ListCard(
+                            onTap: () {
+                              departmentListViewModel
+                                  .changeSelectedEmployeeId(e.id);
+                              departmentListViewModel.changePageState(1);
+                            },
+                            name: e.name,
+                            secondTxt: e.managerName,
+                            thirdTxt: e.employeeNum.toString() + " Çalışan"),
+                      ))
                   : departmentList
                       .sublist(index * 3, departmentList.length)
                       .map((e) => Padding(
@@ -92,7 +111,11 @@ class DepartmentListView extends StatelessWidget {
                               SizeConfig.blockSizeHorizontal * 3,
                             ),
                             child: ListCard(
-                                onTap: () {},
+                                onTap: () {
+                                  departmentListViewModel
+                                      .changeSelectedEmployeeId(e.id);
+                                  departmentListViewModel.changePageState(1);
+                                },
                                 name: e.name,
                                 secondTxt: e.managerName,
                                 thirdTxt:
@@ -101,5 +124,27 @@ class DepartmentListView extends StatelessWidget {
             ],
           );
         }));
+  }
+
+  Row buildPageState1(DepartmentListViewModel departmentListViewModel) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 10, left: 8),
+          child: Container(
+              child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                      onTap: () {
+                        departmentListViewModel.changePageState(0);
+                      },
+                      child: Icon(Icons.arrow_back)))),
+        ),
+        Expanded(
+            child: DepartmentInfoView(
+                id: departmentListViewModel.selectedEmployeeId)),
+      ],
+    );
   }
 }

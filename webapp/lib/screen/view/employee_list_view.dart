@@ -10,6 +10,7 @@ import 'package:webapp/screen/viewModel/employee_list_view_model.dart';
 
 import '../../core/constant/enum/enums.dart';
 import '../model/employee_list_item.dart';
+import 'employee_info_view.dart';
 
 class EmployeeListView extends StatelessWidget {
   final ClientType clientType;
@@ -20,10 +21,44 @@ class EmployeeListView extends StatelessWidget {
     EmployeeListViewModel employeeListViewModel = EmployeeListViewModel(
         EmployeeListService(NetworkManager(SecureStorage()), clientType));
     employeeListViewModel.init();
+    return Observer(builder: (_) {
+      switch (employeeListViewModel.pageState) {
+        case 1:
+          return buildPageState1(employeeListViewModel);
+        default:
+          return buildPageState0(employeeListViewModel, context);
+      }
+    });
+  }
+
+  Row buildPageState1(EmployeeListViewModel employeeListViewModel) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 10, left: 8),
+          child: Container(
+              child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                      onTap: () {
+                        employeeListViewModel.changePageState(0);
+                      },
+                      child: Icon(Icons.arrow_back)))),
+        ),
+        Expanded(
+            child:
+                EmployeeInfoView(id: employeeListViewModel.selectedEmployeeId)),
+      ],
+    );
+  }
+
+  Padding buildPageState0(
+      EmployeeListViewModel employeeListViewModel, BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        left: SizeConfig.blockSizeHorizontal * 10.5,
-        right: SizeConfig.blockSizeHorizontal * 10.5,
+        left: SizeConfig.blockSizeHorizontal * 3.5,
+        right: SizeConfig.blockSizeHorizontal * 3.5,
       ),
       child: Column(children: [
         Expanded(
@@ -39,7 +74,9 @@ class EmployeeListView extends StatelessWidget {
                 children: [
                   SearchField(
                     textEditingController: TextEditingController(),
-                    onChanged: (text) {},
+                    onChanged: (text) {
+                      employeeListViewModel.filter(text);
+                    },
                   ),
                 ],
               ),
@@ -49,7 +86,7 @@ class EmployeeListView extends StatelessWidget {
           child: Observer(builder: (_) {
             switch (employeeListViewModel.dataState) {
               case DataState.READY:
-                return buildEmployeeList(employeeListViewModel.employeeList!);
+                return buildEmployeeList(context, employeeListViewModel);
               case DataState.ERROR:
                 return const Center(child: Text("Hata meydana geldi."));
               case DataState.LOADING:
@@ -66,7 +103,10 @@ class EmployeeListView extends StatelessWidget {
     );
   }
 
-  ListView buildEmployeeList(List<EmployeeListItem> employeeList) {
+  ListView buildEmployeeList(
+      BuildContext buildContext, EmployeeListViewModel employeeListViewModel) {
+    List<EmployeeListItem> employeeList =
+        employeeListViewModel.filteredEmployeeList!;
     return ListView.builder(
         itemCount: employeeList.length ~/ 3 + 1,
         itemBuilder: ((context, index) {
@@ -80,7 +120,11 @@ class EmployeeListView extends StatelessWidget {
                               SizeConfig.blockSizeHorizontal * 3,
                             ),
                             child: ListCard(
-                                onTap: () {},
+                                onTap: () {
+                                  employeeListViewModel
+                                      .changeSelectedEmployeeId(e.id);
+                                  employeeListViewModel.changePageState(1);
+                                },
                                 name: e.firstName! + e.lastName!,
                                 secondTxt: e.departmentName,
                                 thirdTxt: e.email),
@@ -92,9 +136,14 @@ class EmployeeListView extends StatelessWidget {
                               SizeConfig.blockSizeHorizontal * 3,
                             ),
                             child: ListCard(
-                                onTap: () {},
+                                onTap: () {
+                                  employeeListViewModel
+                                      .changeSelectedEmployeeId(e.id);
+                                  employeeListViewModel.changePageState(1);
+                                },
                                 name: (e.firstName ?? "Hata") +
-                                    (e.lastName ?? "Hata"),
+                                    " " +
+                                    (e.lastName ?? ""),
                                 secondTxt: e.departmentName,
                                 thirdTxt: e.email),
                           ))
