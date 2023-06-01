@@ -11,15 +11,19 @@ class TimeOffCard extends StatelessWidget {
   final String type;
   final String? name;
   final String? managerName;
+  final bool? deleteEnable;
+  void Function()? onPressed;
 
-  const TimeOffCard(
+  TimeOffCard(
       {super.key,
       required this.startDate,
       required this.endDate,
       required this.status,
       required this.type,
       this.managerName,
-      this.name});
+      this.name,
+      this.deleteEnable,
+      this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +69,26 @@ class TimeOffCard extends StatelessWidget {
                               : " Reddedildi",
                       style: theme.textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: colorScheme.primary))
+                          color: colorScheme.primary)),
+                  Expanded(child: SizedBox()),
+                  deleteEnable == true
+                      ? ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            backgroundColor: colorScheme.background,
+                          ),
+                          onPressed: onPressed,
+                          child: Icon(
+                            Icons.delete,
+                            color: colorScheme.primary,
+                          ))
+                      : SizedBox(
+                          height: 0,
+                          width: 0,
+                        ),
                 ],
               ),
             ),

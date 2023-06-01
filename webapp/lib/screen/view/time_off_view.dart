@@ -14,11 +14,12 @@ import '../../core/util/size_config.dart';
 import '../../core/widgets/other/button.dart';
 import '../../core/widgets/other/simple_container.dart';
 import '../../core/widgets/other/time_off_card.dart';
+import '../model/time_off.dart';
 
 class TimeOffView extends StatelessWidget {
   // List of items in our dropdown menu
   TimeOffView({super.key});
-  TextEditingController textEditingController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class TimeOffView extends StatelessWidget {
   Padding buildPage(ThemeData theme, ColorScheme colorScheme,
       TimeOffViewModel timeOffViewModel, BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
+      padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 4),
       child: Row(
         children: [
           Expanded(
@@ -62,11 +63,11 @@ class TimeOffView extends StatelessWidget {
                 Expanded(
                     flex: 5,
                     child: buildPendingTimeOffs(
-                        theme, colorScheme, timeOffViewModel)),
+                        context, theme, colorScheme, timeOffViewModel)),
                 Expanded(
                     flex: 5,
                     child: buildPreviousTimeOffs(
-                        theme, colorScheme, timeOffViewModel))
+                        theme, colorScheme, timeOffViewModel, context))
               ],
             ),
           ),
@@ -75,8 +76,8 @@ class TimeOffView extends StatelessWidget {
     );
   }
 
-  SimpleContainer buildPendingTimeOffs(ThemeData theme, ColorScheme colorScheme,
-      TimeOffViewModel timeOffViewModel) {
+  SimpleContainer buildPendingTimeOffs(BuildContext context, ThemeData theme,
+      ColorScheme colorScheme, TimeOffViewModel timeOffViewModel) {
     return SimpleContainer(
       title: "Onay Bekleyen İzinlerim",
       child: Column(
@@ -84,7 +85,8 @@ class TimeOffView extends StatelessWidget {
           Observer(builder: (_) {
             switch (timeOffViewModel.dataState1) {
               case DataState.READY:
-                return buildPendingList(timeOffViewModel);
+                return buildPendingList(
+                    context, timeOffViewModel, theme, colorScheme);
 
               case DataState.LOADING:
                 return const Center(
@@ -102,42 +104,64 @@ class TimeOffView extends StatelessWidget {
     );
   }
 
-  Align buildPendingList(TimeOffViewModel timeOffViewModel) {
+  Align buildPendingList(
+      BuildContext context,
+      TimeOffViewModel timeOffViewModel,
+      ThemeData theme,
+      ColorScheme colorScheme) {
     return Align(
       alignment: Alignment.topLeft,
-      child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              ...timeOffViewModel.pendingTimeOffList!.map(
-                (element) => SizedBox(
-                  height: SizeConfig.blockSizeVertical * 24,
-                  width: SizeConfig.blockSizeHorizontal * 36,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: TimeOffCard(
-                        startDate: element.startDate.toString(),
-                        endDate: element.endDate.toString(),
-                        status: TimeOffStatus.PENDING,
-                        type: element.timeOffType!,
-                        managerName: element.managersToSign![0]),
+      child: Scrollbar(
+        thumbVisibility: true,
+        thickness: 10,
+        radius: Radius.circular(20), //corner radius of scrollbar
+        scrollbarOrientation: ScrollbarOrientation.bottom,
+        controller: _scrollController,
+
+        child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            controller: _scrollController,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ...timeOffViewModel.pendingTimeOffList!.map(
+                  (element) => SizedBox(
+                    height: SizeConfig.blockSizeVertical * 24,
+                    width: SizeConfig.blockSizeVertical * 36,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: TimeOffCard(
+                          deleteEnable: true,
+                          onPressed: () {
+                            showDeletePopup(
+                                context, timeOffViewModel, theme, colorScheme);
+                          },
+                          startDate: element.startDate.toString(),
+                          endDate: element.endDate.toString(),
+                          status: TimeOffStatus.PENDING,
+                          type: element.timeOffType!,
+                          managerName: element.managersToSign![0]),
+                    ),
                   ),
-                ),
-              )
-            ],
-          )),
+                )
+              ],
+            )),
+      ),
     );
   }
 
-  SimpleContainer buildPreviousTimeOffs(ThemeData theme,
-      ColorScheme colorScheme, TimeOffViewModel timeOffViewModel) {
+  SimpleContainer buildPreviousTimeOffs(
+      ThemeData theme,
+      ColorScheme colorScheme,
+      TimeOffViewModel timeOffViewModel,
+      BuildContext context) {
     return SimpleContainer(
       title: "İzin Geçmişim",
       child: Observer(builder: (_) {
         switch (timeOffViewModel.dataState2) {
           case DataState.READY:
-            return buildPreviousList(timeOffViewModel, colorScheme, theme);
+            return buildPreviousList(
+                timeOffViewModel, colorScheme, theme, context);
 
           case DataState.LOADING:
             return const Center(
@@ -155,11 +179,39 @@ class TimeOffView extends StatelessWidget {
   }
 
   ListWidget buildPreviousList(TimeOffViewModel timeOffViewModel,
-      ColorScheme colorScheme, ThemeData theme) {
+      ColorScheme colorScheme, ThemeData theme, BuildContext context) {
+    List<TimeOff> previousTimeOffList = timeOffViewModel.previousTimeOffList!;
     TextStyle textStyle =
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     return ListWidget(
-      data: timeOffViewModel.previousTimeOffList!
+      onTap: (index) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                backgroundColor: Colors.transparent,
+                child: SizedBox(
+                  height: SizeConfig.blockSizeVertical * 24,
+                  width: SizeConfig.blockSizeHorizontal * 36,
+                  child: TimeOffCard(
+                    startDate: previousTimeOffList[index].startDate!,
+                    endDate: previousTimeOffList[index].endDate!,
+                    status: previousTimeOffList[index].status!,
+                    type: previousTimeOffList[index].timeOffType!,
+                    managerName: previousTimeOffList[index]
+                            .signHistories!
+                            .last
+                            .managerName! +
+                        previousTimeOffList[index]
+                            .signHistories!
+                            .last
+                            .managerLastName!,
+                  ),
+                ),
+              );
+            });
+      },
+      data: previousTimeOffList
           .map((e) => [
                 Text(
                   e.startDate ?? "Hata",
@@ -291,5 +343,56 @@ class TimeOffView extends StatelessWidget {
       String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
       textEditingController.text = formattedDate;
     }
+  }
+
+  void showDeletePopup(BuildContext context, TimeOffViewModel timeOffViewModel,
+      ThemeData theme, ColorScheme colorScheme) {
+    showDialog(
+      context: context,
+      builder: (_) => Dialog(
+        child: Container(
+          height: SizeConfig.blockSizeVertical * 15,
+          width: SizeConfig.blockSizeVertical * 40,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "İzin talebinizi iptal etmek istediğinize emin misiniz?",
+                  style: theme.textTheme.bodyMedium!.copyWith(
+                      fontWeight: FontWeight.bold, color: Colors.grey),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () => timeOffViewModel.deleteTimeOff(),
+                    child: Text(
+                      "EVET",
+                      style: theme.textTheme.bodyMedium!.copyWith(
+                          color: colorScheme.primary,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(
+                      "HAYIR",
+                      style: theme.textTheme.bodyMedium!.copyWith(
+                          color: colorScheme.primary,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

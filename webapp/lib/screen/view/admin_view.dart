@@ -22,6 +22,7 @@ class AdminView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("object");
     ThemeData theme = Theme.of(context);
     ColorScheme colorScheme = theme.colorScheme;
     return Scaffold(
@@ -68,6 +69,7 @@ class AdminView extends StatelessWidget {
                 ),
               );
             }))
+
           ],
         ),
       ),

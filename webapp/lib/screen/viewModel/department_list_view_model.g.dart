@@ -41,6 +41,57 @@ mixin _$DepartmentListViewModel on _DepartmentListViewModelBase, Store {
     });
   }
 
+  late final _$filteredDepartmanListAtom = Atom(
+      name: '_DepartmentListViewModelBase.filteredDepartmanList',
+      context: context);
+
+  @override
+  List<DepartmentListItem>? get filteredDepartmanList {
+    _$filteredDepartmanListAtom.reportRead();
+    return super.filteredDepartmanList;
+  }
+
+  @override
+  set filteredDepartmanList(List<DepartmentListItem>? value) {
+    _$filteredDepartmanListAtom.reportWrite(value, super.filteredDepartmanList,
+        () {
+      super.filteredDepartmanList = value;
+    });
+  }
+
+  late final _$pageStateAtom =
+      Atom(name: '_DepartmentListViewModelBase.pageState', context: context);
+
+  @override
+  int get pageState {
+    _$pageStateAtom.reportRead();
+    return super.pageState;
+  }
+
+  @override
+  set pageState(int value) {
+    _$pageStateAtom.reportWrite(value, super.pageState, () {
+      super.pageState = value;
+    });
+  }
+
+  late final _$selectedEmployeeIdAtom = Atom(
+      name: '_DepartmentListViewModelBase.selectedEmployeeId',
+      context: context);
+
+  @override
+  int get selectedEmployeeId {
+    _$selectedEmployeeIdAtom.reportRead();
+    return super.selectedEmployeeId;
+  }
+
+  @override
+  set selectedEmployeeId(int value) {
+    _$selectedEmployeeIdAtom.reportWrite(value, super.selectedEmployeeId, () {
+      super.selectedEmployeeId = value;
+    });
+  }
+
   late final _$initAsyncAction =
       AsyncAction('_DepartmentListViewModelBase.init', context: context);
 
@@ -49,11 +100,51 @@ mixin _$DepartmentListViewModel on _DepartmentListViewModelBase, Store {
     return _$initAsyncAction.run(() => super.init());
   }
 
+  late final _$_DepartmentListViewModelBaseActionController =
+      ActionController(name: '_DepartmentListViewModelBase', context: context);
+
+  @override
+  dynamic changePageState(dynamic value) {
+    final _$actionInfo = _$_DepartmentListViewModelBaseActionController
+        .startAction(name: '_DepartmentListViewModelBase.changePageState');
+    try {
+      return super.changePageState(value);
+    } finally {
+      _$_DepartmentListViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeSelectedEmployeeId(dynamic value) {
+    final _$actionInfo =
+        _$_DepartmentListViewModelBaseActionController.startAction(
+            name: '_DepartmentListViewModelBase.changeSelectedEmployeeId');
+    try {
+      return super.changeSelectedEmployeeId(value);
+    } finally {
+      _$_DepartmentListViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic filter(dynamic name) {
+    final _$actionInfo = _$_DepartmentListViewModelBaseActionController
+        .startAction(name: '_DepartmentListViewModelBase.filter');
+    try {
+      return super.filter(name);
+    } finally {
+      _$_DepartmentListViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 dataState: ${dataState},
-departmentList: ${departmentList}
+departmentList: ${departmentList},
+filteredDepartmanList: ${filteredDepartmanList},
+pageState: ${pageState},
+selectedEmployeeId: ${selectedEmployeeId}
     ''';
   }
 }

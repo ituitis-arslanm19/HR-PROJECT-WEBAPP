@@ -8,6 +8,7 @@ import '../../core/base/base_model.dart';
 import '../../core/constant/enum/enums.dart';
 
 class TimeOff extends BaseModel<TimeOff> {
+  int? id;
   TimeOffStatus? status;
   String? startDate;
   String? endDate;
@@ -17,7 +18,8 @@ class TimeOff extends BaseModel<TimeOff> {
   List<SignHistory>? signHistories;
   String? description;
   TimeOff(
-      {this.startDate,
+      {this.id,
+      this.startDate,
       this.endDate,
       this.managersToSign,
       this.timeOffType,
@@ -29,6 +31,7 @@ class TimeOff extends BaseModel<TimeOff> {
   @override
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'id': id,
       'startDate': startDate,
       'endDate': endDate,
       'managersToSign':
@@ -63,6 +66,7 @@ class TimeOff extends BaseModel<TimeOff> {
     }
 
     return TimeOff(
+        id: json['id'] != null ? json['id'] as int : null,
         startDate: json['startDate'],
         endDate: json['endDate'],
         managersToSign: json['managersToSign'] != null
@@ -84,6 +88,6 @@ class TimeOff extends BaseModel<TimeOff> {
 
   @override
   String toString() {
-    return 'TimeOff(startDate: $startDate, endDate: $endDate, managersToSign: $managersToSign, timeOffType: $timeOffType, timeOffTypeId: $timeOffTypeId, signHistories: $signHistories, description: $description)';
+    return 'TimeOff(id: $id, startDate: $startDate, endDate: $endDate, managersToSign: $managersToSign, timeOffType: $timeOffType, timeOffTypeId: $timeOffTypeId, signHistories: $signHistories, description: $description)';
   }
 }

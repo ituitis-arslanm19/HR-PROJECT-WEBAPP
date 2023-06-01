@@ -38,7 +38,7 @@ abstract class _SplashViewModelBase extends BaseViewModel with Store {
           buildContext,
           MaterialPageRoute(
               builder: (BuildContext context) => MainView(
-                    clientType: result.data!.clientType!,
+                    roles: result.data!.roles!,
                   )));
     } else {
       Navigator.pushReplacement(buildContext,

@@ -6,11 +6,13 @@ import '../../util/size_config.dart';
 class ListWidget extends StatelessWidget {
   final List<String> titles;
   final List<List<Widget>> data;
+  void Function(int)? onTap;
 
-  const ListWidget({
+  ListWidget({
     Key? key,
     required this.titles,
     required this.data,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -50,9 +52,19 @@ class ListWidget extends StatelessWidget {
           color: index % 2 == 0
               ? colorScheme.background
               : colorScheme.primary.withOpacity(0.05),
-          child: buildListTile(
-              theme.textTheme.bodySmall!.copyWith(color: theme.hintColor),
-              data[index]),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap == null
+                  ? () {}
+                  : () {
+                      onTap!(index);
+                    },
+              child: buildListTile(
+                  theme.textTheme.bodySmall!.copyWith(color: theme.hintColor),
+                  data[index]),
+            ),
+          ),
         );
       },
       itemCount: data.length,

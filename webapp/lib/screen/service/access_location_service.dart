@@ -29,7 +29,7 @@ class AccessLocationService {
             HttpMethod.GET,
             AccessLocationDetail(),
             null,
-            TOKEN);
+            null);
     return result.data;
   }
 
@@ -41,7 +41,7 @@ class AccessLocationService {
             HttpMethod.PUT,
             AccessLocationDetail(),
             json.encode(accessLocationDetail.toJson()),
-            TOKEN);
+            null);
     return result.data;
   }
 

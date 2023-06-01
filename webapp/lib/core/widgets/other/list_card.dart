@@ -37,7 +37,7 @@ class _ListCardState extends State<ListCard> {
       curve: Curves.easeInOut,
       transform: transform,
       height: SizeConfig.blockSizeVertical * 30,
-      width: SizeConfig.blockSizeHorizontal * 30,
+      width: SizeConfig.blockSizeVertical * 30,
       duration: Duration(milliseconds: 100),
       child: Material(
           color: Colors.transparent,
@@ -60,7 +60,7 @@ class _ListCardState extends State<ListCard> {
                         border: Border.all(color: Colors.grey, width: 3)),
                     child: CircleAvatar(
                       backgroundColor: colorScheme.primary,
-                      radius: SizeConfig.blockSizeHorizontal * 5,
+                      radius: SizeConfig.blockSizeVertical * 5,
                       child: Text(getInitials(widget.name ?? "Hata"),
                           style: theme.textTheme.headlineLarge!
                               .copyWith(color: colorScheme.background)),

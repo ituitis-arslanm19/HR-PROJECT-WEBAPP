@@ -7,31 +7,30 @@ import 'package:webapp/core/constant/enum/enums.dart';
 class MobileClient extends BaseModel<MobileClient> {
   String? accessToken;
   String? refreshToken;
-  ClientType? clientType;
-  MobileClient({this.accessToken, this.refreshToken, this.clientType});
+  List<ClientType>? roles;
+  MobileClient({this.accessToken, this.refreshToken, this.roles});
 
   @override
   MobileClient fromJson(Map<String, dynamic> json) {
     ClientType clientTypeResult = ClientType.EMPLOYEE;
-    switch (json['clientType'].toString()) {
-      case "EMPLOYEE":
-        clientTypeResult = ClientType.EMPLOYEE;
-        break;
-      case "MANAGER":
-        clientTypeResult = ClientType.MANAGER;
-        break;
 
-      case "HR":
-        clientTypeResult = ClientType.HR;
-        break;
-      case "ADMIN":
-        clientTypeResult = ClientType.ADMIN;
-        break;
-    }
     return MobileClient(
         accessToken: json['accessToken'],
         refreshToken: json['refreshToken'],
-        clientType: clientTypeResult);
+        roles: List<ClientType>.from(json['roles'].map((e) {
+          switch (e) {
+            case "EMPLOYEE":
+              return ClientType.EMPLOYEE;
+            case "MANAGER":
+              return ClientType.MANAGER;
+            case "HR":
+              return ClientType.HR;
+            case "ADMIN":
+              return ClientType.ADMIN;
+            default:
+              return ClientType.EMPLOYEE;
+          }
+        }).toList()));
   }
 
   @override
@@ -39,11 +38,7 @@ class MobileClient extends BaseModel<MobileClient> {
     return <String, dynamic>{
       'accessToken': accessToken,
       'refreshToken': refreshToken,
-      'clienType': clientType.toString(),
+      'roles': roles != null ? roles!.map((x) => x.toString()).toList() : [],
     };
   }
-
-  @override
-  String toString() =>
-      'MobileClient(accessToken: $accessToken, refreshToken: $refreshToken, clientType: $clientType)';
 }

@@ -48,4 +48,14 @@ abstract class _HomeViewModelBase extends BaseViewModel with Store {
       dataState = DataState.ERROR;
     }
   }
+
+  String getInitials(String name) => name.isNotEmpty
+      ? name
+          .trim()
+          .split(' ')
+          .map((l) => l != "ve" ? l[0] : "")
+          .take(2)
+          .join()
+          .toUpperCase()
+      : '';
 }

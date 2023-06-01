@@ -24,7 +24,6 @@ class AccessLocationView extends StatelessWidget {
     AccessLocationViewModel viewModel = AccessLocationViewModel(
         AccessLocationService(networkManager: NetworkManager(SecureStorage())));
     viewModel.init();
-    print("build eedildi");
 
     return Column(
       children: [
