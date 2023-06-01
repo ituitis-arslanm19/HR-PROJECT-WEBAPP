@@ -6,16 +6,18 @@ class TimeOffType extends BaseModel<TimeOffType> {
   int? id;
   String? name;
   String? description;
+  int? numOfTimeOffDay;
   TimeOffType({
     this.id,
     this.name,
     this.description,
+    this.numOfTimeOffDay
   });
 
   @override
   TimeOffType fromJson(Map<String, dynamic> json) {
     return TimeOffType(
-        id: json['id'], name: json['name'], description: json['description']);
+        id: json['id'], name: json['name'], description: json['description'], numOfTimeOffDay: json['numOfTimeOffDay']);
   }
 
   @override
@@ -23,7 +25,8 @@ class TimeOffType extends BaseModel<TimeOffType> {
     return <String, dynamic>{
       'id': id,
       'name': name,
-      'description': description
+      'description': description,
+      'numOfTimeOffDay': numOfTimeOffDay
     };
   }
 }

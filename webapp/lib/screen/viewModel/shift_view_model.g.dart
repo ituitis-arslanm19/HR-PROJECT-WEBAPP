@@ -65,6 +65,14 @@ mixin _$ShiftViewModel on _ShiftViewModelBase, Store {
     return _$initAsyncAction.run(() => super.init());
   }
 
+  late final _$deleteAsyncAction =
+      AsyncAction('_ShiftViewModelBase.delete', context: context);
+
+  @override
+  Future delete(int id) {
+    return _$deleteAsyncAction.run(() => super.delete(id));
+  }
+
   late final _$_ShiftViewModelBaseActionController =
       ActionController(name: '_ShiftViewModelBase', context: context);
 

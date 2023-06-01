@@ -23,9 +23,9 @@ class DepartmentView extends StatelessWidget {
     TextStyle textStyle =
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
-    DepartmentViewModel viewmodel = DepartmentViewModel(
+    DepartmentViewModel viewModel = DepartmentViewModel(
         DepartmentService(networkManager: NetworkManager(SecureStorage())));
-    viewmodel.init();
+    viewModel.init();
 
     return Column(
       children: [
@@ -38,7 +38,7 @@ class DepartmentView extends StatelessWidget {
                 height: SizeConfig.blockSizeVertical * 5,
                 child: SearchField(
                   onChanged: (text) {
-                    viewmodel.filter(text);
+                    viewModel.filter(text);
                   },
                 ),
               ),
@@ -48,19 +48,27 @@ class DepartmentView extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 5,
                 width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(onPressed: () {}, text: "Yeni Ekle +"),
+                child: Button(onPressed: () {showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: DepartmentDetailView(
+                                    buildContext: context, id: null),
+                              )).then((value) => viewModel.init());}, text: "Yeni Ekle +"),
               )
             ],
           ),
         ),
         Observer(builder: (_) {
-          switch (viewmodel.dataState) {
+          switch (viewModel.dataState) {
             case DataState.READY:
               return buildList(
-                viewmodel,
+                viewModel,
                 textStyle,
                 context,
                 primaryColor,
+                theme,
+                theme.colorScheme
               );
             case DataState.LOADING:
               return const Center(
@@ -76,7 +84,7 @@ class DepartmentView extends StatelessWidget {
   }
 
   Expanded buildList(DepartmentViewModel viewModel, TextStyle textStyle,
-      BuildContext context, Color primaryColor) {
+      BuildContext context, Color primaryColor, ThemeData theme, ColorScheme colorScheme) {
     return Expanded(
       child: ListWidget(
         titles: ["Id", "Ad", "Yönetici", "", ""],
@@ -99,8 +107,10 @@ class DepartmentView extends StatelessWidget {
                       showDialog(
                           context: context,
                           builder: (context) => Dialog(
-                              child: DepartmentDetailView(
-                                  buildContext: context, id: e.id)));
+                                backgroundColor: Colors.transparent,
+                                child: DepartmentDetailView(
+                                    buildContext: context, id: e.id),
+                              )).then((value) => viewModel.init());
                     },
                     icon: Icon(
                       Icons.edit,
@@ -108,7 +118,68 @@ class DepartmentView extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => {
+                      showDialog(
+                        context: context,
+                        builder: (_) => Dialog(
+                          child: Container(
+                            height: SizeConfig.blockSizeVertical * 15,
+                            width: SizeConfig.blockSizeVertical * 40,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Silmek istediğinize emin misiniz?",
+                                    style: theme.textTheme.bodyMedium!.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        if (await viewModel.delete(e.id!)) {
+                                          viewModel.init();
+                                          Navigator.of(context).pop();
+                                        }
+                                        ;
+                                      },
+                                      child: Text(
+                                        "SİL",
+                                        style: theme.textTheme.bodyMedium!
+                                            .copyWith(
+                                                color: colorScheme.primary,
+                                                fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text(
+                                        "İPTAL",
+                                        style: theme.textTheme.bodyMedium!
+                                            .copyWith(
+                                                color: colorScheme.primary,
+                                                fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ) //Your buttons here
+                          ,
+                        ),
+                      )
+                    },
                     icon: Icon(
                       Icons.delete,
                       color: primaryColor,

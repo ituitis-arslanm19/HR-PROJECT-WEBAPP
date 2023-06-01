@@ -56,4 +56,15 @@ class AccessLocationService {
             TOKEN);
     return result.data;
   }
+
+  Future<bool?> delete(int id) async {
+    ResponseModel<AccessLocationDetail?> result =
+        await networkManager.send<AccessLocationDetail, AccessLocationDetail>(
+            "/accessLocation/$id",
+            HttpMethod.DELETE,
+            AccessLocationDetail(),
+            null,
+            TOKEN);
+    return result.error;
+  }
 }

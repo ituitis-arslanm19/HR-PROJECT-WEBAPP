@@ -39,4 +39,9 @@ abstract class _SiteViewModelBase with Store {
             (sites) => sites.name!.toLowerCase().startsWith(name.toLowerCase()))
         .toList();
   }
+
+  @action
+  delete(int id) async {
+    return await siteService.delete(id);
+  }
 }

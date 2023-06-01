@@ -23,7 +23,7 @@ class TimeOffTypeService {
   Future<TimeOffType?> getTimeOffTypeDetail(int id) async {
     ResponseModel<TimeOffType?> result =
         await networkManager.send<TimeOffType, TimeOffType>(
-            "/timeOffType/$id", HttpMethod.GET, TimeOffType(), null, null);
+            "/timeOffType/popup/$id", HttpMethod.GET, TimeOffType(), null, null);
     return result.data;
   }
 

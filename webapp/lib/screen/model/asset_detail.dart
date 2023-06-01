@@ -8,6 +8,7 @@ class AssetDetail extends BaseModel<AssetDetail> {
   String? description;
   String? dateOfIssue;
   int? employeeId;
+  String? type;
 
   AssetDetail({
     this.id,
@@ -15,6 +16,7 @@ class AssetDetail extends BaseModel<AssetDetail> {
     this.description,
     this.dateOfIssue,
     this.employeeId,
+    this.type
   });
 
   @override
@@ -24,7 +26,8 @@ class AssetDetail extends BaseModel<AssetDetail> {
       'name': name,
       'description': description,
       'dateOfIssue': dateOfIssue,
-      'employeeId': employeeId
+      'employeeId': employeeId,
+      'type': type,
     };
   }
 
@@ -38,6 +41,7 @@ class AssetDetail extends BaseModel<AssetDetail> {
       dateOfIssue:
           json['dateOfIssue'] != null ? json['dateOfIssue'] as String : null,
       employeeId: json['employeeId'] != null ? json['employeeId'] as int : null,
+      type: json['type'] != null ? json['type'] as String : null,
     );
   }
 }

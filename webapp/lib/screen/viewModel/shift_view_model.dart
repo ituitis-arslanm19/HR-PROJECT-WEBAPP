@@ -39,4 +39,9 @@ abstract class _ShiftViewModelBase with Store {
             (shift) => shift.name!.toLowerCase().startsWith(name.toLowerCase()))
         .toList();
   }
+
+  @action
+  delete(int id) async {
+    return await shiftService.delete(id);
+  }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:webapp/core/constant/enum/enums.dart';
 
+import '../../core/constant/strings.dart';
 import '../../core/network/model/response_model.dart';
 import '../../core/network/network_manager.dart';
 import '../model/site.dart';
@@ -21,7 +22,7 @@ class SiteService {
 
   Future<Site?> getSiteById(int id) async {
     ResponseModel<Site> result = await networkManager.send<Site, Site>(
-        "/site/$id", HttpMethod.GET, Site(), null, null);
+        "/site/popup/$id", HttpMethod.GET, Site(), null, null);
     return result.data;
   }
 
@@ -35,5 +36,16 @@ class SiteService {
     ResponseModel<Site?> result = await networkManager.send<Site, Site>(
         "/site", HttpMethod.POST, Site(), json.encode(site.toJson()), null);
     return result.data;
+  }
+
+  Future<bool?> delete(int id) async {
+    ResponseModel<Site?> result =
+        await networkManager.send<Site, Site>(
+            "/site/$id",
+            HttpMethod.DELETE,
+            Site(),
+            null,
+            TOKEN);
+    return result.error;
   }
 }

@@ -1,20 +1,18 @@
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:webapp/core/cache/secure_storage.dart';
-import 'package:webapp/core/constant/enum/enums.dart';
-import 'package:webapp/core/network/network_manager.dart';
-import 'package:webapp/core/widgets/other/list_widget.dart';
-import 'package:webapp/screen/service/time_off_type_service.dart';
-import 'package:webapp/screen/view/time_off_type_detail_view.dart';
-import 'package:webapp/screen/viewModel/time_off_type_view_model.dart';
-
+import '../../core/constant/enum/enums.dart';
+import '../../core/network/network_manager.dart';
 import '../../core/util/size_config.dart';
-import '../../core/widgets/other/button.dart';
+import '../../core/widgets/other/list_widget.dart';
 import '../../core/widgets/other/search_field.dart';
+import '../service/time_off_service.dart';
+import '../viewModel/time_off_sign_view_model.dart';
 
-class TimeOffTypeView extends StatelessWidget {
-  const TimeOffTypeView({super.key});
+class TimeOffSignView extends StatelessWidget {
+  const TimeOffSignView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +20,9 @@ class TimeOffTypeView extends StatelessWidget {
     TextStyle textStyle =
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
-    TimeOffTypeViewModel viewModel = TimeOffTypeViewModel(
-        TimeOffTypeService(networkManager: NetworkManager(SecureStorage())));
+    TimeOffSignViewModel viewModel = TimeOffSignViewModel(
+        TimeOffService(networkManager: NetworkManager(SecureStorage())),
+        context);
     viewModel.init();
     print("build eedildi");
 
@@ -42,21 +41,12 @@ class TimeOffTypeView extends StatelessWidget {
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 10,
               ),
-              SizedBox(
-                height: SizeConfig.blockSizeVertical * 5,
-                width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(onPressed: () {}, text: "Yeni Ekle +"),
-              )
             ])),
         Observer(builder: (_) {
           switch (viewModel.dataState) {
             case DataState.READY:
-              return buildList(
-                viewModel,
-                textStyle,
-                context,
-                primaryColor,
-              );
+              return buildList(viewModel, textStyle, context, primaryColor,
+                  theme, theme.colorScheme);
             case DataState.LOADING:
               return const Center(
                 child: CircularProgressIndicator(),
@@ -70,51 +60,52 @@ class TimeOffTypeView extends StatelessWidget {
     );
   }
 
-  Expanded buildList(TimeOffTypeViewModel viewModel, TextStyle textStyle,
-      BuildContext context, Color primaryColor) {
+  Expanded buildList(
+      TimeOffSignViewModel viewModel,
+      TextStyle textStyle,
+      BuildContext context,
+      Color primaryColor,
+      ThemeData theme,
+      ColorScheme colorScheme) {
     return Expanded(
       child: ListWidget(
-        titles: ["Id", "Ad", "Açıklama", "Yıllık İzin Hakkı", "", ""],
-        data: viewModel.timeOffTypeList!
+        titles: ["Id", "Ad", "Başlangıç Tarihi", "Bitiş Tarihi", "", ""],
+        data: viewModel.timeOffList!
             .map((e) => [
                   Text(
                     e.id.toString(),
                     style: textStyle,
                   ),
                   Text(
-                    e.name.toString(),
+                    e.firstName.toString() + " " + e.lastName.toString(),
                     style: textStyle,
                   ),
                   Text(
-                    e.description.toString(),
+                    e.startDate.toString(),
                     style: textStyle,
                   ),
                   Text(
-                    e.numOfTimeOffDay.toString(),
+                    e.endDate.toString(),
                     style: textStyle,
                   ),
                   IconButton(
                     onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) => Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: TimeOffTypeDetailView(
-                                    buildContext: context, id: e.id),
-                              )).then((value) => viewModel.init());
+                      viewModel.signTimeOffSign(e.id!);
                     },
                     icon: Icon(
-                      Icons.edit,
+                      Icons.check,
                       color: primaryColor,
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      viewModel.printTimeOff(e.id!);
+                    },
                     icon: Icon(
-                      Icons.delete,
+                      Icons.print,
                       color: primaryColor,
                     ),
-                  )
+                  ),
                 ])
             .toList(),
       ),

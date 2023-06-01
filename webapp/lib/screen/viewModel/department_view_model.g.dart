@@ -80,6 +80,17 @@ mixin _$DepartmentViewModel on _DepartmentViewModelBase, Store {
   }
 
   @override
+  dynamic delete(int id) {
+    final _$actionInfo = _$_DepartmentViewModelBaseActionController.startAction(
+        name: '_DepartmentViewModelBase.delete');
+    try {
+      return super.delete(id);
+    } finally {
+      _$_DepartmentViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 dataState: ${dataState},

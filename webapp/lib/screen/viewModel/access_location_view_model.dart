@@ -41,4 +41,9 @@ abstract class _AccessLocationViewModelBase with Store {
             accessLocation.name!.toLowerCase().startsWith(name.toLowerCase()))
         .toList();
   }
+
+  @action
+  delete(int id) async {
+    return await accessLocationService.delete(id);
+  }
 }

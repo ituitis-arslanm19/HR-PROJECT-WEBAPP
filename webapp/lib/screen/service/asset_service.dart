@@ -24,7 +24,7 @@ class AssetService {
   Future<AssetDetail?> getAssetDetail(int id) async {
     ResponseModel<AssetDetail?> result =
         await networkManager.send<AssetDetail, AssetDetail>(
-            "/product/$id", HttpMethod.GET, AssetDetail(), null, null);
+            "/product/popup/$id", HttpMethod.GET, AssetDetail(), null, null);
     return result.data;
   }
 
