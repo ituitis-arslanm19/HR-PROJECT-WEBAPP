@@ -45,7 +45,15 @@ class AssetView extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 5,
                 width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(onPressed: () {}, text: "Yeni Ekle +"),
+                child: Button(onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: AssetDetailView(
+                                    buildContext: context, id: null),
+                              )).then((value) => viewModel.init());
+                    }, text: "Yeni Ekle +"),
               )
             ])),
         Observer(builder: (_) {

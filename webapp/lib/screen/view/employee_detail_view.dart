@@ -67,8 +67,8 @@ class EmployeeDetailView extends StatelessWidget {
                 child: Text("Çalışanlar görüntülenirken bir hata oluştu"));
           default:
             return SizedBox(
-              width: SizeConfig.blockSizeHorizontal * 50,
-              height: SizeConfig.blockSizeVertical * 80,
+              width: SizeConfig.blockSizeHorizontal * 30,
+              height: SizeConfig.blockSizeVertical * 100,
               child: SimpleContainer(
                 title: "Çalışan",
                 child: Column(
@@ -341,21 +341,24 @@ class EmployeeDetailView extends StatelessWidget {
                                     ),
                                   ),
                                   Expanded(
-                                      flex: 2,
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                            left: 4.0, bottom: 2.0),
-                                        height: 50,
-                                        child: TextButton(
-                                            onPressed: () => viewModel
-                                                .addSite(viewModel.siteId!),
-                                            child: Text("Ekle",
-                                                style: TextStyle(
-                                                    color: Colors.white)),
-                                            style: TextButton.styleFrom(
-                                                backgroundColor: Color.fromARGB(
-                                                    255, 55, 107, 251))),
-                                      )),
+                                    flex: 2,
+                                    child: Container(
+                                      padding: EdgeInsets.only(
+                                          left: 4.0, bottom: 2.0),
+                                      height: 50,
+                                      child: TextButton(
+                                          onPressed: () => viewModel
+                                              .addSite(viewModel.siteId!),
+                                          child: const Text("Ekle",
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                          style: TextButton.styleFrom(
+                                              backgroundColor:
+                                                  Theme.of(buildContext)
+                                                      .colorScheme
+                                                      .primary)),
+                                    ),
+                                  ),
                                 ],
                               )
                             ],
@@ -364,8 +367,8 @@ class EmployeeDetailView extends StatelessWidget {
                       ],
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.22,
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: SizeConfig.blockSizeVertical * 15,
+                      width: SizeConfig.blockSizeHorizontal * 30,
                       child: SingleChildScrollView(
                           child: viewModel.siteListDataState == DataState.READY
                               ? DataTable(
@@ -445,11 +448,12 @@ class EmployeeDetailView extends StatelessWidget {
                                     Navigator.pop(buildContext);
                                   }
                                 },
-                                child: Text("Kaydet",
+                                child: const Text("Kaydet",
                                     style: TextStyle(color: Colors.white)),
                                 style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 55, 107, 251))),
+                                    backgroundColor: Theme.of(buildContext)
+                                        .colorScheme
+                                        .primary)),
                           ),
                         ),
                         Padding(
@@ -460,15 +464,16 @@ class EmployeeDetailView extends StatelessWidget {
                             child: TextButton(
                                 onPressed: () =>
                                     Navigator.of(buildContext).pop(),
-                                child: Text("İptal",
+                                child: const Text("İptal",
                                     style: TextStyle(color: Colors.white)),
                                 style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 55, 107, 251))),
+                                    backgroundColor: Theme.of(buildContext)
+                                        .colorScheme
+                                        .primary)),
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

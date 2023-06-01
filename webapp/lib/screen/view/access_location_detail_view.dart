@@ -43,8 +43,8 @@ class AccessLocationDetailView extends StatelessWidget {
                   Text("Giriş noktası detayı görüntülenirken bir hata oluştu"));
         default:
           return SizedBox(
-            width: SizeConfig.blockSizeHorizontal * 50,
-            height: SizeConfig.blockSizeVertical * 35,
+            width: SizeConfig.blockSizeHorizontal * 30,
+            height: SizeConfig.blockSizeVertical * 30,
             child: SimpleContainer(
               padding: 0,
               title: "Giriş Noktası",

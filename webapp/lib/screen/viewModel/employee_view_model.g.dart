@@ -65,6 +65,14 @@ mixin _$EmployeeViewModel on _EmployeeViewModelBase, Store {
     return _$initAsyncAction.run(() => super.init());
   }
 
+  late final _$deleteAsyncAction =
+      AsyncAction('_EmployeeViewModelBase.delete', context: context);
+
+  @override
+  Future delete(int id) {
+    return _$deleteAsyncAction.run(() => super.delete(id));
+  }
+
   late final _$_EmployeeViewModelBaseActionController =
       ActionController(name: '_EmployeeViewModelBase', context: context);
 

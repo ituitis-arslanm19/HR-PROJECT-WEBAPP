@@ -17,7 +17,6 @@ import 'package:webapp/screen/view/employee_list_view.dart';
 import 'package:webapp/screen/view/home_view.dart';
 import 'package:webapp/screen/view/product_view.dart';
 import 'package:webapp/screen/view/profile_view.dart';
-import 'package:webapp/screen/view/qr_view.dart';
 import 'package:webapp/screen/view/time_off_view.dart';
 import 'package:webapp/screen/view/time_off_approval_view.dart';
 import 'package:webapp/screen/viewModel/main_view_model.dart';

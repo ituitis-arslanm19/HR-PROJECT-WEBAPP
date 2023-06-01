@@ -39,4 +39,9 @@ abstract class _ReaderViewModelBase with Store {
             reader.name!.toLowerCase().startsWith(name.toLowerCase()))
         .toList();
   }
+
+  @action
+  delete(int id) async {
+    return await readerService.delete(id);
+  }
 }

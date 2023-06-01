@@ -7,10 +7,12 @@ import 'package:webapp/core/network/network_manager.dart';
 import 'package:webapp/core/widgets/other/list_widget.dart';
 import 'package:webapp/screen/service/shift_service.dart';
 import 'package:webapp/screen/view/shift_detail_view.dart';
+import 'package:webapp/screen/viewModel/shift_detail_view_model.dart';
 import 'package:webapp/screen/viewModel/shift_view_model.dart';
 
 import '../../core/util/size_config.dart';
 import '../../core/widgets/other/button.dart';
+import '../../core/widgets/other/nav_item.dart';
 import '../../core/widgets/other/search_field.dart';
 
 class ShiftView extends StatelessWidget {
@@ -45,7 +47,15 @@ class ShiftView extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 5,
                 width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(onPressed: () {}, text: "Yeni Ekle +"),
+                child: Button(onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: ShiftDetailView(
+                                    buildContext: context, id: null),
+                              )).then((value) => viewModel.init());
+                    }, text: "Yeni Ekle +"),
               )
             ])),
         Observer(builder: (_) {
@@ -56,6 +66,8 @@ class ShiftView extends StatelessWidget {
                 textStyle,
                 context,
                 primaryColor,
+                theme,
+                theme.colorScheme
               );
             case DataState.LOADING:
               return const Center(
@@ -71,7 +83,7 @@ class ShiftView extends StatelessWidget {
   }
 
   Expanded buildList(ShiftViewModel viewModel, TextStyle textStyle,
-      BuildContext context, Color primaryColor) {
+      BuildContext context, Color primaryColor, ThemeData theme, ColorScheme colorScheme) {
     return Expanded(
       child: ListWidget(
         titles: ["Id", "Ad", "Başlama Saati", "Bitiş Saati", "", ""],
@@ -109,7 +121,60 @@ class ShiftView extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => {showDialog(
+              context: context,
+              builder: (_) => Dialog(
+                child: Container(
+                  height: SizeConfig.blockSizeVertical * 15,
+                  width: SizeConfig.blockSizeVertical * 40,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Silmek istediğinize emin misiniz?",
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          TextButton(
+                            onPressed: () async {
+                              if(await viewModel.delete(e.id!)){
+                                viewModel.init();
+                                Navigator.of(context).pop();
+                              };
+                            },
+                            child: Text(
+                              "SİL",
+                              style: theme.textTheme.bodyMedium!.copyWith(
+                                  color: colorScheme.primary,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text(
+                              "İPTAL",
+                              style: theme.textTheme.bodyMedium!.copyWith(
+                                  color: colorScheme.primary,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ) //Your buttons here
+                ,
+              ),
+            )},
                     icon: Icon(
                       Icons.delete,
                       color: primaryColor,

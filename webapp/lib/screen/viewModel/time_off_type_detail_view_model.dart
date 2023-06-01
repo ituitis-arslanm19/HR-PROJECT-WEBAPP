@@ -34,6 +34,8 @@ abstract class _TimeOffTypeDetailViewModelBase with Store {
 
     textEditingControllerList
         .add(TextEditingController(text: timeOffType!.name));
+      textEditingControllerList
+        .add(TextEditingController(text: timeOffType!.numOfTimeOffDay.toString()));
     textEditingControllerList
         .add(TextEditingController(text: timeOffType!.description));
 
@@ -47,7 +49,8 @@ abstract class _TimeOffTypeDetailViewModelBase with Store {
   @action
   Future<bool> updateTimeOffType() async {
     timeOffType!.name = textEditingControllerList[0].text;
-    timeOffType!.description = textEditingControllerList[1].text;
+    timeOffType!.numOfTimeOffDay = int.parse(textEditingControllerList[1].text);
+    timeOffType!.description = textEditingControllerList[2].text;
     TimeOffType? updatedTimeOffType;
     dataState = DataState.LOADING;
     if (timeOffType!.id != null) {

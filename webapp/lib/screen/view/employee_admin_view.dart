@@ -45,7 +45,15 @@ class EmployeeView extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 5,
                 width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(onPressed: () {}, text: "Yeni Ekle +"),
+                child: Button(onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: EmployeeDetailView(
+                                    buildContext: context, id:null),
+                              )).then((value) => viewModel.init());
+                    }, text: "Yeni Ekle +"),
               )
             ])),
         Observer(builder: (_) {
@@ -74,7 +82,7 @@ class EmployeeView extends StatelessWidget {
       BuildContext context, Color primaryColor) {
     return Expanded(
       child: ListWidget(
-        titles: ["Id", "Ad", "Soyad", "Email", "Departman", "", ""],
+        titles: ["Id", "Ad", "Soyad", "Email", "", ""],
         data: viewModel.employeeList!
             .map((e) => [
                   Text(
@@ -91,10 +99,6 @@ class EmployeeView extends StatelessWidget {
                   ),
                   Text(
                     e.email.toString(),
-                    style: textStyle,
-                  ),
-                  Text(
-                    e.departmentName.toString(),
                     style: textStyle,
                   ),
                   IconButton(

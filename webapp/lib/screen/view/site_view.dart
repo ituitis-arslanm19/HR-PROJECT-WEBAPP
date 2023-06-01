@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:webapp/core/cache/secure_storage.dart';
@@ -45,18 +44,24 @@ class SiteView extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 5,
                 width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(onPressed: () {}, text: "Yeni Ekle +"),
+                child: Button(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: SiteDetailView(
+                                    buildContext: context, id: null),
+                              )).then((value) => viewModel.init());
+                    },
+                    text: "Yeni Ekle +"),
               )
             ])),
         Observer(builder: (_) {
           switch (viewModel.dataState) {
             case DataState.READY:
-              return buildList(
-                viewModel,
-                textStyle,
-                context,
-                primaryColor,
-              );
+              return buildList(viewModel, textStyle, context, primaryColor,
+                  theme, theme.colorScheme);
             case DataState.LOADING:
               return const Center(
                 child: CircularProgressIndicator(),
@@ -70,8 +75,13 @@ class SiteView extends StatelessWidget {
     );
   }
 
-  Expanded buildList(SiteViewModel viewModel, TextStyle textStyle,
-      BuildContext context, Color primaryColor) {
+  Expanded buildList(
+      SiteViewModel viewModel,
+      TextStyle textStyle,
+      BuildContext context,
+      Color primaryColor,
+      ThemeData theme,
+      ColorScheme colorScheme) {
     return Expanded(
       child: ListWidget(
         titles: ["Id", "Ad", "", ""],
@@ -101,7 +111,68 @@ class SiteView extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => {
+                      showDialog(
+                        context: context,
+                        builder: (_) => Dialog(
+                          child: Container(
+                            height: SizeConfig.blockSizeVertical * 15,
+                            width: SizeConfig.blockSizeVertical * 40,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Silmek istediğinize emin misiniz?",
+                                    style: theme.textTheme.bodyMedium!.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        if (await viewModel.delete(e.id!)) {
+                                          viewModel.init();
+                                          Navigator.of(context).pop();
+                                        }
+                                        ;
+                                      },
+                                      child: Text(
+                                        "SİL",
+                                        style: theme.textTheme.bodyMedium!
+                                            .copyWith(
+                                                color: colorScheme.primary,
+                                                fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text(
+                                        "İPTAL",
+                                        style: theme.textTheme.bodyMedium!
+                                            .copyWith(
+                                                color: colorScheme.primary,
+                                                fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ) //Your buttons here
+                          ,
+                        ),
+                      )
+                    },
                     icon: Icon(
                       Icons.delete,
                       color: primaryColor,

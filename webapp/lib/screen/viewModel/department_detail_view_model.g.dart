@@ -58,6 +58,22 @@ mixin _$DepartmentDetailViewModel on _DepartmentDetailViewModelBase, Store {
     });
   }
 
+  late final _$departmentListAtom = Atom(
+      name: '_DepartmentDetailViewModelBase.departmentList', context: context);
+
+  @override
+  List<Department>? get departmentList {
+    _$departmentListAtom.reportRead();
+    return super.departmentList;
+  }
+
+  @override
+  set departmentList(List<Department>? value) {
+    _$departmentListAtom.reportWrite(value, super.departmentList, () {
+      super.departmentList = value;
+    });
+  }
+
   late final _$managersToSignAtom = Atom(
       name: '_DepartmentDetailViewModelBase.managersToSign', context: context);
 
@@ -87,6 +103,22 @@ mixin _$DepartmentDetailViewModel on _DepartmentDetailViewModelBase, Store {
   set employeeId(int? value) {
     _$employeeIdAtom.reportWrite(value, super.employeeId, () {
       super.employeeId = value;
+    });
+  }
+
+  late final _$departmentIdAtom = Atom(
+      name: '_DepartmentDetailViewModelBase.departmentId', context: context);
+
+  @override
+  int? get departmentId {
+    _$departmentIdAtom.reportRead();
+    return super.departmentId;
+  }
+
+  @override
+  set departmentId(int? value) {
+    _$departmentIdAtom.reportWrite(value, super.departmentId, () {
+      super.departmentId = value;
     });
   }
 
@@ -168,13 +200,26 @@ mixin _$DepartmentDetailViewModel on _DepartmentDetailViewModelBase, Store {
   }
 
   @override
+  dynamic changeDepartmentId(int value) {
+    final _$actionInfo = _$_DepartmentDetailViewModelBaseActionController
+        .startAction(name: '_DepartmentDetailViewModelBase.changeDepartmentId');
+    try {
+      return super.changeDepartmentId(value);
+    } finally {
+      _$_DepartmentDetailViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 dataState: ${dataState},
 departmentDetail: ${departmentDetail},
 employeeList: ${employeeList},
+departmentList: ${departmentList},
 managersToSign: ${managersToSign},
 employeeId: ${employeeId},
+departmentId: ${departmentId},
 employeeListDataState: ${employeeListDataState}
     ''';
   }

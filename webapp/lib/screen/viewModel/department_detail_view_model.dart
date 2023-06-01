@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:webapp/screen/model/department.dart';
 
 import '../../core/constant/enum/enums.dart';
 import '../model/department_detail.dart';
@@ -29,10 +30,16 @@ abstract class _DepartmentDetailViewModelBase with Store {
   List<Employee>? employeeList;
 
   @observable
+  List<Department>? departmentList;
+
+  @observable
   List<EmployeeDetail>? managersToSign = [];
 
   @observable
   int? employeeId;
+
+  @observable
+  int? departmentId;
 
   @observable
   DataState employeeListDataState = DataState.READY;
@@ -52,6 +59,7 @@ abstract class _DepartmentDetailViewModelBase with Store {
     textEditingControllerList
         .add(TextEditingController(text: departmentDetail!.name));
     employeeList = await employeeService.getManagers();
+    departmentList = await departmentService.getDepartments();
     if (departmentDetail != null) {
       dataState = DataState.READY;
     } else {
@@ -73,6 +81,11 @@ abstract class _DepartmentDetailViewModelBase with Store {
   @action
   changeEmployeeId(int value) {
     employeeId = value;
+  }
+
+  @action
+  changeDepartmentId(int value) {
+    departmentId = value;
   }
 
   @action

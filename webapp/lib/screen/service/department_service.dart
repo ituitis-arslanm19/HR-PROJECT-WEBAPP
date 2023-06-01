@@ -56,4 +56,15 @@ class DepartmentService {
             null);
     return result.data;
   }
+
+  Future<bool?> deleteDepartment(int id) async {
+    ResponseModel<DepartmentDetail?> result =
+        await networkManager.send<DepartmentDetail, DepartmentDetail>(
+            "/department/$id",
+            HttpMethod.DELETE,
+            DepartmentDetail(),
+            null,
+            TOKEN);
+    return result.responseCode == '200';
+  }
 }

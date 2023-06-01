@@ -27,7 +27,8 @@ class TimeOffTypeDetailView extends StatelessWidget {
     return buildPopup(context, viewModel);
   }
 
-  Widget buildPopup(BuildContext context, TimeOffTypeDetailViewModel viewModel) {
+  Widget buildPopup(
+      BuildContext context, TimeOffTypeDetailViewModel viewModel) {
     return Center(
       child: Observer(builder: (_) {
         switch (viewModel.dataState) {
@@ -59,11 +60,18 @@ class TimeOffTypeDetailView extends StatelessWidget {
                             flex: 5,
                             child: InputText2(
                                 icon: Icon(Icons.description),
-                                hintText: "İzin Tipi Açıklaması",
+                                hintText: "Yıllık İzin Günü Sayısı",
                                 textEditingController:
                                     viewModel.textEditingControllerList[1])),
                       ],
                     ),
+                    Row(children: [
+                      InputText2(
+                          icon: Icon(Icons.description),
+                          hintText: "İzin Tipi Açıklaması",
+                          textEditingController:
+                              viewModel.textEditingControllerList[2])
+                    ]),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -78,11 +86,12 @@ class TimeOffTypeDetailView extends StatelessWidget {
                                     Navigator.pop(buildContext);
                                   }
                                 },
-                                child: Text("Kaydet",
+                                child: const Text("Kaydet",
                                     style: TextStyle(color: Colors.white)),
                                 style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 55, 107, 251))),
+                                    backgroundColor: Theme.of(buildContext)
+                                        .colorScheme
+                                        .primary)),
                           ),
                         ),
                         Padding(
@@ -91,16 +100,18 @@ class TimeOffTypeDetailView extends StatelessWidget {
                             height: MediaQuery.of(context).size.height * 0.04,
                             width: MediaQuery.of(context).size.width * 0.05,
                             child: TextButton(
-                                onPressed: () => Navigator.of(buildContext).pop(),
-                                child: Text("İptal",
+                                onPressed: () =>
+                                    Navigator.of(buildContext).pop(),
+                                child: const Text("İptal",
                                     style: TextStyle(color: Colors.white)),
                                 style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 55, 107, 251))),
+                                    backgroundColor: Theme.of(buildContext)
+                                        .colorScheme
+                                        .primary)),
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

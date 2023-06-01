@@ -39,4 +39,9 @@ abstract class _EmployeeViewModelBase with Store {
             employee.email!.toLowerCase().startsWith(email.toLowerCase()))
         .toList();
   }
+
+  @action
+  delete(int id) async {
+    return await employeeService.delete(id);
+  }
 }

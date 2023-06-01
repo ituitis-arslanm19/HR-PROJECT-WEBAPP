@@ -65,6 +65,14 @@ mixin _$ReaderViewModel on _ReaderViewModelBase, Store {
     return _$initAsyncAction.run(() => super.init());
   }
 
+  late final _$deleteAsyncAction =
+      AsyncAction('_ReaderViewModelBase.delete', context: context);
+
+  @override
+  Future delete(int id) {
+    return _$deleteAsyncAction.run(() => super.delete(id));
+  }
+
   late final _$_ReaderViewModelBaseActionController =
       ActionController(name: '_ReaderViewModelBase', context: context);
 

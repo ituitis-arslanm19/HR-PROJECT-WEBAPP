@@ -65,6 +65,14 @@ mixin _$SiteViewModel on _SiteViewModelBase, Store {
     return _$initAsyncAction.run(() => super.init());
   }
 
+  late final _$deleteAsyncAction =
+      AsyncAction('_SiteViewModelBase.delete', context: context);
+
+  @override
+  Future delete(int id) {
+    return _$deleteAsyncAction.run(() => super.delete(id));
+  }
+
   late final _$_SiteViewModelBaseActionController =
       ActionController(name: '_SiteViewModelBase', context: context);
 

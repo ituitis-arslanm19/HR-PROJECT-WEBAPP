@@ -16,7 +16,7 @@ class NetworkManager {
   NetworkManager(this.secureStorage);
 
   Future<ResponseModel<R>> send<R, T>(String url, HttpMethod httpMethod,
-      BaseModel<T> baseModel, String? data, String? token) async {
+      BaseModel<T>? baseModel, String? data, String? token) async {
     ResponseModel<R> responseModel = ResponseModel();
 
     try {
@@ -156,25 +156,40 @@ class NetworkManager {
           'Authorization': "Bearer " + (token ?? ""),
         });
         break;
+
+      case HttpMethod.DELETE:
+        res = await http
+            .delete(Uri.http(SERVER, url), body: data, headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'Authorization': "Bearer " + (token ?? ""),
+        });
+        break;
     }
     return res;
   }
 
-  ResponseModel<R> handleResponse<R, T>(Response res, BaseModel<T> baseModel) {
+  ResponseModel<R> handleResponse<R, T>(Response res, BaseModel<T>? baseModel) {
     ResponseModel<R> result = ResponseModel();
+    result.responseCode = res.statusCode.toString();
     switch (res.statusCode) {
       case 200:
         if (jsonDecode(utf8.decode(res.body.codeUnits)) != null) {
           var jsonBody = jsonDecode(utf8.decode(res.body.codeUnits));
           result = result.fromJson(jsonBody);
+          if(baseModel == null){
+            result.description = jsonBody['data'];
+            return result;
+          }
           if ((!result.error!) && jsonBody['data'] != null) {
             if (jsonBody['data'] is List) {
               result.data = jsonBody['data']
-                  .map((json) => baseModel.fromJson(json))
+                  .map((json) => baseModel!.fromJson(json))
                   .toList()
                   .cast<T>() as R;
             } else {
-              result.data = baseModel.fromJson(jsonBody["data"]) as R;
+              result.data = baseModel!.fromJson(jsonBody["data"]) as R;
             }
           }
 

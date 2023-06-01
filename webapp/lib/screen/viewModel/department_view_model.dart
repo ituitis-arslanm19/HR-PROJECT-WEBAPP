@@ -39,4 +39,9 @@ abstract class _DepartmentViewModelBase with Store {
             department.name!.toLowerCase().startsWith(name.toLowerCase()))
         .toList();
   }
+
+  @action
+  delete(int id){
+    departmentService.deleteDepartment(id);
+  }
 }

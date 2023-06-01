@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:webapp/core/cache/secure_storage.dart';
+import 'package:webapp/screen/model/department.dart';
 
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
@@ -42,8 +43,8 @@ class DepartmentDetailView extends StatelessWidget {
                     Text("Departman detayı görüntülenirken bir hata oluştu"));
           default:
             return SizedBox(
-              width: SizeConfig.blockSizeHorizontal * 50,
-              height: SizeConfig.blockSizeVertical * 35,
+              width: SizeConfig.blockSizeHorizontal * 30,
+              height: SizeConfig.blockSizeVertical * 55,
               child: SimpleContainer(
                 padding: 0,
                 title: "Departman",
@@ -61,7 +62,6 @@ class DepartmentDetailView extends StatelessWidget {
                         Expanded(
                           flex: 5,
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Align(
                                   alignment: Alignment.centerLeft,
@@ -76,27 +76,61 @@ class DepartmentDetailView extends StatelessWidget {
                                           Theme.of(context).colorScheme.primary,
                                       prefixIcon: Icon(Icons.person)),
                                   isExpanded: true,
-                                  items:
-                                      viewModel.employeeList!.map((Employee items) {
+                                  items: viewModel.employeeList!
+                                      .map((Employee items) {
                                     return DropdownMenuItem(
                                       value: items.id,
-                                      child: Text(
-                                          items.firstName! + " " + items.lastName!),
+                                      child: Text(items.firstName! +
+                                          " " +
+                                          items.lastName!),
                                     );
                                   }).toList(),
                                   onChanged: (value) {
-                                    viewModel.departmentDetail!.managerId = value;
+                                    viewModel.departmentDetail!.managerId =
+                                        value;
                                   }),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Column(
+                    Padding(
+                      padding: const EdgeInsets.only(left: 6),
+                      child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text("Üst Departman")),
+                                DropdownButtonFormField(
+                                    value: viewModel.departmentDetail!.parentDepartmentId,
+                                    decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 1, color: Colors.grey)),
+                                        iconColor:
+                                            Theme.of(context).colorScheme.primary,
+                                        prefixIcon: Icon(Icons.work)),
+                                    isExpanded: true,
+                                    items: viewModel.departmentList!
+                                        .map((Department items) {
+                                      return DropdownMenuItem(
+                                        value: items.id,
+                                        child: Text(items.name!),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      viewModel.departmentDetail!.parentDepartmentId =
+                                          value;
+                                    }),
+                              ],
+                            ),
+                    ),  
+                    Padding(
+                      padding: const EdgeInsets.only(left: 6),
+                      child: Column(
+                        children: [
+                          Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Align(
@@ -128,46 +162,51 @@ class DepartmentDetailView extends StatelessWidget {
                                                   items.lastName!),
                                             );
                                           }).toList(),
-                                          onChanged: (value) =>
-                                              viewModel.changeEmployeeId(value!)),
+                                          onChanged: (value) => viewModel
+                                              .changeEmployeeId(value!)),
                                     ),
                                   ),
                                   Expanded(
                                       flex: 2,
                                       child: Container(
-                                        padding:
-                                            EdgeInsets.only(left: 4.0, bottom: 2.0),
+                                        padding: EdgeInsets.only(
+                                            left: 4.0, bottom: 2.0),
                                         height: 50,
                                         child: TextButton(
-                                            onPressed: () => viewModel
-                                                .addEmployee(viewModel.employeeId!),
+                                            onPressed: () =>
+                                                viewModel.addEmployee(
+                                                    viewModel.employeeId!),
                                             child: Text("Ekle",
-                                                style:
-                                                    TextStyle(color: Colors.white)),
+                                                style: TextStyle(
+                                                    color: Colors.white)),
                                             style: TextButton.styleFrom(
-                                                backgroundColor: Color.fromARGB(
-                                                    255, 55, 107, 251))),
+                                                backgroundColor:
+                                                    Theme.of(buildContext)
+                                                        .colorScheme
+                                                        .primary)),
                                       )),
                                 ],
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Container(
                       padding: EdgeInsets.all(4.0),
-                      height: MediaQuery.of(context).size.height * 0.032,
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      child: Text("İzin İsteğini Onaylaması Gereken Yöneticiler",
-                          style:
-                              TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      height: SizeConfig.blockSizeVertical * 4,
+                      width: SizeConfig.blockSizeHorizontal * 50,
+                      child: Text(
+                          "İzin İsteğini Onaylaması Gereken Yöneticiler",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.30,
                       height: MediaQuery.of(context).size.height * 0.18,
                       child: SingleChildScrollView(
-                          child: viewModel.employeeListDataState == DataState.READY
+                          child: viewModel.employeeListDataState ==
+                                  DataState.READY
                               ? DataTable(
                                   columns: const <DataColumn>[
                                     DataColumn(
@@ -203,9 +242,10 @@ class DepartmentDetailView extends StatelessWidget {
                                       .map(
                                         ((element) => DataRow(
                                               cells: <DataCell>[
-                                                DataCell(
-                                                    Text(element.id!.toString())),
-                                                DataCell(Text(element.firstName! +
+                                                DataCell(Text(
+                                                    element.id!.toString())),
+                                                DataCell(Text(element
+                                                        .firstName! +
                                                     " " +
                                                     element
                                                         .lastName!)), //Extracting fro
@@ -214,9 +254,11 @@ class DepartmentDetailView extends StatelessWidget {
                                                       MainAxisAlignment.end,
                                                   children: [
                                                     IconButton(
-                                                        onPressed: () => viewModel
-                                                            .removeEmployee(
-                                                                element.id!),
+                                                        onPressed: () =>
+                                                            viewModel
+                                                                .removeEmployee(
+                                                                    element
+                                                                        .id!),
                                                         icon: Icon(Icons.close))
                                                   ],
                                                 ))
@@ -233,37 +275,40 @@ class DepartmentDetailView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
-                            height: MediaQuery.of(context).size.height * 0.04,
-                            width: MediaQuery.of(context).size.width * 0.05,
+                            height: SizeConfig.blockSizeVertical * 4,
+                            width: SizeConfig.blockSizeHorizontal * 10,
                             child: TextButton(
                                 onPressed: () async {
                                   if (await viewModel.updateDepartment()) {
                                     Navigator.pop(buildContext);
                                   }
                                 },
-                                child: Text("Kaydet",
+                                child: const Text("Kaydet",
                                     style: TextStyle(color: Colors.white)),
                                 style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 55, 107, 251))),
+                                    backgroundColor: Theme.of(buildContext)
+                                        .colorScheme
+                                        .primary)),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
-                            height: MediaQuery.of(context).size.height * 0.04,
-                            width: MediaQuery.of(context).size.width * 0.05,
+                            height: SizeConfig.blockSizeVertical * 4,
+                            width: SizeConfig.blockSizeHorizontal * 10,
                             child: TextButton(
-                                onPressed: () => Navigator.of(buildContext).pop(),
-                                child: Text("İptal",
+                                onPressed: () =>
+                                    Navigator.of(buildContext).pop(),
+                                child: const Text("İptal",
                                     style: TextStyle(color: Colors.white)),
                                 style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 55, 107, 251))),
+                                    backgroundColor: Theme.of(buildContext)
+                                        .colorScheme
+                                        .primary)),
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
