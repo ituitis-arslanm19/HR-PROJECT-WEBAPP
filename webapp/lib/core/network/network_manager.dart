@@ -94,32 +94,43 @@ class NetworkManager {
           'Authorization': "Bearer " + (token ?? ""),
         });
         break;
+
+      case HttpMethod.DELETE:
+        res = await http
+            .delete(Uri.http(SERVER, url), body: data, headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'Authorization': "Bearer " + (token ?? ""),
+        });
+        break;
     }
     return res;
   }
 
   ResponseModel<R> handleResponse<R, T>(Response res, BaseModel<T>? baseModel) {
     ResponseModel<R> result = ResponseModel();
+    result.responseCode = res.statusCode.toString();
     switch (res.statusCode) {
       case 200:
         if (jsonDecode(utf8.decode(res.body.codeUnits)) != null) {
           var jsonBody = jsonDecode(utf8.decode(res.body.codeUnits));
           result = result.fromJson(jsonBody);
-
-          if (baseModel == null) return result; //Response data içermiyorsa
-
+          if(baseModel == null){
+            result.description = jsonBody['data'];
+            return result;
+          }
           if ((!result.error!) && jsonBody['data'] != null) {
             //Response data içeriyorsa
 
             if (jsonBody['data'] is List) {
               //Data list ise
               result.data = jsonBody['data']
-                  .map((json) => baseModel.fromJson(json))
+                  .map((json) => baseModel!.fromJson(json))
                   .toList()
                   .cast<T>() as R;
             } else {
-              //Data list değil ise
-              result.data = baseModel.fromJson(jsonBody["data"]) as R;
+              result.data = baseModel!.fromJson(jsonBody["data"]) as R;
             }
           }
         } else {

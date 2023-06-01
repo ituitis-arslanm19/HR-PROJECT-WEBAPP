@@ -1,13 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:core';
+import 'dart:typed_data';
 
+import 'package:webapp/core/base/base_model.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/constant/strings.dart';
 import 'package:webapp/core/network/model/response_model.dart';
 import 'package:webapp/core/network/network_manager.dart';
 import 'package:webapp/screen/model/request/create_time_off_request.dart';
 import 'package:webapp/screen/model/time_off.dart';
+import 'package:webapp/screen/model/time_off_sign.dart';
 import 'package:webapp/screen/model/time_off_type.dart';
 import 'package:mobx/mobx.dart';
 
@@ -42,5 +45,24 @@ class TimeOffService {
         await networkManager.send<Iterable<TimeOffType>, TimeOffType>(
             "/timeOff/timeOffType", HttpMethod.GET, TimeOffType(), null, TOKEN);
     return result;
+  }
+
+  Future<List<TimeOffSign>?> getTimeOffsToSign() async {
+    ResponseModel<List<TimeOffSign>> result =
+        await networkManager.send<List<TimeOffSign>, TimeOffSign>(
+            "/timeOff", HttpMethod.GET, TimeOffSign(), null, TOKEN);
+    return result.data;
+  }
+
+  Future<TimeOffSign?> signTimeOff(int id) async {
+    ResponseModel<TimeOffSign?> result = 
+      await networkManager.send<TimeOffSign, TimeOffSign>("/timeOff/sign/$id", HttpMethod.PUT, TimeOffSign(), null, TOKEN);
+    return result.data;
+  }
+
+  Future<Uint8List?> printTimeOff(int id) async {
+    ResponseModel<Uint8List?> result = 
+      await networkManager.send("/timeOff/document/$id", HttpMethod.GET, null, null, TOKEN);
+    return base64Decode(result.description!);
   }
 }

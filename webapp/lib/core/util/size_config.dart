@@ -13,7 +13,6 @@ class SizeConfig {
 
   void init(BuildContext context) {
     screenWidth = html.window.screen!.width!.toDouble();
-
     screenHeight = html.window.screen!.height!.toDouble();
 
     blockSizeHorizontal = screenWidth / 100;
@@ -28,7 +27,7 @@ class SizeConfig {
 
   static SizedBox horizontalSpace() {
     return SizedBox(
-      width: blockSizeVertical * 1,
+      width: blockSizeHorizontal * 1,
     );
   }
 }

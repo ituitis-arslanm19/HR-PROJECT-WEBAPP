@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:webapp/core/constant/enum/enums.dart';
 
+import '../../core/constant/strings.dart';
 import '../../core/network/model/response_model.dart';
 import '../../core/network/network_manager.dart';
 import '../model/employee.dart';
@@ -32,7 +33,7 @@ class EmployeeService {
   Future<EmployeeDetail?> getEmployeeDetail(int id) async {
     ResponseModel<EmployeeDetail?> result =
         await networkManager.send<EmployeeDetail, EmployeeDetail>(
-            "/employee/$id", HttpMethod.GET, EmployeeDetail(), null, null);
+            "/employee/popup/$id", HttpMethod.GET, EmployeeDetail(), null, null);
     return result.data;
   }
 
@@ -57,4 +58,16 @@ class EmployeeService {
             null);
     return result.data;
   }
+
+  Future<bool?> delete(int id) async {
+    ResponseModel<EmployeeDetail?> result =
+        await networkManager.send<EmployeeDetail, EmployeeDetail>(
+            "/employee/$id",
+            HttpMethod.DELETE,
+            EmployeeDetail(),
+            null,
+            TOKEN);
+    return result.error;
+}
+  
 }

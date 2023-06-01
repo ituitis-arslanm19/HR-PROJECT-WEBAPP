@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:webapp/core/constant/enum/enums.dart';
 
+import '../../core/constant/strings.dart';
 import '../../core/network/model/response_model.dart';
 import '../../core/network/network_manager.dart';
 import '../model/reader.dart';
@@ -24,7 +25,7 @@ class ReaderService {
   Future<ReaderDetail?> getReaderDetail(int id) async {
     ResponseModel<ReaderDetail?> result =
         await networkManager.send<ReaderDetail, ReaderDetail>(
-            "/reader/$id", HttpMethod.GET, ReaderDetail(), null, null);
+            "/reader/popup/$id", HttpMethod.GET, ReaderDetail(), null, null);
     return result.data;
   }
 
@@ -49,4 +50,15 @@ class ReaderService {
             null);
     return result.data;
   }
+
+  Future<bool?> delete(int id) async {
+    ResponseModel<Reader?> result =
+        await networkManager.send<Reader, Reader>(
+            "/reader/$id",
+            HttpMethod.DELETE,
+            Reader(),
+            null,
+            TOKEN);
+    return result.error;
+}
 }

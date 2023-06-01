@@ -28,6 +28,8 @@ abstract class _AssetDetailViewModelBase with Store {
   @observable
   List<Employee>? employeeList;
 
+  List<String>? productType = ["PHONE", "LAPTOP", "HEADPHONE"];
+
   _AssetDetailViewModelBase(
       this.assetService, this.id, this.employeeService, this.buildContext);
 

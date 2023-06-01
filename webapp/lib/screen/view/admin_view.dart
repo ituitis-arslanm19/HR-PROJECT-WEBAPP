@@ -3,6 +3,15 @@ import 'package:webapp/core/util/size_config.dart';
 import 'package:webapp/core/widgets/other/list_widget.dart';
 import 'package:webapp/core/widgets/other/simple_container.dart';
 import 'package:webapp/screen/model/access_location.dart';
+import 'package:webapp/screen/model/asset.dart';
+import 'package:webapp/screen/view/asset_view.dart';
+import 'package:webapp/screen/view/employee_admin_view.dart';
+import 'package:webapp/screen/view/reader_view.dart';
+import 'package:webapp/screen/view/shift_view.dart';
+import 'package:webapp/screen/view/site_view.dart';
+import 'package:webapp/screen/view/time_off_approval_view.dart';
+import 'package:webapp/screen/view/time_off_sign_view.dart';
+import 'package:webapp/screen/view/time_off_view.dart';
 import 'package:webapp/screen/viewModel/access_location_view_model.dart';
 
 import 'access_location_view.dart';
@@ -39,23 +48,28 @@ class AdminView extends StatelessWidget {
                     const Tab(text: "Vardiya"),
                   ]),
             ),
-            Expanded(
-                child: Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: theme.colorScheme.background,
-                    border: Border.all(color: Colors.grey.shade300)),
-                child: TabBarView(children: [
-                  DepartmentView(),
-                  AccessLocationView(),
-                  Container(),
-                  Container(),
-                  Container()
-                ]),
-              ),
-            ))
+            Expanded(child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+              return Padding(
+                padding: EdgeInsets.only(left: 16, right: 16),
+                child: Container(
+                  height: constraints.maxHeight,
+                  width: constraints.maxWidth,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: theme.colorScheme.background,
+                      border: Border.all(color: Colors.grey.shade300)),
+                  child: TabBarView(children: [
+                    AssetView(),
+                    EmployeeView(),
+                    TimeOffSignView(),
+                    ReaderView(),
+                    ShiftView()
+                  ]),
+                ),
+              );
+            }))
+
           ],
         ),
       ),
