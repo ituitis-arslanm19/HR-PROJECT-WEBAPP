@@ -9,7 +9,7 @@ class Indicator extends StatelessWidget {
     this.textColor,
   });
   final Color color;
-  final String text;
+  final String? text;
   final bool isSquare;
 
   final Color? textColor;
@@ -31,7 +31,7 @@ class Indicator extends StatelessWidget {
         const SizedBox(
           width: 4,
         ),
-        Text(text, style: theme.textTheme.bodySmall)
+        Text(text ?? "Hata", style: theme.textTheme.bodySmall)
       ],
     );
   }

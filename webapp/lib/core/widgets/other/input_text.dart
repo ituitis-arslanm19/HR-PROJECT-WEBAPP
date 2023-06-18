@@ -57,7 +57,7 @@ class InputText extends StatelessWidget {
               labelStyle:
                   theme.textTheme.bodySmall!.copyWith(color: theme.hintColor),
               border: InputBorder.none,
-              labelText: hintText),
+              labelText: hintText ?? "Hata"),
         ),
       ),
     );

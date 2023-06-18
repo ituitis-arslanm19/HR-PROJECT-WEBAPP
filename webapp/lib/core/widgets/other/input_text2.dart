@@ -26,7 +26,8 @@ class InputText2 extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Align(
-                    alignment: Alignment.centerLeft, child: Text("$hintText")),
+                    alignment: Alignment.centerLeft,
+                    child: Text(hintText ?? "Hata")),
                 TextFormField(
                   onTap: onTap,
                   controller: textEditingController,

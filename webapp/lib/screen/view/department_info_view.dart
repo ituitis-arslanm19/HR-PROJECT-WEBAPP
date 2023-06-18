@@ -91,6 +91,7 @@ class DepartmentInfoView extends StatelessWidget {
               Expanded(
                   child: employeeList.isNotEmpty
                       ? ListWidget(
+                          rowElementWidth: SizeConfig.blockSizeHorizontal * 6,
                           titles: const [],
                           data: employeeList
                               .map(
@@ -135,15 +136,15 @@ class DepartmentInfoView extends StatelessWidget {
           child: Column(
             children: [
               ProfileCard(
-                tittle: "İsim",
+                title: "İsim",
                 value: departmentDetailViewModel.departmentInfo!.managerName,
               ),
               ProfileCard(
-                tittle: "E-posta",
+                title: "E-posta",
                 value: departmentDetailViewModel.departmentInfo!.managerEmail,
               ),
               ProfileCard(
-                tittle: "Çalışma Saatleri",
+                title: "Çalışma Saatleri",
                 value: departmentDetailViewModel.departmentInfo!.managerShift,
               )
             ],
@@ -160,16 +161,16 @@ class DepartmentInfoView extends StatelessWidget {
           child: Column(
             children: [
               ProfileCard(
-                tittle: "İsim",
+                title: "İsim",
                 value: departmentDetailViewModel.departmentInfo!.name,
               ),
               ProfileCard(
-                tittle: "Çalışan Sayısı",
+                title: "Çalışan Sayısı",
                 value: departmentDetailViewModel.departmentInfo!.employeeNum
                     .toString(),
               ),
               ProfileCard(
-                  tittle: "Üst Departman",
+                  title: "Üst Departman",
                   value: departmentDetailViewModel
                               .departmentInfo!.parentDepartmentName ==
                           ""

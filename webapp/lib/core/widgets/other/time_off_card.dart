@@ -5,10 +5,10 @@ import 'package:webapp/screen/model/sign_history.dart';
 import '../../util/size_config.dart';
 
 class TimeOffCard extends StatelessWidget {
-  final String startDate;
-  final String endDate;
-  final TimeOffStatus status;
-  final String type;
+  final String? startDate;
+  final String? endDate;
+  final TimeOffStatus? status;
+  final String? type;
   final String? name;
   final String? managerName;
   final bool? deleteEnable;
@@ -16,10 +16,10 @@ class TimeOffCard extends StatelessWidget {
 
   TimeOffCard(
       {super.key,
-      required this.startDate,
-      required this.endDate,
-      required this.status,
-      required this.type,
+      this.startDate,
+      this.endDate,
+      this.status,
+      this.type,
       this.managerName,
       this.name,
       this.deleteEnable,
@@ -114,7 +114,8 @@ class TimeOffCard extends StatelessWidget {
                 style: tittleStyle,
                 /*defining default style is optional */
                 children: <TextSpan>[
-                  TextSpan(text: '$type', style: theme.textTheme.bodySmall),
+                  TextSpan(
+                      text: type ?? "Hata", style: theme.textTheme.bodySmall),
                 ],
               ),
             ),

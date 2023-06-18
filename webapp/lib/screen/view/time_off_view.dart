@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
-import 'package:webapp/core/cache/secure_storage.dart';
 import 'package:webapp/core/network/network_manager.dart';
 import 'package:webapp/core/widgets/other/drop_down_input_text.dart';
 import 'package:webapp/core/widgets/other/input_text.dart';
@@ -183,18 +182,20 @@ class TimeOffView extends StatelessWidget {
                   height: SizeConfig.blockSizeVertical * 24,
                   width: SizeConfig.blockSizeVertical * 36,
                   child: TimeOffCard(
-                    startDate: previousTimeOffList[index].startDate!,
-                    endDate: previousTimeOffList[index].endDate!,
-                    status: previousTimeOffList[index].status!,
-                    type: previousTimeOffList[index].timeOffType!,
-                    managerName: previousTimeOffList[index]
-                            .signHistories!
-                            .last
-                            .managerName! +
-                        previousTimeOffList[index]
-                            .signHistories!
-                            .last
-                            .managerLastName!,
+                    startDate: previousTimeOffList[index].startDate,
+                    endDate: previousTimeOffList[index].endDate,
+                    status: previousTimeOffList[index].status,
+                    type: previousTimeOffList[index].timeOffType,
+                    managerName: (previousTimeOffList[index]
+                                .signHistories!
+                                .last
+                                .managerName ??
+                            "Hata") +
+                        (previousTimeOffList[index]
+                                .signHistories!
+                                .last
+                                .managerLastName ??
+                            "Hata"),
                   ),
                 ),
               );

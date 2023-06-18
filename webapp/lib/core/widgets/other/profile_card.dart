@@ -3,9 +3,9 @@ import 'package:webapp/core/theme/app_theme.dart';
 import 'package:webapp/core/util/size_config.dart';
 
 class ProfileCard extends StatelessWidget {
-  final String? tittle;
+  final String? title;
   final String? value;
-  const ProfileCard({super.key, this.tittle, this.value});
+  const ProfileCard({super.key, this.title, this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class ProfileCard extends StatelessWidget {
         children: [
           Container(
             width: SizeConfig.blockSizeHorizontal * 88,
-            child: Text("$tittle",
+            child: Text(title ?? "Hata",
                 textAlign: TextAlign.left,
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                     color: Theme.of(context).colorScheme.primary,
@@ -37,7 +37,7 @@ class ProfileCard extends StatelessWidget {
                   left: 20,
                 ),
                 child: Text(
-                  "$value",
+                  value ?? "Hata",
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ))

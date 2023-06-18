@@ -104,12 +104,16 @@ class EmployeeInfoView extends StatelessWidget {
                                     width: SizeConfig.blockSizeVertical * 36,
                                     child: TimeOffCard(
                                       startDate:
-                                          pendingTimeOffs[index].startDate!,
-                                      endDate: pendingTimeOffs[index].endDate!,
-                                      status: pendingTimeOffs[index].status!,
-                                      type: pendingTimeOffs[index].timeOffType!,
+                                          pendingTimeOffs[index].startDate,
+                                      endDate: pendingTimeOffs[index].endDate,
+                                      status: pendingTimeOffs[index].status,
+                                      type: pendingTimeOffs[index].timeOffType,
                                       managerName: pendingTimeOffs[index]
-                                          .managersToSign![0],
+                                                  .managersToSign !=
+                                              null
+                                          ? pendingTimeOffs[index]
+                                              .managersToSign![0]
+                                          : "Hata",
                                     ),
                                   ),
                                 );
@@ -157,6 +161,7 @@ class EmployeeInfoView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ListWidget(
+                        rowElementWidth: SizeConfig.blockSizeHorizontal * 10,
                         onTap: (index) {
                           showDialog(
                               context: context,
@@ -168,19 +173,20 @@ class EmployeeInfoView extends StatelessWidget {
                                     width: SizeConfig.blockSizeVertical * 36,
                                     child: TimeOffCard(
                                       startDate:
-                                          previousTimeOffs[index].startDate!,
-                                      endDate: previousTimeOffs[index].endDate!,
-                                      status: previousTimeOffs[index].status!,
-                                      type:
-                                          previousTimeOffs[index].timeOffType!,
-                                      managerName: previousTimeOffs[index]
-                                              .signHistories!
-                                              .last
-                                              .managerName! +
-                                          previousTimeOffs[index]
-                                              .signHistories!
-                                              .last
-                                              .managerLastName!,
+                                          previousTimeOffs[index].startDate,
+                                      endDate: previousTimeOffs[index].endDate,
+                                      status: previousTimeOffs[index].status,
+                                      type: previousTimeOffs[index].timeOffType,
+                                      managerName: (previousTimeOffs[index]
+                                                  .signHistories!
+                                                  .last
+                                                  .managerName ??
+                                              "Hata") +
+                                          (previousTimeOffs[index]
+                                                  .signHistories!
+                                                  .last
+                                                  .managerLastName ??
+                                              "Hata"),
                                     ),
                                   ),
                                 );
@@ -236,15 +242,15 @@ class EmployeeInfoView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ProfileCard(
-                tittle: "Departman",
+                title: "Departman",
                 value: employeeInfo.departmentName,
               ),
               ProfileCard(
-                tittle: "Başlangıç Tarihi",
+                title: "Başlangıç Tarihi",
                 value: employeeInfo.startDate,
               ),
               ProfileCard(
-                tittle: "Kalan Yıllık İzin",
+                title: "Kalan Yıllık İzin",
                 value: employeeInfo.remainingTimeOffDays.toString(),
               ),
             ],
@@ -260,17 +266,17 @@ class EmployeeInfoView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ProfileCard(
-                tittle: "İsim",
+                title: "İsim",
                 value: (employeeInfo.firstName ?? "Hata") +
                     " " +
                     (employeeInfo.lastName ?? ""),
               ),
               ProfileCard(
-                tittle: "E-posta",
+                title: "E-posta",
                 value: employeeInfo.email,
               ),
               ProfileCard(
-                tittle: "Doğum Tarihi",
+                title: "Doğum Tarihi",
                 value: employeeInfo.startDate,
               ),
             ],

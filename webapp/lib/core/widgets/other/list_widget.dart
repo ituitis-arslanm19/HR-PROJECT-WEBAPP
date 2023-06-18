@@ -7,12 +7,14 @@ class ListWidget extends StatelessWidget {
   final List<String> titles;
   final List<List<Widget>> data;
   void Function(int)? onTap;
+  final double? rowElementWidth;
 
   ListWidget({
     Key? key,
     required this.titles,
     required this.data,
     this.onTap,
+    this.rowElementWidth,
   }) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class ListWidget extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     ColorScheme colorScheme = theme.colorScheme;
     return Column(children: [
-      !titles.isEmpty
+      titles.isNotEmpty
           ? Container(
               decoration: BoxDecoration(
                   border:
@@ -30,21 +32,23 @@ class ListWidget extends StatelessWidget {
                 child: buildListTitle(
                     theme.textTheme.bodyMedium!
                         .copyWith(color: colorScheme.primary),
-                    titles),
+                    titles,
+                    rowElementWidth),
               ))
-          : SizedBox(
+          : const SizedBox(
               height: 0,
               width: 0,
             ),
       Expanded(child: LayoutBuilder(builder: (buildContext, constraints) {
         return SizedBox(
             height: constraints.maxHeight,
-            child: buildList(colorScheme, theme));
+            child: buildList(colorScheme, theme, rowElementWidth));
       }))
     ]);
   }
 
-  ListView buildList(ColorScheme colorScheme, ThemeData theme) {
+  ListView buildList(
+      ColorScheme colorScheme, ThemeData theme, double? rowElementWidth) {
     return ListView.builder(
       itemBuilder: (context, index) {
         return Container(
@@ -62,7 +66,8 @@ class ListWidget extends StatelessWidget {
                     },
               child: buildListTile(
                   theme.textTheme.bodySmall!.copyWith(color: theme.hintColor),
-                  data[index]),
+                  data[index],
+                  rowElementWidth),
             ),
           ),
         );
@@ -72,14 +77,15 @@ class ListWidget extends StatelessWidget {
   }
 }
 
-SizedBox buildListTitle(TextStyle listTextStyle, List<String> titles) {
+SizedBox buildListTitle(
+    TextStyle listTextStyle, List<String> titles, double? rowElementWidth) {
   return SizedBox(
     height: SizeConfig.blockSizeVertical * 4,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        ...titles.map((e) => Container(
-              width: SizeConfig.blockSizeHorizontal * 6,
+        ...titles.map((e) => SizedBox(
+              width: rowElementWidth ?? SizeConfig.blockSizeHorizontal * 12,
               child: Text(
                 e,
                 style: listTextStyle,
@@ -92,12 +98,14 @@ SizedBox buildListTitle(TextStyle listTextStyle, List<String> titles) {
   );
 }
 
-Row buildListTile(TextStyle listTextStyle, List<Widget> dataRow) {
+Row buildListTile(
+    TextStyle listTextStyle, List<Widget> dataRow, double? rowElementWidth) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
-      ...dataRow.map(
-          (e) => SizedBox(width: SizeConfig.blockSizeHorizontal * 6, child: e))
+      ...dataRow.map((e) => SizedBox(
+          width: rowElementWidth ?? SizeConfig.blockSizeHorizontal * 12,
+          child: e))
     ],
   );
 }

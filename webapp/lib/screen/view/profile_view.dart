@@ -66,23 +66,23 @@ class ProfileView extends StatelessWidget {
       child: Column(
         children: [
           ProfileCard(
-            tittle: "Departman",
+            title: "Departman",
             value: profileViewModel.profile!.department ?? "Error",
           ),
           ProfileCard(
-            tittle: "Doğum Günü",
+            title: "Doğum Günü",
             value: profileViewModel.profile!.birthDate ?? "Error",
           ),
           ProfileCard(
-            tittle: "Başlangıç Tarihi",
+            title: "Başlangıç Tarihi",
             value: profileViewModel.profile!.startDate ?? "Error",
           ),
           ProfileCard(
-            tittle: "Kalan İzin Günleri",
+            title: "Kalan İzin Günleri",
             value: profileViewModel.profile!.remainingTimeOffDays.toString(),
           ),
           // ProfileCard(
-          //   tittle: "İşe Giriş Tarihi",
+          //   title: "İşe Giriş Tarihi",
           //   value: profileViewModel.profile!. ?? "Error",
           // ),
         ],

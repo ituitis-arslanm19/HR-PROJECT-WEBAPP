@@ -75,9 +75,9 @@ class TimeOffApprovalCard extends StatelessWidget {
                         /*defining default style is optional */
                         children: <TextSpan>[
                           TextSpan(
-                            text: approvedTimeOff.startDate! +
+                            text: (approvedTimeOff.startDate ?? "Hata") +
                                 " - " +
-                                approvedTimeOff.endDate!,
+                                (approvedTimeOff.endDate ?? "Hata"),
                             style: theme.textTheme.bodySmall,
                           )
                         ],
@@ -93,7 +93,7 @@ class TimeOffApprovalCard extends StatelessWidget {
                             /*defining default style is optional */
                             children: <TextSpan>[
                               TextSpan(
-                                  text: approvedTimeOff.timeOffType,
+                                  text: approvedTimeOff.timeOffType ?? "Hata",
                                   style: theme.textTheme.bodySmall),
                             ],
                           ),
@@ -107,9 +107,9 @@ class TimeOffApprovalCard extends StatelessWidget {
                         /*defining default style is optional */
                         children: <TextSpan>[
                           TextSpan(
-                            text: approvedTimeOff.firstName! +
+                            text: (approvedTimeOff.firstName ?? "Hata") +
                                 " " +
-                                approvedTimeOff.lastName!,
+                                (approvedTimeOff.lastName ?? "Hata"),
                             style: theme.textTheme.bodySmall,
                           )
                         ],

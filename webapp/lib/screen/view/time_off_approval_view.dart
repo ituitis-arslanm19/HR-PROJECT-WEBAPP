@@ -160,10 +160,10 @@ class TimeOffApprovalView extends StatelessWidget {
                   height: SizeConfig.blockSizeVertical * 24,
                   width: SizeConfig.blockSizeVertical * 36,
                   child: TimeOffCard(
-                    startDate: approvedTimeOffs[index].startDate!,
-                    endDate: approvedTimeOffs[index].endDate!,
-                    status: approvedTimeOffs[index].status!,
-                    type: approvedTimeOffs[index].timeOffType!,
+                    startDate: approvedTimeOffs[index].startDate,
+                    endDate: approvedTimeOffs[index].endDate,
+                    status: approvedTimeOffs[index].status,
+                    type: approvedTimeOffs[index].timeOffType,
                     name: (approvedTimeOffs[index].firstName ?? "") +
                         " " +
                         (approvedTimeOffs[index].lastName ?? "Hata"),
