@@ -197,10 +197,12 @@ class EmployeeInfoView extends StatelessWidget {
                                     style: textStyle,
                                   ),
                                   Icon(
-                                    e.status == TimeOffStatus.APPROVED
+                                    e.status == TimeOffStatus.APPROVED ||
+                                            e.status == TimeOffStatus.COMPLETED
                                         ? Icons.check
                                         : Icons.close,
-                                    color: e.status == TimeOffStatus.APPROVED
+                                    color: e.status == TimeOffStatus.APPROVED ||
+                                            e.status == TimeOffStatus.COMPLETED
                                         ? Colors.green
                                         : Colors.red,
                                   ),

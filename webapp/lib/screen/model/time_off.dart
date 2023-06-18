@@ -60,7 +60,7 @@ class TimeOff extends BaseModel<TimeOff> {
         timeOffStatusResult = TimeOffStatus.APPROVED;
         break;
       default:
-        timeOffStatusResult = TimeOffStatus.PENDING;
+        timeOffStatusResult = TimeOffStatus.COMPLETED;
 
         break;
     }

@@ -128,7 +128,8 @@ class TimeOffCard extends StatelessWidget {
                   TextSpan(
                       text: name != null
                           ? '$name'
-                          : status == TimeOffStatus.APPROVED
+                          : status == TimeOffStatus.APPROVED ||
+                                  status == TimeOffStatus.COMPLETED
                               ? " Onaylandı"
                               : status == TimeOffStatus.PENDING
                                   ? " Onay bekleniyor ($managerName)"

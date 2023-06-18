@@ -6,6 +6,6 @@ enum DataState { LOADING, READY, ERROR, EMPTY }
 
 enum ClientType { MANAGER, EMPLOYEE, HR, ADMIN }
 
-enum TimeOffStatus { APPROVED, PENDING, DENIED }
+enum TimeOffStatus { APPROVED, PENDING, DENIED, COMPLETED }
 
 enum ProductType { LAPTOP, HEADPHONE, MOUSE, KEYBOARD, OTHER }
