@@ -178,6 +178,14 @@ mixin _$TimeOffViewModel on _TimeOffViewModelBase, Store {
     return _$requestNewTimeOffAsyncAction.run(() => super.requestNewTimeOff());
   }
 
+  late final _$deleteTimeOffAsyncAction =
+      AsyncAction('_TimeOffViewModelBase.deleteTimeOff', context: context);
+
+  @override
+  Future deleteTimeOff() {
+    return _$deleteTimeOffAsyncAction.run(() => super.deleteTimeOff());
+  }
+
   late final _$_TimeOffViewModelBaseActionController =
       ActionController(name: '_TimeOffViewModelBase', context: context);
 

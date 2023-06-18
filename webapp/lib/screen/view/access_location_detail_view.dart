@@ -23,8 +23,8 @@ class AccessLocationDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AccessLocationDetailViewModel viewModel = AccessLocationDetailViewModel(
-        AccessLocationService(networkManager: NetworkManager(SecureStorage())),
-        SiteService(networkManager: NetworkManager(SecureStorage())),
+        AccessLocationService(networkManager: NetworkManager()),
+        SiteService(networkManager: NetworkManager()),
         id,
         context);
     viewModel.init();
@@ -44,7 +44,7 @@ class AccessLocationDetailView extends StatelessWidget {
         default:
           return SizedBox(
             width: SizeConfig.blockSizeHorizontal * 30,
-            height: SizeConfig.blockSizeVertical * 30,
+            height: SizeConfig.blockSizeVertical * 33,
             child: SimpleContainer(
               padding: 0,
               title: "Giriş Noktası",

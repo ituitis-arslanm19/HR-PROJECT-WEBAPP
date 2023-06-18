@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:webapp/core/cache/secure_storage.dart';
@@ -22,10 +21,9 @@ class EmployeeView extends StatelessWidget {
     TextStyle textStyle =
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
-    EmployeeViewModel viewModel = EmployeeViewModel(
-        EmployeeService(networkManager: NetworkManager(SecureStorage())));
+    EmployeeViewModel viewModel =
+        EmployeeViewModel(EmployeeService(networkManager: NetworkManager()));
     viewModel.init();
-    print("build eedildi");
 
     return Column(
       children: [
@@ -45,15 +43,17 @@ class EmployeeView extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 5,
                 width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(onPressed: () {
+                child: Button(
+                    onPressed: () {
                       showDialog(
                           context: context,
                           builder: (context) => Dialog(
                                 backgroundColor: Colors.transparent,
                                 child: EmployeeDetailView(
-                                    buildContext: context, id:null),
+                                    buildContext: context, id: null),
                               )).then((value) => viewModel.init());
-                    }, text: "Yeni Ekle +"),
+                    },
+                    text: "Yeni Ekle +"),
               )
             ])),
         Observer(builder: (_) {
@@ -129,4 +129,3 @@ class EmployeeView extends StatelessWidget {
     );
   }
 }
-

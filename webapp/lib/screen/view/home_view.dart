@@ -25,8 +25,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeViewModel homeViewModel =
-        HomeViewModel(HomeService(NetworkManager(SecureStorage())));
+    HomeViewModel homeViewModel = HomeViewModel(HomeService(NetworkManager()));
     homeViewModel.init();
     ThemeData theme = Theme.of(context);
     ColorScheme colorScheme = theme.colorScheme;
@@ -101,22 +100,24 @@ class HomeView extends StatelessWidget {
         homeViewModel.dashboard!.birthdays!;
     return Column(
       children: [
-        ListWidget(titles: const [], data: [
-          ...upcomingBirthdayList.map((e) => [
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: CircleAvatar(
-                    backgroundColor: colorScheme.primary,
-                    child: Text(homeViewModel.getInitials(e.name!),
-                        style: theme.textTheme.headlineSmall!
-                            .copyWith(color: colorScheme.background)),
-                    radius: SizeConfig.blockSizeHorizontal * 3,
+        Expanded(
+          child: ListWidget(titles: const [], data: [
+            ...upcomingBirthdayList.map((e) => [
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: CircleAvatar(
+                      backgroundColor: colorScheme.primary,
+                      child: Text(homeViewModel.getInitials(e.name!),
+                          style: theme.textTheme.headlineSmall!
+                              .copyWith(color: colorScheme.background)),
+                      radius: SizeConfig.blockSizeHorizontal * 3,
+                    ),
                   ),
-                ),
-                Text(e.name!),
-                Text(e.birthday!)
-              ])
-        ])
+                  Text(e.name!),
+                  Text(e.birthday!)
+                ])
+          ]),
+        )
       ],
     );
   }

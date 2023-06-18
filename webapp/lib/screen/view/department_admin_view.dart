@@ -24,7 +24,7 @@ class DepartmentView extends StatelessWidget {
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
     DepartmentViewModel viewModel = DepartmentViewModel(
-        DepartmentService(networkManager: NetworkManager(SecureStorage())));
+        DepartmentService(networkManager: NetworkManager()));
     viewModel.init();
 
     return Column(
@@ -48,13 +48,17 @@ class DepartmentView extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 5,
                 width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(onPressed: () {showDialog(
+                child: Button(
+                    onPressed: () {
+                      showDialog(
                           context: context,
                           builder: (context) => Dialog(
                                 backgroundColor: Colors.transparent,
                                 child: DepartmentDetailView(
                                     buildContext: context, id: null),
-                              )).then((value) => viewModel.init());}, text: "Yeni Ekle +"),
+                              )).then((value) => viewModel.init());
+                    },
+                    text: "Yeni Ekle +"),
               )
             ],
           ),
@@ -62,14 +66,8 @@ class DepartmentView extends StatelessWidget {
         Observer(builder: (_) {
           switch (viewModel.dataState) {
             case DataState.READY:
-              return buildList(
-                viewModel,
-                textStyle,
-                context,
-                primaryColor,
-                theme,
-                theme.colorScheme
-              );
+              return buildList(viewModel, textStyle, context, primaryColor,
+                  theme, theme.colorScheme);
             case DataState.LOADING:
               return const Center(
                 child: CircularProgressIndicator(),
@@ -83,8 +81,13 @@ class DepartmentView extends StatelessWidget {
     );
   }
 
-  Expanded buildList(DepartmentViewModel viewModel, TextStyle textStyle,
-      BuildContext context, Color primaryColor, ThemeData theme, ColorScheme colorScheme) {
+  Expanded buildList(
+      DepartmentViewModel viewModel,
+      TextStyle textStyle,
+      BuildContext context,
+      Color primaryColor,
+      ThemeData theme,
+      ColorScheme colorScheme) {
     return Expanded(
       child: ListWidget(
         titles: ["Id", "Ad", "Yönetici", "", ""],

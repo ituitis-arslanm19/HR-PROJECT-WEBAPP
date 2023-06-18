@@ -11,7 +11,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
   String? birthDate;
   String? startDate;
   int? departmentId;
-  bool? isManager;
+  List<String>? roles;
   int? remainingTimeOffDays;
   String? gender;
   List<Site>? siteList;
@@ -26,7 +26,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
       this.birthDate,
       this.startDate,
       this.departmentId,
-      this.isManager,
+      this.roles,
       this.remainingTimeOffDays,
       this.gender,
       this.siteList,
@@ -43,7 +43,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
       'birthDate': birthDate,
       'startDate': startDate,
       'departmentId': departmentId,
-      'isManager': isManager,
+      'roles': roles != null ? roles!.map((x) => x).toList() : [],
       'remainingTimeOffDays': remainingTimeOffDays,
       'gender': gender,
       'siteIdList': siteList!.map((x) => x.id).toList(),
@@ -63,7 +63,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
       startDate: map['startDate'] != null ? map['startDate'] as String : null,
       departmentId:
           map['departmentId'] != null ? map['departmentId'] as int : null,
-      isManager: map['isManager'] != null ? map['isManager'] as bool : null,
+      roles: map['roles'] != null ? List<String>.from(map['roles']) : null,
       remainingTimeOffDays: map['remainingTimeOffDays'] != null
           ? map['remainingTimeOffDays'] as int
           : null,
@@ -89,7 +89,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
         other.birthDate == birthDate &&
         other.startDate == startDate &&
         other.departmentId == departmentId &&
-        other.isManager == isManager &&
+        listEquals(other.roles, roles) &&
         other.remainingTimeOffDays == remainingTimeOffDays &&
         other.gender == gender &&
         listEquals(other.siteList, siteList) &&
@@ -106,7 +106,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
         birthDate.hashCode ^
         startDate.hashCode ^
         departmentId.hashCode ^
-        isManager.hashCode ^
+        roles.hashCode ^
         remainingTimeOffDays.hashCode ^
         gender.hashCode ^
         siteList.hashCode ^

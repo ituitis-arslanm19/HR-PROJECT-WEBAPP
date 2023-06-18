@@ -3,6 +3,10 @@ import 'package:webapp/core/util/size_config.dart';
 import 'package:webapp/core/widgets/other/list_widget.dart';
 import 'package:webapp/core/widgets/other/simple_container.dart';
 import 'package:webapp/screen/model/access_location.dart';
+import 'package:webapp/screen/view/asset_view.dart';
+import 'package:webapp/screen/view/employee_admin_view.dart';
+import 'package:webapp/screen/view/time_off_sign_view.dart';
+import 'package:webapp/screen/view/time_off_type_view.dart';
 import 'package:webapp/screen/viewModel/access_location_view_model.dart';
 
 import 'access_location_view.dart';
@@ -17,7 +21,7 @@ class HrView extends StatelessWidget {
     ColorScheme colorScheme = theme.colorScheme;
     return Scaffold(
       body: DefaultTabController(
-        length: 5,
+        length: 4,
         child: Column(
           children: [
             SizedBox(
@@ -30,23 +34,26 @@ class HrView extends StatelessWidget {
                   labelStyle: theme.textTheme.headlineMedium,
                   indicatorColor: colorScheme.primary,
                   unselectedLabelColor: Colors.grey,
-                  tabs: [
-                    const Tab(text: "Çalışan"),
-                    const Tab(text: "Zimmet"),
-                    const Tab(text: "İzin Tipi"),
+                  tabs: const [
+                    Tab(text: "Çalışan"),
+                    Tab(text: "Zimmet"),
+                    Tab(text: "İzin Tipi"),
+                    Tab(text: "İzin Onayı"),
                   ]),
             ),
             Expanded(
                 child: Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
+              padding: const EdgeInsets.only(left: 16, right: 16),
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: theme.colorScheme.background,
                     border: Border.all(color: Colors.grey.shade300)),
-                child: TabBarView(children: [
-                  DepartmentView(),
-                  AccessLocationView(),
+                child: const TabBarView(children: [
+                  EmployeeView(),
+                  AssetView(),
+                  TimeOffTypeView(),
+                  TimeOffSignView()
                 ]),
               ),
             ))

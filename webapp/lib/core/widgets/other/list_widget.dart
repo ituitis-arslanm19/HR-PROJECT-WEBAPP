@@ -79,7 +79,7 @@ SizedBox buildListTitle(TextStyle listTextStyle, List<String> titles) {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ...titles.map((e) => Container(
-              width: SizeConfig.blockSizeHorizontal * 12,
+              width: SizeConfig.blockSizeHorizontal * 6,
               child: Text(
                 e,
                 style: listTextStyle,
@@ -97,7 +97,7 @@ Row buildListTile(TextStyle listTextStyle, List<Widget> dataRow) {
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       ...dataRow.map(
-          (e) => SizedBox(width: SizeConfig.blockSizeHorizontal * 12, child: e))
+          (e) => SizedBox(width: SizeConfig.blockSizeHorizontal * 6, child: e))
     ],
   );
 }

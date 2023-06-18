@@ -22,8 +22,8 @@ class ProductView extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     ColorScheme colorScheme = theme.colorScheme;
-    ProductViewModel productViewModel = ProductViewModel(
-        ProductService(networkManager: NetworkManager(SecureStorage())));
+    ProductViewModel productViewModel =
+        ProductViewModel(ProductService(networkManager: NetworkManager()));
     productViewModel.init();
 
     SizeConfig().init(context);
@@ -39,13 +39,13 @@ class ProductView extends StatelessWidget {
             case DataState.READY:
               return buildProductList(productViewModel);
             case DataState.ERROR:
-              return Center(child: Text("Hata meydana geldi."));
+              return const Center(child: Text("Hata meydana geldi."));
             case DataState.LOADING:
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             case DataState.EMPTY:
-              return Center(
+              return const Center(
                   child: Text("Üzerinize zimmetli ürün bulunmamakta"));
           }
         }),

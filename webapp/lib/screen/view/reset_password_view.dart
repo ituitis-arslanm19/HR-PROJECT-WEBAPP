@@ -19,7 +19,7 @@ class ResetPasswordView extends StatelessWidget {
     ColorScheme colorScheme = theme.colorScheme;
     ResetPasswordViewModel resetPasswordViewModel = ResetPasswordViewModel(
         context,
-        ResetPasswordService(networkManager: NetworkManager(SecureStorage())),
+        ResetPasswordService(networkManager: NetworkManager()),
         SecureStorage());
     resetPasswordViewModel.init();
     return Scaffold(
@@ -33,7 +33,7 @@ class ResetPasswordView extends StatelessWidget {
       body: Center(
         child: SizedBox(
           height: SizeConfig.blockSizeVertical * 60,
-          width: SizeConfig.blockSizeHorizontal * 60,
+          width: SizeConfig.blockSizeVertical * 60,
           child: ShadowContainer(
             child: Form(
               key: resetPasswordViewModel.formKeyReset,

@@ -20,9 +20,7 @@ class ShiftDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ShiftDetailViewModel viewModel = ShiftDetailViewModel(
-        ShiftService(networkManager: NetworkManager(SecureStorage())),
-        id,
-        context);
+        ShiftService(networkManager: NetworkManager()), id, context);
     viewModel.init();
     return buildPopup(context, viewModel);
   }
@@ -39,7 +37,7 @@ class ShiftDetailView extends StatelessWidget {
           default:
             return SizedBox(
               width: SizeConfig.blockSizeHorizontal * 30,
-              height: SizeConfig.blockSizeVertical * 30,
+              height: SizeConfig.blockSizeVertical * 33,
               child: SimpleContainer(
                 padding: 0,
                 title: "Vardiya",

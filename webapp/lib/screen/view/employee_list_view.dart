@@ -19,7 +19,7 @@ class EmployeeListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     EmployeeListViewModel employeeListViewModel = EmployeeListViewModel(
-        EmployeeListService(NetworkManager(SecureStorage()), clientType));
+        EmployeeListService(NetworkManager(), clientType));
     employeeListViewModel.init();
     return Observer(builder: (_) {
       switch (employeeListViewModel.pageState) {
@@ -125,7 +125,9 @@ class EmployeeListView extends StatelessWidget {
                                       .changeSelectedEmployeeId(e.id);
                                   employeeListViewModel.changePageState(1);
                                 },
-                                name: e.firstName! + e.lastName!,
+                                name: (e.firstName ?? "Hata") +
+                                    " " +
+                                    (e.lastName ?? ""),
                                 secondTxt: e.departmentName,
                                 thirdTxt: e.email),
                           ))

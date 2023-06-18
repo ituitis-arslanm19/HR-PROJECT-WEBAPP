@@ -24,8 +24,8 @@ class DepartmentInfoView extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     ColorScheme colorScheme = theme.colorScheme;
-    DepartmentInfoViewModel departmentInfoViewModel = DepartmentInfoViewModel(
-        DepartmentInfoService(NetworkManager(SecureStorage())), id);
+    DepartmentInfoViewModel departmentInfoViewModel =
+        DepartmentInfoViewModel(DepartmentInfoService(NetworkManager()), id);
     departmentInfoViewModel.init();
     return Scaffold(body: Observer(builder: (_) {
       switch (departmentInfoViewModel.dataState) {
@@ -89,33 +89,38 @@ class DepartmentInfoView extends StatelessWidget {
           child: Column(
             children: [
               Expanded(
-                child: ListWidget(
-                    titles: const [],
-                    data: employeeList
-                        .map(
-                          (e) => [
-                            Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: CircleAvatar(
-                                backgroundColor: colorScheme.primary,
-                                radius: SizeConfig.blockSizeHorizontal * 3,
-                                child: Text(
-                                    departmentInfoViewModel.getInitials(
-                                        (e.firstName ?? "") +
-                                            (e.lastName ?? "Hata")),
-                                    style: theme.textTheme.headlineSmall!
-                                        .copyWith(
-                                            color: colorScheme.background)),
-                              ),
-                            ),
-                            Text((e.firstName ?? "Hata") +
-                                " " +
-                                (e.lastName ?? "")),
-                            Text(e.email ?? "Hata")
-                          ],
-                        )
-                        .toList()),
-              ),
+                  child: employeeList.isNotEmpty
+                      ? ListWidget(
+                          titles: const [],
+                          data: employeeList
+                              .map(
+                                (e) => [
+                                  Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: CircleAvatar(
+                                      backgroundColor: colorScheme.primary,
+                                      radius:
+                                          SizeConfig.blockSizeHorizontal * 3,
+                                      child: Text(
+                                          departmentInfoViewModel.getInitials(
+                                              (e.firstName ?? "") +
+                                                  (e.lastName ?? "Hata")),
+                                          style: theme.textTheme.headlineSmall!
+                                              .copyWith(
+                                                  color:
+                                                      colorScheme.background)),
+                                    ),
+                                  ),
+                                  Text((e.firstName ?? "Hata") +
+                                      " " +
+                                      (e.lastName ?? "")),
+                                  Text(e.email ?? "Hata")
+                                ],
+                              )
+                              .toList())
+                      : const Center(
+                          child: Text("Departmanda çalışan bulunmamakta"),
+                        )),
             ],
           )),
     );
@@ -199,93 +204,93 @@ class DepartmentInfoView extends StatelessWidget {
       title: "Çalışan Dağılımı",
       child: SizedBox(
         child: SizedBox(
-          height: SizeConfig.blockSizeVertical * 15,
-          child: Row(
-            children: [
-              Expanded(
-                flex: 5,
-                child: Observer(builder: (_) {
-                  return departmentInfoViewModel.departmentInfo!.genderPieChart!
-                                  .femaleEmployeeNum !=
-                              0 ||
-                          departmentInfoViewModel.departmentInfo!
-                                  .genderPieChart!.maleEmployeeNum !=
-                              0
-                      ? PieChart(
-                          PieChartData(
-                            centerSpaceRadius: SizeConfig.blockSizeVertical * 4,
-                            sections: showingGenderSections(
-                                colorScheme, theme, departmentInfoViewModel),
-                            pieTouchData: PieTouchData(
-                              touchCallback:
-                                  (FlTouchEvent event, pieTouchResponse) {
-                                if (!event.isInterestedForInteractions ||
-                                    pieTouchResponse == null ||
-                                    pieTouchResponse.touchedSection == null) {
-                                  departmentInfoViewModel.pieChartIndex = -1;
-                                  return;
-                                }
-                                departmentInfoViewModel.changePieChartIndex(
-                                    pieTouchResponse
-                                        .touchedSection!.touchedSectionIndex);
-                              },
+            height: SizeConfig.blockSizeVertical * 15,
+            child: departmentInfoViewModel.departmentInfo!.genderPieChart!
+                            .femaleEmployeeNum !=
+                        0 ||
+                    departmentInfoViewModel
+                            .departmentInfo!.genderPieChart!.maleEmployeeNum !=
+                        0
+                ? Row(
+                    children: [
+                      Expanded(
+                        flex: 5,
+                        child: Observer(builder: (_) {
+                          return PieChart(
+                            PieChartData(
+                              centerSpaceRadius:
+                                  SizeConfig.blockSizeVertical * 5,
+                              sections: showingGenderSections(
+                                  colorScheme, theme, departmentInfoViewModel),
+                              pieTouchData: PieTouchData(
+                                touchCallback:
+                                    (FlTouchEvent event, pieTouchResponse) {
+                                  if (!event.isInterestedForInteractions ||
+                                      pieTouchResponse == null ||
+                                      pieTouchResponse.touchedSection == null) {
+                                    departmentInfoViewModel.pieChartIndex = -1;
+                                    return;
+                                  }
+                                  departmentInfoViewModel.changePieChartIndex(
+                                      pieTouchResponse
+                                          .touchedSection!.touchedSectionIndex);
+                                },
+                              ),
                             ),
-                          ),
-                        )
-                      : SizedBox(
-                          height: 0,
-                          width: 0,
-                        );
-                }),
-              ),
-              Expanded(
-                  flex: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            Indicator(
-                                color: colorScheme.primary,
-                                text: "Erkek",
-                                isSquare: true),
-                            SizedBox(
-                              width: SizeConfig.blockSizeHorizontal * 2,
+                          );
+                        }),
+                      ),
+                      Expanded(
+                          flex: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Indicator(
+                                        color: colorScheme.primary,
+                                        text: "Erkek",
+                                        isSquare: true),
+                                    SizedBox(
+                                      width: SizeConfig.blockSizeHorizontal * 2,
+                                    ),
+                                    Text(
+                                      departmentInfoViewModel.departmentInfo!
+                                          .genderPieChart!.maleEmployeeNum
+                                          .toString(),
+                                      style: theme.textTheme.bodySmall,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                    height: SizeConfig.blockSizeVertical * 1),
+                                Row(
+                                  children: [
+                                    Indicator(
+                                        color: colorScheme.secondary,
+                                        text: "Kadın",
+                                        isSquare: true),
+                                    SizedBox(
+                                      width: SizeConfig.blockSizeHorizontal * 2,
+                                    ),
+                                    Text(
+                                      departmentInfoViewModel.departmentInfo!
+                                          .genderPieChart!.femaleEmployeeNum
+                                          .toString(),
+                                      style: theme.textTheme.bodySmall,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            Text(
-                              departmentInfoViewModel.departmentInfo!
-                                  .genderPieChart!.maleEmployeeNum
-                                  .toString(),
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: SizeConfig.blockSizeVertical * 1),
-                        Row(
-                          children: [
-                            Indicator(
-                                color: colorScheme.secondary,
-                                text: "Kadın",
-                                isSquare: true),
-                            SizedBox(
-                              width: SizeConfig.blockSizeHorizontal * 2,
-                            ),
-                            Text(
-                              departmentInfoViewModel.departmentInfo!
-                                  .genderPieChart!.femaleEmployeeNum
-                                  .toString(),
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ))
-            ],
-          ),
-        ),
+                          ))
+                    ],
+                  )
+                : const Center(
+                    child: Text("Departmanda çalışan bulunmamakta"),
+                  )),
       ),
     );
   }

@@ -33,7 +33,11 @@ class EmployeeService {
   Future<EmployeeDetail?> getEmployeeDetail(int id) async {
     ResponseModel<EmployeeDetail?> result =
         await networkManager.send<EmployeeDetail, EmployeeDetail>(
-            "/employee/popup/$id", HttpMethod.GET, EmployeeDetail(), null, null);
+            "/employee/popup/$id",
+            HttpMethod.GET,
+            EmployeeDetail(),
+            null,
+            null);
     return result.data;
   }
 
@@ -62,12 +66,7 @@ class EmployeeService {
   Future<bool?> delete(int id) async {
     ResponseModel<EmployeeDetail?> result =
         await networkManager.send<EmployeeDetail, EmployeeDetail>(
-            "/employee/$id",
-            HttpMethod.DELETE,
-            EmployeeDetail(),
-            null,
-            TOKEN);
+            "/employee/$id", HttpMethod.DELETE, EmployeeDetail(), null, TOKEN);
     return result.error;
-}
-  
+  }
 }

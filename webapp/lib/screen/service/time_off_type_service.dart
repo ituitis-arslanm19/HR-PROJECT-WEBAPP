@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:webapp/core/constant/enum/enums.dart';
@@ -23,7 +22,11 @@ class TimeOffTypeService {
   Future<TimeOffType?> getTimeOffTypeDetail(int id) async {
     ResponseModel<TimeOffType?> result =
         await networkManager.send<TimeOffType, TimeOffType>(
-            "/timeOffType/popup/$id", HttpMethod.GET, TimeOffType(), null, null);
+            "/timeOffType/popup/$id",
+            HttpMethod.GET,
+            TimeOffType(),
+            null,
+            null);
     return result.data;
   }
 

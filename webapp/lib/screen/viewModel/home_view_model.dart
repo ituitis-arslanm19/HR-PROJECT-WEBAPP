@@ -43,7 +43,7 @@ abstract class _HomeViewModelBase extends BaseViewModel with Store {
       dashboard = result.data;
       dashboard!.birthdays!.isEmpty
           ? dataState = DataState.EMPTY
-          : DataState.READY;
+          : dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;
     }

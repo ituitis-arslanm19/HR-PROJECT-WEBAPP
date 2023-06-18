@@ -21,10 +21,8 @@ class TimeOffSignView extends StatelessWidget {
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
     TimeOffSignViewModel viewModel = TimeOffSignViewModel(
-        TimeOffService(networkManager: NetworkManager(SecureStorage())),
-        context);
+        TimeOffService(networkManager: NetworkManager()), context);
     viewModel.init();
-    print("build eedildi");
 
     return Column(
       children: [

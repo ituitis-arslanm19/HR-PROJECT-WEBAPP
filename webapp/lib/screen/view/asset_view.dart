@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:webapp/core/cache/secure_storage.dart';
@@ -22,10 +21,9 @@ class AssetView extends StatelessWidget {
     TextStyle textStyle =
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
-    AssetViewModel viewModel = AssetViewModel(
-        AssetService(networkManager: NetworkManager(SecureStorage())));
+    AssetViewModel viewModel =
+        AssetViewModel(AssetService(networkManager: NetworkManager()));
     viewModel.init();
-    print("build eedildi");
 
     return Column(
       children: [
@@ -45,7 +43,8 @@ class AssetView extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 5,
                 width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(onPressed: () {
+                child: Button(
+                    onPressed: () {
                       showDialog(
                           context: context,
                           builder: (context) => Dialog(
@@ -53,7 +52,8 @@ class AssetView extends StatelessWidget {
                                 child: AssetDetailView(
                                     buildContext: context, id: null),
                               )).then((value) => viewModel.init());
-                    }, text: "Yeni Ekle +"),
+                    },
+                    text: "Yeni Ekle +"),
               )
             ])),
         Observer(builder: (_) {

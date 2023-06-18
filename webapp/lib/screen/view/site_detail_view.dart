@@ -20,9 +20,7 @@ class SiteDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SiteDetailViewModel viewModel = SiteDetailViewModel(
-        SiteService(networkManager: NetworkManager(SecureStorage())),
-        id,
-        context);
+        SiteService(networkManager: NetworkManager()), id, context);
     viewModel.init();
     return buildPopup(context, viewModel);
   }
@@ -39,7 +37,7 @@ class SiteDetailView extends StatelessWidget {
           default:
             return SizedBox(
               width: SizeConfig.blockSizeHorizontal * 30,
-              height: SizeConfig.blockSizeVertical * 22,
+              height: SizeConfig.blockSizeVertical * 25,
               child: SimpleContainer(
                 padding: 0,
                 title: "Alan",

@@ -9,10 +9,6 @@ import 'package:webapp/screen/view/employee_admin_view.dart';
 import 'package:webapp/screen/view/reader_view.dart';
 import 'package:webapp/screen/view/shift_view.dart';
 import 'package:webapp/screen/view/site_view.dart';
-import 'package:webapp/screen/view/time_off_approval_view.dart';
-import 'package:webapp/screen/view/time_off_sign_view.dart';
-import 'package:webapp/screen/view/time_off_view.dart';
-import 'package:webapp/screen/viewModel/access_location_view_model.dart';
 
 import 'access_location_view.dart';
 import 'department_admin_view.dart';
@@ -22,7 +18,6 @@ class AdminView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("object");
     ThemeData theme = Theme.of(context);
     ColorScheme colorScheme = theme.colorScheme;
     return Scaffold(
@@ -40,18 +35,18 @@ class AdminView extends StatelessWidget {
                   labelStyle: theme.textTheme.headlineMedium,
                   indicatorColor: colorScheme.primary,
                   unselectedLabelColor: Colors.grey,
-                  tabs: [
-                    const Tab(text: "Departman"),
-                    const Tab(text: "Alan"),
-                    const Tab(text: "Giriş Noktası"),
-                    const Tab(text: "Okuyucular"),
-                    const Tab(text: "Vardiya"),
+                  tabs: const [
+                    Tab(text: "Departman"),
+                    Tab(text: "Alan"),
+                    Tab(text: "Giriş Noktası"),
+                    Tab(text: "Okuyucular"),
+                    Tab(text: "Vardiya"),
                   ]),
             ),
             Expanded(child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
               return Padding(
-                padding: EdgeInsets.only(left: 16, right: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16),
                 child: Container(
                   height: constraints.maxHeight,
                   width: constraints.maxWidth,
@@ -59,17 +54,16 @@ class AdminView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       color: theme.colorScheme.background,
                       border: Border.all(color: Colors.grey.shade300)),
-                  child: TabBarView(children: [
-                    AssetView(),
-                    EmployeeView(),
-                    TimeOffSignView(),
+                  child: const TabBarView(children: [
+                    DepartmentView(),
+                    SiteView(),
+                    AccessLocationView(),
                     ReaderView(),
                     ShiftView()
                   ]),
                 ),
               );
             }))
-
           ],
         ),
       ),

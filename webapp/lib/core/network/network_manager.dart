@@ -10,10 +10,15 @@ import 'package:webapp/core/network/model/response_model.dart';
 import 'package:webapp/screen/model/mobile_client.dart';
 
 class NetworkManager {
-  final SecureStorage secureStorage;
+  final SecureStorage secureStorage = SecureStorage();
   static const SERVER = SERVER_ADDRESS;
 
-  NetworkManager(this.secureStorage);
+  NetworkManager._internal();
+  static final NetworkManager _networkManager = NetworkManager._internal();
+
+  factory NetworkManager() {
+    return _networkManager;
+  }
 
   Future<ResponseModel<R>> send<R, T>(String url, HttpMethod httpMethod,
       BaseModel<T>? baseModel, String? data, String? token) async {
@@ -96,13 +101,14 @@ class NetworkManager {
         break;
 
       case HttpMethod.DELETE:
-        res = await http
-            .delete(Uri.http(SERVER, url), body: data, headers: <String, String>{
-          "Access-Control-Allow-Origin": "*",
-          'Content-Type': 'application/json',
-          'Accept': '*/*',
-          'Authorization': "Bearer " + (token ?? ""),
-        });
+        res = await http.delete(Uri.http(SERVER, url),
+            body: data,
+            headers: <String, String>{
+              "Access-Control-Allow-Origin": "*",
+              'Content-Type': 'application/json',
+              'Accept': '*/*',
+              'Authorization': "Bearer " + (token ?? ""),
+            });
         break;
     }
     return res;
@@ -116,7 +122,7 @@ class NetworkManager {
         if (jsonDecode(utf8.decode(res.body.codeUnits)) != null) {
           var jsonBody = jsonDecode(utf8.decode(res.body.codeUnits));
           result = result.fromJson(jsonBody);
-          if(baseModel == null){
+          if (baseModel == null) {
             result.description = jsonBody['data'];
             return result;
           }
@@ -126,11 +132,11 @@ class NetworkManager {
             if (jsonBody['data'] is List) {
               //Data list ise
               result.data = jsonBody['data']
-                  .map((json) => baseModel!.fromJson(json))
+                  .map((json) => baseModel.fromJson(json))
                   .toList()
                   .cast<T>() as R;
             } else {
-              result.data = baseModel!.fromJson(jsonBody["data"]) as R;
+              result.data = baseModel.fromJson(jsonBody["data"]) as R;
             }
           }
         } else {

@@ -21,10 +21,9 @@ class SiteView extends StatelessWidget {
     TextStyle textStyle =
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
-    SiteViewModel viewModel = SiteViewModel(
-        SiteService(networkManager: NetworkManager(SecureStorage())));
+    SiteViewModel viewModel =
+        SiteViewModel(SiteService(networkManager: NetworkManager()));
     viewModel.init();
-    print("build eedildi");
 
     return Column(
       children: [

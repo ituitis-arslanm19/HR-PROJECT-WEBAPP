@@ -22,8 +22,8 @@ class ReaderDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ReaderDetailViewModel viewModel = ReaderDetailViewModel(
-        ReaderService(networkManager: NetworkManager(SecureStorage())),
-        AccessLocationService(networkManager: NetworkManager(SecureStorage())),
+        ReaderService(networkManager: NetworkManager()),
+        AccessLocationService(networkManager: NetworkManager()),
         id,
         context);
     viewModel.init();
@@ -42,7 +42,7 @@ class ReaderDetailView extends StatelessWidget {
           default:
             return SizedBox(
               width: SizeConfig.blockSizeHorizontal * 30,
-              height: SizeConfig.blockSizeVertical * 30,
+              height: SizeConfig.blockSizeVertical * 33,
               child: SimpleContainer(
                 padding: 0,
                 title: "Okuyucu",
@@ -86,13 +86,15 @@ class ReaderDetailView extends StatelessWidget {
                                     alignment: Alignment.centerLeft,
                                     child: Text("Giriş Noktası")),
                                 DropdownButtonFormField(
-                                    value: viewModel.readerDetail!.accessLocationId,
+                                    value: viewModel
+                                        .readerDetail!.accessLocationId,
                                     decoration: InputDecoration(
                                         enabledBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
                                                 width: 1, color: Colors.grey)),
-                                        iconColor:
-                                            Theme.of(context).colorScheme.primary,
+                                        iconColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                         prefixIcon: Icon(Icons.room)),
                                     isExpanded: true,
                                     items: viewModel.accessLocationList!

@@ -23,9 +23,9 @@ class DepartmentDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DepartmentDetailViewModel viewModel = DepartmentDetailViewModel(
-        DepartmentService(networkManager: NetworkManager(SecureStorage())),
+        DepartmentService(networkManager: NetworkManager()),
         id,
-        EmployeeService(networkManager: NetworkManager(SecureStorage())),
+        EmployeeService(networkManager: NetworkManager()),
         context);
     viewModel.init();
     return buildPopup(context, viewModel);
@@ -44,7 +44,7 @@ class DepartmentDetailView extends StatelessWidget {
           default:
             return SizedBox(
               width: SizeConfig.blockSizeHorizontal * 30,
-              height: SizeConfig.blockSizeVertical * 55,
+              height: SizeConfig.blockSizeVertical * 58,
               child: SimpleContainer(
                 padding: 0,
                 title: "Departman",
@@ -97,35 +97,36 @@ class DepartmentDetailView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 6),
                       child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("Üst Departman")),
-                                DropdownButtonFormField(
-                                    value: viewModel.departmentDetail!.parentDepartmentId,
-                                    decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 1, color: Colors.grey)),
-                                        iconColor:
-                                            Theme.of(context).colorScheme.primary,
-                                        prefixIcon: Icon(Icons.work)),
-                                    isExpanded: true,
-                                    items: viewModel.departmentList!
-                                        .map((Department items) {
-                                      return DropdownMenuItem(
-                                        value: items.id,
-                                        child: Text(items.name!),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      viewModel.departmentDetail!.parentDepartmentId =
-                                          value;
-                                    }),
-                              ],
-                            ),
-                    ),  
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Üst Departman")),
+                          DropdownButtonFormField(
+                              value: viewModel
+                                  .departmentDetail!.parentDepartmentId,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.grey)),
+                                  iconColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  prefixIcon: Icon(Icons.work)),
+                              isExpanded: true,
+                              items: viewModel.departmentList!
+                                  .map((Department items) {
+                                return DropdownMenuItem(
+                                  value: items.id,
+                                  child: Text(items.name!),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                viewModel.departmentDetail!.parentDepartmentId =
+                                    value;
+                              }),
+                        ],
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(left: 6),
                       child: Column(

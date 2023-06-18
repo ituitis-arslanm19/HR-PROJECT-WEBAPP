@@ -27,8 +27,8 @@ class EmployeeInfoView extends StatelessWidget {
     ColorScheme colorScheme = theme.colorScheme;
     TextStyle textStyle =
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
-    EmployeeInfoViewModel employeeInfoViewModel = EmployeeInfoViewModel(
-        EmployeeInfoService(NetworkManager(SecureStorage())), id);
+    EmployeeInfoViewModel employeeInfoViewModel =
+        EmployeeInfoViewModel(EmployeeInfoService(NetworkManager()), id);
     employeeInfoViewModel.init();
     return Scaffold(body: Observer(builder: (_) {
       switch (employeeInfoViewModel.dataState) {

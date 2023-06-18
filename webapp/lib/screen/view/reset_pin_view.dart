@@ -21,10 +21,8 @@ class ResetPinView extends StatelessWidget {
     SizeConfig().init(context);
     ThemeData theme = Theme.of(context);
     ColorScheme colorScheme = theme.colorScheme;
-    ResetPinViewModel resetPinViewModel = ResetPinViewModel(
-        context,
-        ResetPinService(networkManager: NetworkManager(SecureStorage())),
-        SecureStorage());
+    ResetPinViewModel resetPinViewModel = ResetPinViewModel(context,
+        ResetPinService(networkManager: NetworkManager()), SecureStorage());
     resetPinViewModel.init();
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +35,7 @@ class ResetPinView extends StatelessWidget {
       body: Center(
         child: SizedBox(
           height: SizeConfig.blockSizeVertical * 60,
-          width: SizeConfig.blockSizeHorizontal * 60,
+          width: SizeConfig.blockSizeVertical * 60,
           child: ShadowContainer(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -70,7 +68,7 @@ class ResetPinView extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 10),
                   child: SizedBox(
                       height: SizeConfig.blockSizeVertical * 5,
-                      width: SizeConfig.blockSizeHorizontal * 75,
+                      width: SizeConfig.blockSizeVertical * 75,
                       child: Button(
                           onPressed: () {
                             resetPinViewModel.checkCode(email);

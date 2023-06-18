@@ -40,27 +40,28 @@ class AssetDetailView extends StatelessWidget {
     }
 
     AssetDetailViewModel viewModel = AssetDetailViewModel(
-        AssetService(networkManager: NetworkManager(SecureStorage())),
+        AssetService(networkManager: NetworkManager()),
         id,
-        EmployeeService(networkManager: NetworkManager(SecureStorage())),
+        EmployeeService(networkManager: NetworkManager()),
         context);
     viewModel.init();
     return buildPopup(context, viewModel, _showCalendar);
   }
 
-  Widget buildPopup(BuildContext context, AssetDetailViewModel viewModel, void Function(BuildContext, TextEditingController) showCalendar) {
+  Widget buildPopup(BuildContext context, AssetDetailViewModel viewModel,
+      void Function(BuildContext, TextEditingController) showCalendar) {
     return Center(
       child: Observer(builder: (_) {
         switch (viewModel.dataState) {
           case DataState.LOADING:
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           case DataState.ERROR:
-            return Center(
+            return const Center(
                 child: Text("Ürün detayı görüntülenirken bir hata oluştu"));
           default:
             return SizedBox(
               width: SizeConfig.blockSizeHorizontal * 30,
-              height: SizeConfig.blockSizeVertical * 35,
+              height: SizeConfig.blockSizeVertical * 40,
               child: SimpleContainer(
                 padding: 0,
                 title: "Zimmet",
@@ -71,7 +72,7 @@ class AssetDetailView extends StatelessWidget {
                         Expanded(
                             flex: 5,
                             child: InputText2(
-                                icon: Icon(Icons.computer),
+                                icon: const Icon(Icons.computer),
                                 hintText: "Ürün Adı",
                                 textEditingController:
                                     viewModel.textEditingControllerList[0])),
@@ -80,25 +81,26 @@ class AssetDetailView extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Align(
+                              const Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text("Çalışan")),
                               DropdownButtonFormField(
                                   value: viewModel.assetDetail!.employeeId,
                                   decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
+                                      enabledBorder: const OutlineInputBorder(
                                           borderSide: BorderSide(
                                               width: 1, color: Colors.grey)),
                                       iconColor:
                                           Theme.of(context).colorScheme.primary,
-                                      prefixIcon: Icon(Icons.person)),
+                                      prefixIcon: const Icon(Icons.person)),
                                   isExpanded: true,
-                                  items:
-                                      viewModel.employeeList!.map((Employee items) {
+                                  items: viewModel.employeeList!
+                                      .map((Employee items) {
                                     return DropdownMenuItem(
                                       value: items.id,
-                                      child: Text(
-                                          items.firstName! + " " + items.lastName!),
+                                      child: Text(items.firstName! +
+                                          " " +
+                                          items.lastName!),
                                     );
                                   }).toList(),
                                   onChanged: (value) {
@@ -113,16 +115,16 @@ class AssetDetailView extends StatelessWidget {
                       Expanded(
                           flex: 5,
                           child: InputText2(
-                              onTap: () => showCalendar!(buildContext,
+                              onTap: () => showCalendar(buildContext,
                                   viewModel.textEditingControllerList[1]),
-                              icon: Icon(Icons.calendar_month),
+                              icon: const Icon(Icons.calendar_month),
                               hintText: "Veriliş Tarihi",
                               textEditingController:
                                   viewModel.textEditingControllerList[1])),
                       Expanded(
                           flex: 5,
                           child: InputText2(
-                              icon: Icon(Icons.description),
+                              icon: const Icon(Icons.description),
                               hintText: "Açıklama",
                               textEditingController:
                                   viewModel.textEditingControllerList[2]))
@@ -130,74 +132,73 @@ class AssetDetailView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 6),
                       child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("Zimmet Türü")),
-                                DropdownButtonFormField(
-                                    value: viewModel.assetDetail!.type,
-                                    decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 1, color: Colors.grey)),
-                                        iconColor:
-                                            Theme.of(context).colorScheme.primary,
-                                        prefixIcon: Icon(Icons.laptop)),
-                                    isExpanded: true,
-                                    items: viewModel.productType!
-                                        .map((String item) {
-                                      return DropdownMenuItem(
-                                        value: item,
-                                        child: Text(item),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      viewModel.assetDetail!.type=
-                                          value;
-                                    }),
-                              ],
-                            ),
-                    ),  
-                     Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.04,
-                          width: MediaQuery.of(context).size.width * 0.05,
-                          child: TextButton(
-                              onPressed: () async {
-                                if (await viewModel.updateAsset()) {
-                                  Navigator.pop(buildContext);
-                                }
-                              },
-                              child: const Text("Kaydet",
-                                  style: TextStyle(color: Colors.white)),
-                              style: TextButton.styleFrom(
-                                  backgroundColor: Theme.of(buildContext)
-                                      .colorScheme
-                                      .primary)),
-                        ),
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Zimmet Türü")),
+                          DropdownButtonFormField(
+                              value: viewModel.assetDetail!.type,
+                              decoration: InputDecoration(
+                                  enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.grey)),
+                                  iconColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  prefixIcon: const Icon(Icons.laptop)),
+                              isExpanded: true,
+                              items: viewModel.productType!.map((String item) {
+                                return DropdownMenuItem(
+                                  value: item,
+                                  child: Text(item),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                viewModel.assetDetail!.type = value;
+                              }),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.04,
-                          width: MediaQuery.of(context).size.width * 0.05,
-                          child: TextButton(
-                              onPressed: () => Navigator.of(buildContext).pop(),
-                              child: const Text("İptal",
-                                  style: TextStyle(color: Colors.white)),
-                              style: TextButton.styleFrom(
-                                  backgroundColor: Theme.of(buildContext)
-                                      .colorScheme
-                                      .primary)),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            width: MediaQuery.of(context).size.width * 0.05,
+                            child: TextButton(
+                                onPressed: () async {
+                                  if (await viewModel.updateAsset()) {
+                                    Navigator.pop(buildContext);
+                                  }
+                                },
+                                style: TextButton.styleFrom(
+                                    backgroundColor: Theme.of(buildContext)
+                                        .colorScheme
+                                        .primary),
+                                child: const Text("Kaydet",
+                                    style: TextStyle(color: Colors.white))),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            width: MediaQuery.of(context).size.width * 0.05,
+                            child: TextButton(
+                                onPressed: () =>
+                                    Navigator.of(buildContext).pop(),
+                                style: TextButton.styleFrom(
+                                    backgroundColor: Theme.of(buildContext)
+                                        .colorScheme
+                                        .primary),
+                                child: const Text("İptal",
+                                    style: TextStyle(color: Colors.white))),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

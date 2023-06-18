@@ -105,20 +105,67 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
     });
   }
 
-  late final _$isManagerObservableAtom = Atom(
-      name: '_EmployeeDetailViewModelBase.isManagerObservable',
-      context: context);
+  late final _$isManagerAtom =
+      Atom(name: '_EmployeeDetailViewModelBase.isManager', context: context);
 
   @override
-  bool? get isManagerObservable {
-    _$isManagerObservableAtom.reportRead();
-    return super.isManagerObservable;
+  bool? get isManager {
+    _$isManagerAtom.reportRead();
+    return super.isManager;
   }
 
   @override
-  set isManagerObservable(bool? value) {
-    _$isManagerObservableAtom.reportWrite(value, super.isManagerObservable, () {
-      super.isManagerObservable = value;
+  set isManager(bool? value) {
+    _$isManagerAtom.reportWrite(value, super.isManager, () {
+      super.isManager = value;
+    });
+  }
+
+  late final _$isEmployeeAtom =
+      Atom(name: '_EmployeeDetailViewModelBase.isEmployee', context: context);
+
+  @override
+  bool? get isEmployee {
+    _$isEmployeeAtom.reportRead();
+    return super.isEmployee;
+  }
+
+  @override
+  set isEmployee(bool? value) {
+    _$isEmployeeAtom.reportWrite(value, super.isEmployee, () {
+      super.isEmployee = value;
+    });
+  }
+
+  late final _$isAdminAtom =
+      Atom(name: '_EmployeeDetailViewModelBase.isAdmin', context: context);
+
+  @override
+  bool? get isAdmin {
+    _$isAdminAtom.reportRead();
+    return super.isAdmin;
+  }
+
+  @override
+  set isAdmin(bool? value) {
+    _$isAdminAtom.reportWrite(value, super.isAdmin, () {
+      super.isAdmin = value;
+    });
+  }
+
+  late final _$isHRAtom =
+      Atom(name: '_EmployeeDetailViewModelBase.isHR', context: context);
+
+  @override
+  bool? get isHR {
+    _$isHRAtom.reportRead();
+    return super.isHR;
+  }
+
+  @override
+  set isHR(bool? value) {
+    _$isHRAtom.reportWrite(value, super.isHR, () {
+      super.isHR = value;
     });
   }
 
@@ -186,6 +233,39 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
   }
 
   @override
+  dynamic changeIsEmployee(bool value) {
+    final _$actionInfo = _$_EmployeeDetailViewModelBaseActionController
+        .startAction(name: '_EmployeeDetailViewModelBase.changeIsEmployee');
+    try {
+      return super.changeIsEmployee(value);
+    } finally {
+      _$_EmployeeDetailViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeIsAdmin(bool value) {
+    final _$actionInfo = _$_EmployeeDetailViewModelBaseActionController
+        .startAction(name: '_EmployeeDetailViewModelBase.changeIsAdmin');
+    try {
+      return super.changeIsAdmin(value);
+    } finally {
+      _$_EmployeeDetailViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeIsHR(bool value) {
+    final _$actionInfo = _$_EmployeeDetailViewModelBaseActionController
+        .startAction(name: '_EmployeeDetailViewModelBase.changeIsHR');
+    try {
+      return super.changeIsHR(value);
+    } finally {
+      _$_EmployeeDetailViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeSiteId(int value) {
     final _$actionInfo = _$_EmployeeDetailViewModelBaseActionController
         .startAction(name: '_EmployeeDetailViewModelBase.changeSiteId');
@@ -205,7 +285,10 @@ departmentList: ${departmentList},
 siteList: ${siteList},
 shiftList: ${shiftList},
 siteListDataState: ${siteListDataState},
-isManagerObservable: ${isManagerObservable},
+isManager: ${isManager},
+isEmployee: ${isEmployee},
+isAdmin: ${isAdmin},
+isHR: ${isHR},
 siteId: ${siteId}
     ''';
   }

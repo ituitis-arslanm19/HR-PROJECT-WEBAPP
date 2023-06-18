@@ -10,10 +10,8 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SplashViewModel splashViewModel = SplashViewModel(
-        context,
-        SplashService(SecureStorage(),
-            networkManager: NetworkManager(SecureStorage())));
+    SplashViewModel splashViewModel = SplashViewModel(context,
+        SplashService(SecureStorage(), networkManager: NetworkManager()));
     splashViewModel.init();
     return Center(
       child: CircularProgressIndicator(

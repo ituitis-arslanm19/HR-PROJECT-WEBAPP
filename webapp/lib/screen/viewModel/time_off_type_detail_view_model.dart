@@ -34,8 +34,10 @@ abstract class _TimeOffTypeDetailViewModelBase with Store {
 
     textEditingControllerList
         .add(TextEditingController(text: timeOffType!.name));
-      textEditingControllerList
-        .add(TextEditingController(text: timeOffType!.numOfTimeOffDay.toString()));
+    textEditingControllerList.add(TextEditingController(
+        text: timeOffType!.numOfTimeOffDay != null
+            ? timeOffType!.numOfTimeOffDay.toString()
+            : ""));
     textEditingControllerList
         .add(TextEditingController(text: timeOffType!.description));
 

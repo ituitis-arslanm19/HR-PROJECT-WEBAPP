@@ -43,7 +43,16 @@ abstract class _EmployeeDetailViewModelBase with Store {
   DataState siteListDataState = DataState.READY;
 
   @observable
-  bool? isManagerObservable;
+  bool? isManager;
+
+  @observable
+  bool? isEmployee;
+
+  @observable
+  bool? isAdmin;
+
+  @observable
+  bool? isHR;
 
   @observable
   int? siteId;
@@ -68,7 +77,18 @@ abstract class _EmployeeDetailViewModelBase with Store {
     } else {
       employeeDetail = await employeeService.getEmployeeDetail(id!);
     }
-    isManagerObservable = employeeDetail!.isManager;
+    isManager = employeeDetail!.roles != null
+        ? employeeDetail!.roles!.contains("MANAGER")
+        : false;
+    isEmployee = employeeDetail!.roles != null
+        ? employeeDetail!.roles!.contains("EMPLOYEE")
+        : false;
+    isHR = employeeDetail!.roles != null
+        ? employeeDetail!.roles!.contains("HR")
+        : false;
+    isAdmin = employeeDetail!.roles != null
+        ? employeeDetail!.roles!.contains("ADMIN")
+        : false;
     textEditingControllerList
         .add(TextEditingController(text: employeeDetail!.firstName));
     textEditingControllerList
@@ -97,7 +117,22 @@ abstract class _EmployeeDetailViewModelBase with Store {
 
   @action
   changeIsManager(bool value) {
-    isManagerObservable = value;
+    isManager = value;
+  }
+
+  @action
+  changeIsEmployee(bool value) {
+    isEmployee = value;
+  }
+
+  @action
+  changeIsAdmin(bool value) {
+    isAdmin = value;
+  }
+
+  @action
+  changeIsHR(bool value) {
+    isHR = value;
   }
 
   @action
@@ -138,7 +173,19 @@ abstract class _EmployeeDetailViewModelBase with Store {
         textEditingControllerList[6].text != ""
             ? int.parse(textEditingControllerList[6].text)
             : null;
-    employeeDetail!.isManager = isManagerObservable;
+    employeeDetail!.roles = [];
+    if (isManager!) {
+      employeeDetail!.roles!.add("MANAGER");
+    }
+    if (isEmployee!) {
+      employeeDetail!.roles!.add("EMPLOYEE");
+    }
+    if (isHR!) {
+      employeeDetail!.roles!.add("HR");
+    }
+    if (isAdmin!) {
+      employeeDetail!.roles!.add("ADMIN");
+    }
     EmployeeDetail? updatedEmployee;
     dataState = DataState.LOADING;
     if (employeeDetail!.id != null) {

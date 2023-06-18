@@ -20,8 +20,7 @@ class NewTimeOffView extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     ColorScheme colorScheme = theme.colorScheme;
     NewTimeOffViewModel newTimeOffViewModel = NewTimeOffViewModel(
-        NewTimeOffService(networkManager: NetworkManager(SecureStorage())),
-        context);
+        NewTimeOffService(networkManager: NetworkManager()), context);
     newTimeOffViewModel.init();
     return Observer(builder: (_) {
       switch (newTimeOffViewModel.dataState) {

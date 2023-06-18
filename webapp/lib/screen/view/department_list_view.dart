@@ -18,8 +18,8 @@ class DepartmentListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DepartmentListViewModel departmentListViewModel = DepartmentListViewModel(
-        DepartmentListService(NetworkManager(SecureStorage())));
+    DepartmentListViewModel departmentListViewModel =
+        DepartmentListViewModel(DepartmentListService(NetworkManager()));
     departmentListViewModel.init();
     return Observer(builder: (_) {
       switch (departmentListViewModel.pageState) {

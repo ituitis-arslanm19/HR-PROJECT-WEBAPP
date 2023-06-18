@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:webapp/core/constant/enum/enums.dart';
 
 import '../../util/size_config.dart';
 
 class ProductCard extends StatelessWidget {
-  final String name;
-  final String date;
+  final String? name;
+  final String? date;
+  final ProductType? type;
 
-  const ProductCard({super.key, required this.name, required this.date});
+  const ProductCard({super.key, this.name, this.date, this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class ProductCard extends StatelessWidget {
                     bottomLeft: Radius.circular(10)),
               ),
               child: Icon(
-                Icons.computer,
+                getIcon(type),
                 color: colorScheme.background,
                 size: SizeConfig.blockSizeVertical * 6,
               ),
@@ -91,5 +93,21 @@ class ProductCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  IconData getIcon(ProductType? productType) {
+    switch (productType) {
+      case ProductType.HEADPHONE:
+        return Icons.headphones;
+      case ProductType.KEYBOARD:
+        return Icons.keyboard;
+      case ProductType.MOUSE:
+        return Icons.mouse;
+
+      case ProductType.OTHER:
+        return Icons.devices_other;
+      default:
+        return Icons.laptop;
+    }
   }
 }

@@ -20,7 +20,7 @@ class ResetEmailView extends StatelessWidget {
     ColorScheme colorScheme = theme.colorScheme;
     ResetEmailViewModel resetEmailViewModel = ResetEmailViewModel(
         buildContext: context,
-        ResetEmailService(networkManager: NetworkManager(SecureStorage())));
+        ResetEmailService(networkManager: NetworkManager()));
     resetEmailViewModel.init();
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +33,7 @@ class ResetEmailView extends StatelessWidget {
       body: Center(
         child: SizedBox(
           height: SizeConfig.blockSizeVertical * 60,
-          width: SizeConfig.blockSizeHorizontal * 60,
+          width: SizeConfig.blockSizeVertical * 60,
           child: ShadowContainer(
             child: Form(
               key: resetEmailViewModel.formKeyReset,

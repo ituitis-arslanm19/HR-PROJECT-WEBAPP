@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:webapp/core/cache/secure_storage.dart';
@@ -22,10 +21,9 @@ class ReaderView extends StatelessWidget {
     TextStyle textStyle =
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
-    ReaderViewModel viewModel = ReaderViewModel(
-        ReaderService(networkManager: NetworkManager(SecureStorage())));
+    ReaderViewModel viewModel =
+        ReaderViewModel(ReaderService(networkManager: NetworkManager()));
     viewModel.init();
-    print("build eedildi");
 
     return Column(
       children: [
@@ -45,7 +43,8 @@ class ReaderView extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 5,
                 width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(onPressed: () {
+                child: Button(
+                    onPressed: () {
                       showDialog(
                           context: context,
                           builder: (context) => Dialog(
@@ -53,20 +52,15 @@ class ReaderView extends StatelessWidget {
                                 child: ReaderDetailView(
                                     buildContext: context, id: null),
                               )).then((value) => viewModel.init());
-                    }, text: "Yeni Ekle +"),
+                    },
+                    text: "Yeni Ekle +"),
               )
             ])),
         Observer(builder: (_) {
           switch (viewModel.dataState) {
             case DataState.READY:
-              return buildList(
-                viewModel,
-                textStyle,
-                context,
-                primaryColor,
-                theme,
-                theme.colorScheme
-              );
+              return buildList(viewModel, textStyle, context, primaryColor,
+                  theme, theme.colorScheme);
             case DataState.LOADING:
               return const Center(
                 child: CircularProgressIndicator(),
@@ -80,8 +74,13 @@ class ReaderView extends StatelessWidget {
     );
   }
 
-  Expanded buildList(ReaderViewModel viewModel, TextStyle textStyle,
-      BuildContext context, Color primaryColor, ThemeData theme, ColorScheme colorScheme) {
+  Expanded buildList(
+      ReaderViewModel viewModel,
+      TextStyle textStyle,
+      BuildContext context,
+      Color primaryColor,
+      ThemeData theme,
+      ColorScheme colorScheme) {
     return Expanded(
       child: ListWidget(
         titles: ["Id", "Ad", "Tip", "Yön", "", ""],

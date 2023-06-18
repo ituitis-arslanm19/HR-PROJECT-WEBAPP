@@ -20,9 +20,7 @@ class TimeOffTypeDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TimeOffTypeDetailViewModel viewModel = TimeOffTypeDetailViewModel(
-        TimeOffTypeService(networkManager: NetworkManager(SecureStorage())),
-        id,
-        context);
+        TimeOffTypeService(networkManager: NetworkManager()), id, context);
     viewModel.init();
     return buildPopup(context, viewModel);
   }
@@ -40,7 +38,7 @@ class TimeOffTypeDetailView extends StatelessWidget {
                     Text("İzin tipi detayı görüntülenirken bir hata oluştu"));
           default:
             return SizedBox(
-              width: SizeConfig.blockSizeHorizontal * 50,
+              width: SizeConfig.blockSizeHorizontal * 30,
               height: SizeConfig.blockSizeVertical * 35,
               child: SimpleContainer(
                 padding: 0,
@@ -66,11 +64,13 @@ class TimeOffTypeDetailView extends StatelessWidget {
                       ],
                     ),
                     Row(children: [
-                      InputText2(
-                          icon: Icon(Icons.description),
-                          hintText: "İzin Tipi Açıklaması",
-                          textEditingController:
-                              viewModel.textEditingControllerList[2])
+                      Expanded(
+                        child: InputText2(
+                            icon: Icon(Icons.description),
+                            hintText: "İzin Tipi Açıklaması",
+                            textEditingController:
+                                viewModel.textEditingControllerList[2]),
+                      )
                     ]),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,

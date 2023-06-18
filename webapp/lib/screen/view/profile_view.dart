@@ -13,8 +13,8 @@ import '../../core/util/size_config.dart';
 
 class ProfileView extends StatelessWidget {
   ProfileView({super.key});
-  ProfileViewModel profileViewModel = ProfileViewModel(
-      ProfileService(networkManager: NetworkManager(SecureStorage())));
+  ProfileViewModel profileViewModel =
+      ProfileViewModel(ProfileService(networkManager: NetworkManager()));
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);

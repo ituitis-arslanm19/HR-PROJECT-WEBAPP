@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:webapp/core/cache/secure_storage.dart';
@@ -23,7 +22,7 @@ class TimeOffTypeView extends StatelessWidget {
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
     TimeOffTypeViewModel viewModel = TimeOffTypeViewModel(
-        TimeOffTypeService(networkManager: NetworkManager(SecureStorage())));
+        TimeOffTypeService(networkManager: NetworkManager()));
     viewModel.init();
     print("build eedildi");
 
@@ -45,7 +44,17 @@ class TimeOffTypeView extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 5,
                 width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(onPressed: () {}, text: "Yeni Ekle +"),
+                child: Button(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: TimeOffTypeDetailView(
+                                    buildContext: context, id: null),
+                              )).then((value) => viewModel.init());
+                    },
+                    text: "Yeni Ekle +"),
               )
             ])),
         Observer(builder: (_) {

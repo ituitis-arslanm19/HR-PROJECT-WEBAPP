@@ -7,13 +7,12 @@ class DepartmentDetail extends BaseModel<DepartmentDetail> {
   List<int>? managersToSignIds;
   int? parentDepartmentId;
 
-  DepartmentDetail({
-    this.id,
-    this.name,
-    this.managerId,
-    this.managersToSignIds,
-    this.parentDepartmentId
-  });
+  DepartmentDetail(
+      {this.id,
+      this.name,
+      this.managerId,
+      this.managersToSignIds,
+      this.parentDepartmentId});
 
   @override
   Map<String, dynamic> toJson() {
@@ -34,8 +33,10 @@ class DepartmentDetail extends BaseModel<DepartmentDetail> {
       managerId: json['managerId'] != null ? json['managerId'] as int : null,
       managersToSignIds: json['managersToSignIds'] != null
           ? List<int>.from(json['managersToSignIds'])
+          : [],
+      parentDepartmentId: json['parentDepartmentId'] != null
+          ? json['parentDepartmentId'] as int
           : null,
-      parentDepartmentId: json['parentDepartmentId'] != null ? json['parentDepartmentId'] as int : null,
     );
   }
 }

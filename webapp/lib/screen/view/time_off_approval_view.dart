@@ -31,7 +31,7 @@ class TimeOffApprovalView extends StatelessWidget {
     TimeOffApprovalViewModel timeOffApprovalViewModel =
         TimeOffApprovalViewModel(
             TimeOffApprovalService(
-              networkManager: NetworkManager(SecureStorage()),
+              networkManager: NetworkManager(),
             ),
             context);
     timeOffApprovalViewModel.init();

@@ -27,8 +27,7 @@ class TimeOffView extends StatelessWidget {
     ColorScheme colorScheme = theme.colorScheme;
     SizeConfig().init(context);
     TimeOffViewModel timeOffViewModel = TimeOffViewModel(
-        TimeOffService(networkManager: NetworkManager(SecureStorage())),
-        context);
+        TimeOffService(networkManager: NetworkManager()), context);
     timeOffViewModel.init();
     return buildPage(theme, colorScheme, timeOffViewModel, context);
   }
@@ -37,37 +36,31 @@ class TimeOffView extends StatelessWidget {
       TimeOffViewModel timeOffViewModel, BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 4),
-      child: Row(
+      child: Column(
         children: [
           Expanded(
-            flex: 4,
-            child: Column(
+            flex: 5,
+            child: Row(
               children: [
                 Expanded(
-                    flex: 5,
+                    flex: 4,
                     child: buildNewTimeOff(
                         theme, colorScheme, timeOffViewModel, context)),
                 Expanded(
-                    flex: 5,
-                    child: SimpleContainer(
-                      title: "Kalan İzinlerim",
-                      child: Container(),
-                    )),
+                    flex: 6,
+                    child: buildPendingTimeOffs(
+                        context, theme, colorScheme, timeOffViewModel)),
               ],
             ),
           ),
           Expanded(
-            flex: 6,
-            child: Column(
+            flex: 5,
+            child: Row(
               children: [
                 Expanded(
-                    flex: 5,
-                    child: buildPendingTimeOffs(
-                        context, theme, colorScheme, timeOffViewModel)),
-                Expanded(
-                    flex: 5,
-                    child: buildPreviousTimeOffs(
-                        theme, colorScheme, timeOffViewModel, context))
+                  child: buildPreviousTimeOffs(
+                      theme, colorScheme, timeOffViewModel, context),
+                )
               ],
             ),
           ),
@@ -80,27 +73,23 @@ class TimeOffView extends StatelessWidget {
       ColorScheme colorScheme, TimeOffViewModel timeOffViewModel) {
     return SimpleContainer(
       title: "Onay Bekleyen İzinlerim",
-      child: Column(
-        children: [
-          Observer(builder: (_) {
-            switch (timeOffViewModel.dataState1) {
-              case DataState.READY:
-                return buildPendingList(
-                    context, timeOffViewModel, theme, colorScheme);
+      child: Observer(builder: (_) {
+        switch (timeOffViewModel.dataState1) {
+          case DataState.READY:
+            return buildPendingList(
+                context, timeOffViewModel, theme, colorScheme);
 
-              case DataState.LOADING:
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              case DataState.ERROR:
-                return const Center(child: Text("Hata meydana geldi"));
-              case DataState.EMPTY:
-                return const Center(
-                    child: Text("Onay bekleyen izniniz bulunmamakta"));
-            }
-          })
-        ],
-      ),
+          case DataState.LOADING:
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          case DataState.ERROR:
+            return const Center(child: Text("Hata meydana geldi"));
+          case DataState.EMPTY:
+            return const Center(
+                child: Text("Onay bekleyen izniniz bulunmamakta"));
+        }
+      }),
     );
   }
 

@@ -29,23 +29,6 @@ class MainView extends StatelessWidget {
     SizeConfig().init(context);
 
     return Scaffold(
-        // appBar: AppBar(
-        //   centerTitle: false,
-        //   titleSpacing: 20.0,
-        //   automaticallyImplyLeading: false,
-        //   elevation: 0,
-        //   title: Align(
-        //     alignment: Alignment.centerLeft,
-        //     child: Text(
-        //       "HR Manager",
-        //       style: GoogleFonts.aBeeZee(
-        //           color: colorScheme.onPrimary,
-        //           fontWeight: FontWeight.bold),
-        //       textAlign: TextAlign.start,
-        //     ),
-        //   ),
-        //   backgroundColor: colorScheme.primary,
-        // ),
         body: SingleChildScrollView(
       child: SizedBox(
         height: SizeConfig.screenHeight * 7 / 8,
@@ -147,7 +130,8 @@ class MainView extends StatelessWidget {
                     title: 'Onay',
                     isSelected: mainViewModel.bnbIndex == 2 ? true : false);
               }),
-            if (!roles.contains(ClientType.EMPLOYEE))
+            if (roles.contains(ClientType.HR) ||
+                roles.contains(ClientType.MANAGER))
               Observer(builder: (_) {
                 return NavItem(
                     onTap: () {
@@ -239,7 +223,6 @@ class MainView extends StatelessWidget {
     return Observer(builder: (_) {
       return NavItem(
           onTap: () {
-            _onItemTapped(7, mainViewModel);
             showDialog(
               context: context,
               builder: (_) => Dialog(

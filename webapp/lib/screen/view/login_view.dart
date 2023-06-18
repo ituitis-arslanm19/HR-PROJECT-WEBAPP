@@ -17,8 +17,7 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LoginViewModel loginViewModel = LoginViewModel(
-        LoginService(SecureStorage(),
-            networkManager: NetworkManager(SecureStorage())),
+        LoginService(SecureStorage(), networkManager: NetworkManager()),
         context);
 
     TextEditingController textController = TextEditingController();
@@ -33,7 +32,7 @@ class LoginView extends StatelessWidget {
       body: Center(
         child: SizedBox(
           height: SizeConfig.blockSizeVertical * 60,
-          width: SizeConfig.blockSizeHorizontal * 60,
+          width: SizeConfig.blockSizeVertical * 60,
           child: ShadowContainer(
             child: DefaultTabController(
               length: 2,
@@ -55,7 +54,7 @@ class LoginView extends StatelessWidget {
       LoginViewModel loginViewModel) {
     return SizedBox(
       height: SizeConfig.blockSizeVertical * 30,
-      width: SizeConfig.blockSizeHorizontal * 50,
+      width: SizeConfig.blockSizeVertical * 50,
       child: TabBarView(children: [
         buildLoginView(textController, theme, loginViewModel),
         buildRegisterView(textController, theme, loginViewModel)
@@ -66,7 +65,7 @@ class LoginView extends StatelessWidget {
   Container buildTabBar(ColorScheme colorScheme, ThemeData theme) {
     return Container(
       height: SizeConfig.blockSizeVertical * 10,
-      width: SizeConfig.blockSizeHorizontal * 50,
+      width: SizeConfig.blockSizeVertical * 50,
       child: Align(
         alignment: Alignment.bottomCenter,
         child: TabBar(
@@ -105,7 +104,7 @@ class LoginView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: SizeConfig.blockSizeHorizontal * 50,
+              width: SizeConfig.blockSizeVertical * 50,
               child: Column(
                 children: [
                   InputText(
@@ -134,7 +133,7 @@ class LoginView extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: SizedBox(
                       height: SizeConfig.blockSizeVertical * 5,
-                      width: SizeConfig.blockSizeHorizontal * 50,
+                      width: SizeConfig.blockSizeVertical * 50,
                       child: Button(
                           onPressed: () {
                             loginViewModel.register();
@@ -161,7 +160,7 @@ class LoginView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: SizeConfig.blockSizeHorizontal * 50,
+              width: SizeConfig.blockSizeVertical * 50,
               child: Column(
                 children: [
                   InputText(
@@ -183,7 +182,7 @@ class LoginView extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: SizedBox(
                       height: SizeConfig.blockSizeVertical * 5,
-                      width: SizeConfig.blockSizeHorizontal * 90,
+                      width: SizeConfig.blockSizeVertical * 90,
                       child: Button(
                           onPressed: () => loginViewModel.login(),
                           text: "GİRİŞ YAP"),

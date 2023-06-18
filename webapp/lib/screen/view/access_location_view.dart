@@ -22,7 +22,7 @@ class AccessLocationView extends StatelessWidget {
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
     AccessLocationViewModel viewModel = AccessLocationViewModel(
-        AccessLocationService(networkManager: NetworkManager(SecureStorage())));
+        AccessLocationService(networkManager: NetworkManager()));
     viewModel.init();
 
     return Column(
@@ -43,7 +43,8 @@ class AccessLocationView extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 5,
                 width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(onPressed: () {
+                child: Button(
+                    onPressed: () {
                       showDialog(
                           context: context,
                           builder: (context) => Dialog(
@@ -51,20 +52,15 @@ class AccessLocationView extends StatelessWidget {
                                 child: AccessLocationDetailView(
                                     buildContext: context, id: null),
                               )).then((value) => viewModel.init());
-                    }, text: "Yeni Ekle +"),
+                    },
+                    text: "Yeni Ekle +"),
               )
             ])),
         Observer(builder: (_) {
           switch (viewModel.dataState) {
             case DataState.READY:
-              return buildList(
-                viewModel,
-                textStyle,
-                context,
-                primaryColor,
-                theme,
-                theme.colorScheme
-              );
+              return buildList(viewModel, textStyle, context, primaryColor,
+                  theme, theme.colorScheme);
             case DataState.LOADING:
               return const Center(
                 child: CircularProgressIndicator(),
@@ -78,8 +74,13 @@ class AccessLocationView extends StatelessWidget {
     );
   }
 
-  Expanded buildList(AccessLocationViewModel viewModel, TextStyle textStyle,
-      BuildContext context, Color primaryColor, ThemeData theme, ColorScheme colorScheme) {
+  Expanded buildList(
+      AccessLocationViewModel viewModel,
+      TextStyle textStyle,
+      BuildContext context,
+      Color primaryColor,
+      ThemeData theme,
+      ColorScheme colorScheme) {
     return Expanded(
       child: ListWidget(
         titles: ["Id", "Ad", "Tip", "Alan", "", ""],
