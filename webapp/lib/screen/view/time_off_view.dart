@@ -181,7 +181,7 @@ class TimeOffView extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 child: SizedBox(
                   height: SizeConfig.blockSizeVertical * 24,
-                  width: SizeConfig.blockSizeHorizontal * 36,
+                  width: SizeConfig.blockSizeVertical * 36,
                   child: TimeOffCard(
                     startDate: previousTimeOffList[index].startDate!,
                     endDate: previousTimeOffList[index].endDate!,
