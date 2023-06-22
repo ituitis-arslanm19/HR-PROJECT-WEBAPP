@@ -121,8 +121,8 @@ class TimeOffView extends StatelessWidget {
                       child: TimeOffCard(
                           deleteEnable: true,
                           onPressed: () {
-                            showDeletePopup(
-                                context, timeOffViewModel, theme, colorScheme);
+                            showDeletePopup(context, timeOffViewModel, theme,
+                                colorScheme, element.id!);
                           },
                           startDate: element.startDate.toString(),
                           endDate: element.endDate.toString(),
@@ -191,6 +191,7 @@ class TimeOffView extends StatelessWidget {
                                 .last
                                 .managerName ??
                             "Hata") +
+                        " " +
                         (previousTimeOffList[index]
                                 .signHistories!
                                 .last
@@ -336,7 +337,7 @@ class TimeOffView extends StatelessWidget {
   }
 
   void showDeletePopup(BuildContext context, TimeOffViewModel timeOffViewModel,
-      ThemeData theme, ColorScheme colorScheme) {
+      ThemeData theme, ColorScheme colorScheme, int timeOffId) {
     showDialog(
       context: context,
       builder: (_) => Dialog(

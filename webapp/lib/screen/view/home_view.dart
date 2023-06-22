@@ -101,22 +101,25 @@ class HomeView extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: ListWidget(titles: const [], data: [
-            ...upcomingBirthdayList.map((e) => [
-                  Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: CircleAvatar(
-                      backgroundColor: colorScheme.primary,
-                      child: Text(homeViewModel.getInitials(e.name!),
-                          style: theme.textTheme.headlineSmall!
-                              .copyWith(color: colorScheme.background)),
-                      radius: SizeConfig.blockSizeHorizontal * 3,
-                    ),
-                  ),
-                  Text(e.name!),
-                  Text(e.birthday!)
-                ])
-          ]),
+          child: ListWidget(
+              rowElementWidth: SizeConfig.blockSizeHorizontal * 6,
+              titles: const [],
+              data: [
+                ...upcomingBirthdayList.map((e) => [
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: CircleAvatar(
+                          backgroundColor: colorScheme.primary,
+                          child: Text(homeViewModel.getInitials(e.name!),
+                              style: theme.textTheme.headlineSmall!
+                                  .copyWith(color: colorScheme.background)),
+                          radius: SizeConfig.blockSizeHorizontal * 3,
+                        ),
+                      ),
+                      Text(e.name!),
+                      Text(e.birthday!)
+                    ])
+              ]),
         )
       ],
     );
@@ -306,7 +309,7 @@ class HomeView extends StatelessWidget {
                       children: [
                         ...departmentList.asMap().entries.map((e) => Indicator(
                             color: colorScheme.primary.withOpacity(
-                                0.5 + e.key * 1 / departmentList.length),
+                                0.2 + 0.8 / departmentList.length * e.key),
                             text: e.value.departmentName!,
                             isSquare: true))
                       ],
@@ -377,7 +380,7 @@ class HomeView extends StatelessWidget {
       return PieChartSectionData(
         showTitle: false,
         color: colorScheme.primary
-            .withOpacity(0.5 + i * 1 / departmentList.length),
+            .withOpacity(0.2 + 0.8 / departmentList.length * i),
         value: departmentList[i].employeeNum!.toDouble(),
         radius: radius,
       );

@@ -182,6 +182,7 @@ class EmployeeInfoView extends StatelessWidget {
                                                   .last
                                                   .managerName ??
                                               "Hata") +
+                                          " " +
                                           (previousTimeOffs[index]
                                                   .signHistories!
                                                   .last

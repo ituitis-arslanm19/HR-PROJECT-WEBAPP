@@ -41,6 +41,38 @@ mixin _$MainViewModel on _MainViewModelBase, Store {
     });
   }
 
+  late final _$hrSubMenuAtom =
+      Atom(name: '_MainViewModelBase.hrSubMenu', context: context);
+
+  @override
+  bool get hrSubMenu {
+    _$hrSubMenuAtom.reportRead();
+    return super.hrSubMenu;
+  }
+
+  @override
+  set hrSubMenu(bool value) {
+    _$hrSubMenuAtom.reportWrite(value, super.hrSubMenu, () {
+      super.hrSubMenu = value;
+    });
+  }
+
+  late final _$adminSubMenuAtom =
+      Atom(name: '_MainViewModelBase.adminSubMenu', context: context);
+
+  @override
+  bool get adminSubMenu {
+    _$adminSubMenuAtom.reportRead();
+    return super.adminSubMenu;
+  }
+
+  @override
+  set adminSubMenu(bool value) {
+    _$adminSubMenuAtom.reportWrite(value, super.adminSubMenu, () {
+      super.adminSubMenu = value;
+    });
+  }
+
   late final _$_MainViewModelBaseActionController =
       ActionController(name: '_MainViewModelBase', context: context);
 
@@ -67,10 +99,34 @@ mixin _$MainViewModel on _MainViewModelBase, Store {
   }
 
   @override
+  dynamic changeHrSubMenu(bool value) {
+    final _$actionInfo = _$_MainViewModelBaseActionController.startAction(
+        name: '_MainViewModelBase.changeHrSubMenu');
+    try {
+      return super.changeHrSubMenu(value);
+    } finally {
+      _$_MainViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeAdminSubMenu() {
+    final _$actionInfo = _$_MainViewModelBaseActionController.startAction(
+        name: '_MainViewModelBase.changeAdminSubMenu');
+    try {
+      return super.changeAdminSubMenu();
+    } finally {
+      _$_MainViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 isLoading: ${isLoading},
-bnbIndex: ${bnbIndex}
+bnbIndex: ${bnbIndex},
+hrSubMenu: ${hrSubMenu},
+adminSubMenu: ${adminSubMenu}
     ''';
   }
 }

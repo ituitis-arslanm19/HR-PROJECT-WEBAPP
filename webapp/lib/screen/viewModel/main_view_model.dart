@@ -20,6 +20,12 @@ abstract class _MainViewModelBase extends BaseViewModel with Store {
   @observable
   int bnbIndex = 0;
 
+  @observable
+  bool hrSubMenu = true;
+
+  @observable
+  bool adminSubMenu = false;
+
   _MainViewModelBase(this.buildContext, this.secureStorage);
 
   @override
@@ -31,6 +37,16 @@ abstract class _MainViewModelBase extends BaseViewModel with Store {
   @action
   setBnbIndex(int index) {
     bnbIndex = index;
+  }
+
+  @action
+  changeHrSubMenu(bool value) {
+    hrSubMenu = value;
+  }
+
+  @action
+  changeAdminSubMenu() {
+    adminSubMenu = !adminSubMenu;
   }
 
   logout() async {

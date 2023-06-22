@@ -45,8 +45,10 @@ class ProductView extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             case DataState.EMPTY:
-              return const Center(
-                  child: Text("Üzerinize zimmetli ürün bulunmamakta"));
+              return Expanded(
+                child: const Center(
+                    child: Text("Üzerinize zimmetli ürün bulunmamakta")),
+              );
           }
         }),
       ],

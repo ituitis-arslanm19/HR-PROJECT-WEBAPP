@@ -2,15 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/util/size_config.dart';
-import 'package:webapp/screen/view/login_view.dart';
 
-import 'package:webapp/screen/view/main_view.dart';
 import 'package:webapp/screen/view/splash_view.dart';
 
 import 'core/theme/app_theme.dart';
-import 'dart:html' as html;
 
 void main() => runApp(MyApp());
 

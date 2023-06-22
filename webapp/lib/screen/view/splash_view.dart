@@ -18,6 +18,5 @@ class SplashView extends StatelessWidget {
         color: Theme.of(context).colorScheme.primary,
       ),
     );
-    ;
   }
 }

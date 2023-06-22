@@ -30,6 +30,10 @@ abstract class _EmployeeInfoViewModelBase extends BaseViewModel with Store {
 
     if ((!result.error!) && result.data != null) {
       employeeInfo = result.data;
+      employeeInfo!.previousTimeOffs =
+          employeeInfo!.previousTimeOffs!.reversed.toList();
+      employeeInfo!.waitingTimeOffs =
+          employeeInfo!.waitingTimeOffs!.reversed.toList();
 
       dataState = DataState.READY;
     } else {

@@ -63,11 +63,13 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
     if (((!result.error!) || result.data != null)) {
       pendingTimeOffList = ObservableList();
       previousTimeOffList = ObservableList();
-      for (TimeOff timeOff in result.data!) {
+
+      for (TimeOff timeOff in result.data!.toList().reversed) {
         timeOff.status == TimeOffStatus.PENDING
             ? pendingTimeOffList!.add(timeOff)
             : previousTimeOffList!.add(timeOff);
       }
+
       pendingTimeOffList!.isEmpty
           ? dataState1 = DataState.EMPTY
           : dataState1 = DataState.READY;
@@ -116,6 +118,7 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
               timeOffTypeId: _getTimeOffTypeId(controllers[2].text)));
       if ((!result.error!) || result.data != null) {
         pendingTimeOffList!.add(result.data!);
+        if (dataState1 == DataState.EMPTY) dataState1 = DataState.READY;
       }
       ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
           content: Text(
@@ -126,23 +129,7 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
   }
 
   @action
-  deleteTimeOff() async {
-    if (formKeyNewTimeOff.currentState!.validate()) {
-      ResponseModel<TimeOff?> result = await timeOffService.requestNewTimeOff(
-          CreateTimeOffRequest(
-              startDate: controllers[0].text,
-              endDate: controllers[1].text,
-              timeOffTypeId: _getTimeOffTypeId(controllers[2].text)));
-      if ((!result.error!) || result.data != null) {
-        pendingTimeOffList!.add(result.data!);
-      }
-      ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
-          content: Text(
-        result.description!,
-        textAlign: TextAlign.center,
-      )));
-    }
-  }
+  deleteTimeOff() async {}
 
   int? _getTimeOffTypeId(String name) {
     for (TimeOffType timeOffType in timeOffTypeList!) {

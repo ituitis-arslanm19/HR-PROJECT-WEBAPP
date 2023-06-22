@@ -15,7 +15,7 @@ class ProductService {
   Future<ResponseModel<List<Product>?>> getProducts() async {
     ResponseModel<List<Product>?> result =
         await networkManager.send<List<Product>, Product>(
-            "product", HttpMethod.GET, Product(), null, TOKEN);
+            "/product/email", HttpMethod.GET, Product(), null, TOKEN);
     return result;
   }
 }

@@ -24,7 +24,6 @@ class TimeOffTypeView extends StatelessWidget {
     TimeOffTypeViewModel viewModel = TimeOffTypeViewModel(
         TimeOffTypeService(networkManager: NetworkManager()));
     viewModel.init();
-    print("build eedildi");
 
     return Column(
       children: [

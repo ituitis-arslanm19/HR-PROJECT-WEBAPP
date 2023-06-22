@@ -67,8 +67,8 @@ class EmployeeDetailView extends StatelessWidget {
                 child: Text("Çalışanlar görüntülenirken bir hata oluştu"));
           default:
             return SizedBox(
-              width: SizeConfig.blockSizeHorizontal * 100,
-              height: SizeConfig.blockSizeVertical * 200,
+              width: SizeConfig.blockSizeHorizontal * 50,
+              height: SizeConfig.blockSizeVertical * 80,
               child: SimpleContainer(
                 title: "Çalışan",
                 child: Column(

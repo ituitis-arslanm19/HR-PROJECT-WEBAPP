@@ -153,13 +153,39 @@ class MainView extends StatelessWidget {
               }),
             if (roles.contains(ClientType.HR))
               Observer(builder: (_) {
-                return NavItem(
-                    onTap: () {
-                      _onItemTapped(5, mainViewModel);
-                    },
-                    icon: Icons.edit,
-                    title: 'İK',
-                    isSelected: mainViewModel.bnbIndex == 5 ? true : false);
+                return AnimatedContainer(
+                  height: !mainViewModel.hrSubMenu
+                      ? SizeConfig.blockSizeVertical * 7.5
+                      : SizeConfig.blockSizeVertical * 27.5,
+                  curve: Curves.linear,
+                  duration: const Duration(milliseconds: 100),
+                  child: !mainViewModel.hrSubMenu
+                      ? NavItem(
+                          endIcon: Icons.arrow_right,
+                          onTap: () {
+                            mainViewModel
+                                .changeHrSubMenu(!mainViewModel.hrSubMenu);
+                          },
+                          icon: Icons.edit,
+                          title: 'İK',
+                          isSelected:
+                              mainViewModel.bnbIndex == 5 ? true : false)
+                      : Column(
+                          children: [
+                            NavItem(
+                                endIcon: Icons.arrow_drop_down,
+                                onTap: () {
+                                  mainViewModel.changeHrSubMenu(
+                                      !mainViewModel.hrSubMenu);
+                                },
+                                icon: Icons.edit,
+                                title: 'İK',
+                                isSelected:
+                                    mainViewModel.bnbIndex == 5 ? true : false),
+                            buildHrSubMenu(mainViewModel),
+                          ],
+                        ),
+                );
               }),
             if (roles.contains(ClientType.ADMIN))
               Observer(builder: (_) {
@@ -178,6 +204,47 @@ class MainView extends StatelessWidget {
               // onDestinationSelected: (index) => _onItemTapped(index, mainViewModel),
               ),
         ),
+      ),
+    );
+  }
+
+  Padding buildHrSubMenu(MainViewModel mainViewModel) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Column(
+        children: [
+          NavItem(
+              isSubItem: true,
+              onTap: () {
+                _onItemTapped(51, mainViewModel);
+              },
+              title: 'Çalışan',
+              isSelected: mainViewModel.bnbIndex == 51 ? true : false),
+          NavItem(
+              isSubItem: true,
+              onTap: () {
+                _onItemTapped(52, mainViewModel);
+              },
+              icon: Icons.edit,
+              title: 'Zimmet',
+              isSelected: mainViewModel.bnbIndex == 52 ? true : false),
+          NavItem(
+              isSubItem: true,
+              onTap: () {
+                _onItemTapped(53, mainViewModel);
+              },
+              icon: Icons.edit,
+              title: 'İzin Tipi',
+              isSelected: mainViewModel.bnbIndex == 53 ? true : false),
+          NavItem(
+              isSubItem: true,
+              onTap: () {
+                _onItemTapped(54, mainViewModel);
+              },
+              icon: Icons.edit,
+              title: 'İzin Takibi',
+              isSelected: mainViewModel.bnbIndex == 54 ? true : false),
+        ],
       ),
     );
   }

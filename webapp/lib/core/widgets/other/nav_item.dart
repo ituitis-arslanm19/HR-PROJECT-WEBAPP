@@ -7,15 +7,19 @@ import 'package:webapp/core/util/size_config.dart';
 class NavItem extends StatelessWidget {
   void Function()? onTap;
   bool isSelected;
+  bool? isSubItem;
   String title;
-  IconData icon;
+  IconData? icon;
+  IconData? endIcon;
 
   NavItem({
     Key? key,
     this.onTap,
     required this.isSelected,
+    this.isSubItem,
     required this.title,
-    required this.icon,
+    this.icon,
+    this.endIcon,
   }) : super(key: key);
 
   @override
@@ -37,6 +41,11 @@ class NavItem extends StatelessWidget {
     }
     return Column(
       children: [
+        SizedBox(
+          height: isSubItem == true
+              ? SizeConfig.blockSizeVertical * 0.0
+              : SizeConfig.blockSizeVertical * 1.25,
+        ),
         Material(
           color: Colors.transparent,
           child: InkWell(
@@ -52,18 +61,25 @@ class NavItem extends StatelessWidget {
                         width: 5,
                         color: startingColor,
                       ),
+                      if (isSubItem != true)
+                        Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Icon(icon, color: color)),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Icon(icon, color: color),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 14.0),
+                        padding: EdgeInsets.only(
+                            left: isSubItem == true ? 34 : 14.0),
                         child: Text(
                           title,
                           style: theme.textTheme.bodyMedium!.copyWith(
                               color: color, fontWeight: FontWeight.bold),
                         ),
                       ),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Icon(endIcon, color: color),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -72,7 +88,9 @@ class NavItem extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: SizeConfig.blockSizeVertical * 2.5,
+          height: isSubItem == true
+              ? SizeConfig.blockSizeVertical * 0.0
+              : SizeConfig.blockSizeVertical * 1.25,
         )
       ],
     );
