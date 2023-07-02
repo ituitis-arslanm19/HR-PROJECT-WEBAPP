@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:webapp/core/cache/secure_storage.dart';
 import 'package:webapp/core/network/network_manager.dart';
-import 'package:webapp/core/widgets/other/input_text.dart';
 import 'package:webapp/core/widgets/other/product_card.dart';
-import 'package:webapp/core/widgets/other/profile_card.dart';
-import 'package:webapp/core/widgets/other/time_off_approval_card.dart';
 import 'package:webapp/screen/service/product_service.dart';
 import 'package:webapp/screen/viewModel/product_view_model.dart';
-
 import '../../core/constant/enum/enums.dart';
 import '../../core/util/size_config.dart';
-import '../../core/widgets/other/button.dart';
-import '../../core/widgets/other/time_off_card.dart';
 
 class ProductView extends StatelessWidget {
   ProductView({super.key});
-  TextEditingController textEditingController = TextEditingController();
+  final TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

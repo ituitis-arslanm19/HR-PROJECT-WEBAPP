@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:webapp/core/base/base_view_model.dart';
-import 'package:mobx/mobx.dart';
 import 'package:webapp/core/util/size_config.dart';
 
 class BaseView extends StatelessWidget {

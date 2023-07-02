@@ -1,10 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
-import 'package:json_annotation/json_annotation.dart';
-
 import '../../core/base/base_model.dart';
-
 
 class TimeOffSign extends BaseModel<TimeOffSign> {
   int? id;
@@ -24,8 +18,7 @@ class TimeOffSign extends BaseModel<TimeOffSign> {
     this.timeOffType,
     this.description,
   });
-  
-  
+
   @override
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -47,8 +40,10 @@ class TimeOffSign extends BaseModel<TimeOffSign> {
       lastName: map['lastName'] != null ? map['lastName'] as String : null,
       startDate: map['startDate'] != null ? map['startDate'] as String : null,
       endDate: map['endDate'] != null ? map['endDate'] as String : null,
-      timeOffType: map['timeOffType'] != null ? map['timeOffType'] as String : null,
-      description: map['description'] != null ? map['description'] as String : null,
+      timeOffType:
+          map['timeOffType'] != null ? map['timeOffType'] as String : null,
+      description:
+          map['description'] != null ? map['description'] as String : null,
     );
   }
 }

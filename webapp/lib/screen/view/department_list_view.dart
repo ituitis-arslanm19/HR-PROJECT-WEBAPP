@@ -6,11 +6,8 @@ import 'package:webapp/core/widgets/other/search_field.dart';
 import 'package:webapp/screen/service/department_list_service.dart';
 import 'package:webapp/screen/view/department_info_view.dart';
 import 'package:webapp/screen/viewModel/department_list_view_model.dart';
-
-import '../../core/cache/secure_storage.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
-import '../model/department.dart';
 import '../model/department_list_item.dart';
 
 class DepartmentListView extends StatelessWidget {

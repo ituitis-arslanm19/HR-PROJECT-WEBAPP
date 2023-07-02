@@ -4,12 +4,12 @@ class InputText extends StatelessWidget {
   final Icon? icon;
   final String? hintText;
   final TextEditingController textEditingController;
-  void Function()? onTap;
-  String? Function(String?)? validator;
-  bool? enabled;
-  bool? obscure;
+  final void Function()? onTap;
+  final String? Function(String?)? validator;
+  final bool? enabled;
+  final bool? obscure;
 
-  InputText(
+  const InputText(
       {super.key,
       this.icon,
       this.enabled,

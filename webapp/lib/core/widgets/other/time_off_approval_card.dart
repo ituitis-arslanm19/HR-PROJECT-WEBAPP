@@ -1,16 +1,15 @@
 // ignore_for_file: unnecessary_string_interpolations
 
 import 'package:flutter/material.dart';
-import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/screen/model/approved_time_off.dart';
 
 import '../../util/size_config.dart';
 
 class TimeOffApprovalCard extends StatelessWidget {
-  ApprovedTimeOff approvedTimeOff;
+  final ApprovedTimeOff approvedTimeOff;
   final void Function(bool, int) onTap;
 
-  TimeOffApprovalCard(
+  const TimeOffApprovalCard(
       {super.key, required this.approvedTimeOff, required this.onTap});
 
   @override

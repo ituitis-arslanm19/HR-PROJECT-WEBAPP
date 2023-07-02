@@ -6,8 +6,8 @@ class SizeConfig {
   static late double screenHeight;
   static late double blockSizeHorizontal;
   static late double blockSizeVertical;
-  static late double _safeAreaHorizontal;
-  static late double _safeAreaVertical;
+  //static late double _safeAreaHorizontal;
+  //static late double _safeAreaVertical;
   static late double safeBlockHorizontal;
   static late double safeBlockVertical;
 

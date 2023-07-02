@@ -2,9 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:webapp/core/base/base_view_model.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/screen/model/department_info.dart';
-import 'package:webapp/screen/model/employee_info.dart';
 import 'package:webapp/screen/service/department_info_service.dart';
-import 'package:webapp/screen/service/employee_info_service.dart';
 
 import '../../core/network/model/response_model.dart';
 part 'department_info_view_model.g.dart';

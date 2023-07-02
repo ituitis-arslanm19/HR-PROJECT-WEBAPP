@@ -1,8 +1,5 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:webapp/core/cache/secure_storage.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
 import '../../core/util/size_config.dart';
@@ -67,7 +64,7 @@ class TimeOffSignView extends StatelessWidget {
       ColorScheme colorScheme) {
     return Expanded(
       child: ListWidget(
-        titles: ["Id", "Ad", "Başlangıç Tarihi", "Bitiş Tarihi", "", ""],
+        titles: const ["Id", "Ad", "Başlangıç Tarihi", "Bitiş Tarihi", "", ""],
         data: viewModel.timeOffList!
             .map((e) => [
                   Text(

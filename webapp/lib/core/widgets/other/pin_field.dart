@@ -4,9 +4,9 @@ import 'package:webapp/core/util/size_config.dart';
 
 class PinField extends StatelessWidget {
   final List<TextEditingController> controllers;
-  void Function()? onTap;
+  final void Function()? onTap;
 
-  PinField({super.key, this.onTap, required this.controllers});
+  const PinField({super.key, this.onTap, required this.controllers});
 
   @override
   Widget build(BuildContext context) {

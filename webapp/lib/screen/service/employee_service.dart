@@ -7,7 +7,6 @@ import '../../core/constant/strings.dart';
 import '../../core/network/model/response_model.dart';
 import '../../core/network/network_manager.dart';
 import '../model/employee.dart';
-import '../model/employee_list_item.dart';
 import '../model/employee_detail.dart';
 
 class EmployeeService {

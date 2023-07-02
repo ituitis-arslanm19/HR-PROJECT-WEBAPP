@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
-import 'package:webapp/screen/model/sign_history.dart';
 
 import '../../util/size_config.dart';
 
@@ -12,9 +11,9 @@ class TimeOffCard extends StatelessWidget {
   final String? name;
   final String? managerName;
   final bool? deleteEnable;
-  void Function()? onPressed;
+  final void Function()? onPressed;
 
-  TimeOffCard(
+  const TimeOffCard(
       {super.key,
       this.startDate,
       this.endDate,

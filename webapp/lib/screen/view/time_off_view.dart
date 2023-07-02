@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
 import 'package:webapp/core/network/network_manager.dart';
+import 'package:webapp/core/widgets/other/data_grid.dart';
 import 'package:webapp/core/widgets/other/drop_down_input_text.dart';
 import 'package:webapp/core/widgets/other/input_text.dart';
-import 'package:webapp/core/widgets/other/list_widget.dart';
+import 'package:webapp/core/widgets/other/step_progress_indicator.dart';
 import 'package:webapp/screen/service/time_off_service.dart';
 import 'package:webapp/screen/viewModel/time_off_view_model.dart';
 
@@ -12,13 +13,10 @@ import '../../core/constant/enum/enums.dart';
 import '../../core/util/size_config.dart';
 import '../../core/widgets/other/button.dart';
 import '../../core/widgets/other/simple_container.dart';
-import '../../core/widgets/other/time_off_card.dart';
 import '../model/time_off.dart';
 
 class TimeOffView extends StatelessWidget {
-  // List of items in our dropdown menu
-  TimeOffView({super.key});
-  final ScrollController _scrollController = ScrollController();
+  const TimeOffView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -92,49 +90,52 @@ class TimeOffView extends StatelessWidget {
     );
   }
 
-  Align buildPendingList(
+  DataGrid buildPendingList(
       BuildContext context,
       TimeOffViewModel timeOffViewModel,
       ThemeData theme,
       ColorScheme colorScheme) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Scrollbar(
-        thumbVisibility: true,
-        thickness: 10,
-        radius: Radius.circular(20), //corner radius of scrollbar
-        scrollbarOrientation: ScrollbarOrientation.bottom,
-        controller: _scrollController,
+    List<TimeOff> pendingTimeOffList = timeOffViewModel.pendingTimeOffList!;
 
-        child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            controller: _scrollController,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                ...timeOffViewModel.pendingTimeOffList!.map(
-                  (element) => SizedBox(
-                    height: SizeConfig.blockSizeVertical * 24,
-                    width: SizeConfig.blockSizeVertical * 36,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: TimeOffCard(
-                          deleteEnable: true,
-                          onPressed: () {
-                            showDeletePopup(context, timeOffViewModel, theme,
-                                colorScheme, element.id!);
-                          },
-                          startDate: element.startDate.toString(),
-                          endDate: element.endDate.toString(),
-                          status: TimeOffStatus.PENDING,
-                          type: element.timeOffType!,
-                          managerName: element.managersToSign![0]),
-                    ),
-                  ),
-                )
-              ],
-            )),
-      ),
+    return buildDataGrid(context, colorScheme, pendingTimeOffList, (date) {
+      TimeOff delete = pendingTimeOffList
+          .firstWhere((element) => element.startDate == element.endDate);
+
+      timeOffViewModel.deleteTimeOff();
+    });
+  }
+
+  DataGrid buildDataGrid(BuildContext context, ColorScheme colorScheme,
+      List<TimeOff> timeOffList, void Function(dynamic)? deleteFunction) {
+    return DataGrid(
+      deleteFunction: deleteFunction,
+      onRowTap: (date) {
+        final DateFormat formatter = DateFormat('dd/MM/yyyy');
+        final String formatted = formatter.format(date);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                backgroundColor: colorScheme.background.withOpacity(0.8),
+                child: StepProgressIndicator(
+                  previousSteps: timeOffList
+                      .firstWhere((element) => element.startDate == formatted)
+                      .signHistories!,
+                  futureSteps: timeOffList
+                      .firstWhere((element) => element.startDate == formatted)
+                      .managersToSign!,
+                ),
+              );
+            });
+      },
+      dataSourceList: timeOffList,
+      columnNames: const ["startDate", "endDate", "status", "type"],
+      titles: const [
+        "Başlangıç Tarihi",
+        "Bitiş Tarihi",
+        "Onay Durumu",
+        "İzin tipi"
+      ],
     );
   }
 
@@ -166,73 +167,11 @@ class TimeOffView extends StatelessWidget {
     );
   }
 
-  ListWidget buildPreviousList(TimeOffViewModel timeOffViewModel,
+  DataGrid buildPreviousList(TimeOffViewModel timeOffViewModel,
       ColorScheme colorScheme, ThemeData theme, BuildContext context) {
     List<TimeOff> previousTimeOffList = timeOffViewModel.previousTimeOffList!;
-    TextStyle textStyle =
-        theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
-    return ListWidget(
-      onTap: (index) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return Dialog(
-                backgroundColor: Colors.transparent,
-                child: SizedBox(
-                  height: SizeConfig.blockSizeVertical * 24,
-                  width: SizeConfig.blockSizeVertical * 36,
-                  child: TimeOffCard(
-                    startDate: previousTimeOffList[index].startDate,
-                    endDate: previousTimeOffList[index].endDate,
-                    status: previousTimeOffList[index].status,
-                    type: previousTimeOffList[index].timeOffType,
-                    managerName: (previousTimeOffList[index]
-                                .signHistories!
-                                .last
-                                .managerName ??
-                            "Hata") +
-                        " " +
-                        (previousTimeOffList[index]
-                                .signHistories!
-                                .last
-                                .managerLastName ??
-                            "Hata"),
-                  ),
-                ),
-              );
-            });
-      },
-      data: previousTimeOffList
-          .map((e) => [
-                Text(
-                  e.startDate ?? "Hata",
-                  style: textStyle,
-                ),
-                Text(
-                  e.endDate ?? "Hata",
-                  style: textStyle,
-                ),
-                Icon(
-                  e.status == TimeOffStatus.APPROVED
-                      ? Icons.check
-                      : Icons.close,
-                  color: e.status == TimeOffStatus.APPROVED
-                      ? Colors.green
-                      : Colors.red,
-                ),
-                Text(
-                  e.timeOffType ?? "Hata",
-                  style: textStyle,
-                )
-              ])
-          .toList(),
-      titles: const [
-        "Başlangıç Tarihi",
-        "Bitiş Tarihi",
-        "Onay Durumu",
-        "İzin tipi"
-      ],
-    );
+
+    return buildDataGrid(context, colorScheme, previousTimeOffList, null);
   }
 
   SimpleContainer buildNewTimeOff(ThemeData theme, ColorScheme colorScheme,

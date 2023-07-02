@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:webapp/core/util/size_config.dart';
 
 class SimpleContainer extends StatelessWidget {
-  String? title;
-  Widget child;
-  double? padding;
+  final String? title;
+  final Widget child;
+  final double? padding;
 
-  SimpleContainer({
+  const SimpleContainer({
     Key? key,
     this.title,
     required this.child,

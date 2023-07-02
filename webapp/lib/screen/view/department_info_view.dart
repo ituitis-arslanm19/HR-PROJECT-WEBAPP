@@ -1,14 +1,12 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:webapp/core/cache/secure_storage.dart';
 import 'package:webapp/core/network/network_manager.dart';
 import 'package:webapp/core/util/size_config.dart';
 import 'package:webapp/core/widgets/other/list_widget.dart';
 import 'package:webapp/core/widgets/other/profile_card.dart';
 import 'package:webapp/core/widgets/other/simple_container.dart';
 import 'package:webapp/screen/service/department_info_service.dart';
-import 'package:webapp/screen/viewModel/department_detail_view_model.dart';
 
 import '../../core/constant/enum/enums.dart';
 import '../../core/constant/strings.dart';
@@ -300,9 +298,9 @@ class DepartmentInfoView extends StatelessWidget {
       ThemeData theme, DepartmentInfoViewModel departmentInfoViewModel) {
     return List.generate(2, (i) {
       final isTouched = departmentInfoViewModel.pieChartIndex == i;
-      final fontSize = isTouched ? 25.0 : 16.0;
+      //final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 50.0 : 40.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+      //const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
       switch (i) {
         case 0:
           return PieChartSectionData(

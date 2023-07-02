@@ -1,16 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:webapp/screen/model/time_off_type.dart';
 
 class DropDownInputText extends StatefulWidget {
   final String? hintText;
   final List<String?> items;
-  bool selected;
+  final bool selected;
   final TextEditingController textEditingController;
   final void Function()? onTap;
-  String? Function(String?)? validator;
+  final String? Function(String?)? validator;
 
-  DropDownInputText(
+  const DropDownInputText(
       {Key? key,
       this.hintText,
       required this.items,
@@ -44,7 +43,7 @@ class _DropDownInputTextState extends State<DropDownInputText> {
   }
 
   showOverlay() {
-    final overlay = Overlay.of(context)!;
+    final overlay = Overlay.of(context);
     final renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
 
@@ -85,29 +84,38 @@ class _DropDownInputTextState extends State<DropDownInputText> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    widget.items[index] ?? "Error",
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
+                      TextFieldTapRegion(
+                        child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              child: IgnorePointer(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        widget.items[index] ?? "Error",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                            onTap: () {
-                              widget.textEditingController.text =
-                                  widget.items[index] ?? "Error";
-                              hideOverlay();
-                              focusNode.unfocus();
-                            },
-                          )),
-                      Divider()
+                              onTap: () {
+                                widget.textEditingController.text =
+                                    widget.items[index] ?? "Error";
+                                hideOverlay();
+                                focusNode.unfocus();
+                              },
+                            )),
+                      ),
+                      const Divider(
+                        thickness: 1,
+                      )
                     ],
                   );
                 },
@@ -121,7 +129,9 @@ class _DropDownInputTextState extends State<DropDownInputText> {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () => hideOverlay(),
+      onTap: () {
+        hideOverlay();
+      },
       child: Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
         child: Column(

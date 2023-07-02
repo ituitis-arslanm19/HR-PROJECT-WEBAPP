@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:webapp/core/util/size_config.dart';
-import 'package:webapp/core/widgets/other/list_widget.dart';
-import 'package:webapp/core/widgets/other/simple_container.dart';
-import 'package:webapp/screen/model/access_location.dart';
 import 'package:webapp/screen/view/asset_view.dart';
 import 'package:webapp/screen/view/employee_admin_view.dart';
 import 'package:webapp/screen/view/time_off_sign_view.dart';
 import 'package:webapp/screen/view/time_off_type_view.dart';
-import 'package:webapp/screen/viewModel/access_location_view_model.dart';
-
-import 'access_location_view.dart';
-import 'department_admin_view.dart';
 
 class HrView extends StatelessWidget {
   const HrView({super.key});

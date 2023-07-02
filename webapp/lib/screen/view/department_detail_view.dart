@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:webapp/core/cache/secure_storage.dart';
 import 'package:webapp/screen/model/department.dart';
 
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
 import '../../core/util/size_config.dart';
-import '../../core/widgets/other/input_text.dart';
 import '../../core/widgets/other/input_text2.dart';
 import '../../core/widgets/other/simple_container.dart';
 import '../model/employee.dart';
 import '../service/department_service.dart';
 import '../service/employee_service.dart';
 import '../viewModel/department_detail_view_model.dart';
-import 'main_view.dart';
 
 class DepartmentDetailView extends StatelessWidget {
   final int? id;

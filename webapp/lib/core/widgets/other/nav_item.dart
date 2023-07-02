@@ -1,18 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'package:webapp/core/util/size_config.dart';
 
 class NavItem extends StatelessWidget {
-  void Function()? onTap;
-  bool isSelected;
-  bool? isSubItem;
-  String title;
-  IconData? icon;
-  IconData? endIcon;
+  final void Function()? onTap;
+  final bool isSelected;
+  final bool? isSubItem;
+  final String title;
+  final IconData? icon;
+  final IconData? endIcon;
 
-  NavItem({
+  const NavItem({
     Key? key,
     this.onTap,
     required this.isSelected,

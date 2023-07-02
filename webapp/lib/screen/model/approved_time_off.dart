@@ -1,10 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:core';
 
+import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:webapp/core/base/data_grid_model.dart';
+
 import '../../core/base/base_model.dart';
 import '../../core/constant/enum/enums.dart';
 
-class ApprovedTimeOff extends BaseModel<ApprovedTimeOff> {
+class ApprovedTimeOff extends BaseModel<ApprovedTimeOff> with DataGridModel {
   int? id;
   TimeOffStatus? status;
   String? startDate;
@@ -73,4 +77,18 @@ class ApprovedTimeOff extends BaseModel<ApprovedTimeOff> {
   String toString() {
     return 'ApprovedTimeOff(id: $id, status: $status, startDate: $startDate, endDate: $endDate, firstName: $firstName, lastName: $lastName, timeOffType: $timeOffType, description: $description)';
   }
+
+  @override
+  DataGridRow toDataGridRow() => DataGridRow(cells: [
+        DataGridCell<String>(
+            columnName: "name",
+            value: "${firstName ?? "Hata"} ${lastName ?? "Hata"}"),
+        DataGridCell<DateTime>(
+            columnName: 'startDate',
+            value: DateFormat("dd/MM/yyyy").parse(startDate ?? "00/00/0000")),
+        DataGridCell<DateTime>(
+            columnName: 'endDate',
+            value: DateFormat("dd/MM/yyyy").parse(endDate ?? "00/00/0000")),
+        DataGridCell<String>(columnName: "timeOffType", value: timeOffType)
+      ]);
 }

@@ -1,13 +1,14 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 import 'dart:core';
 
+import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_datagrid/src/datagrid_widget/sfdatagrid.dart';
+import 'package:webapp/core/base/data_grid_model.dart';
 import 'package:webapp/screen/model/sign_history.dart';
 
 import '../../core/base/base_model.dart';
 import '../../core/constant/enum/enums.dart';
 
-class TimeOff extends BaseModel<TimeOff> {
+class TimeOff extends BaseModel<TimeOff> with DataGridModel {
   int? id;
   TimeOffStatus? status;
   String? startDate;
@@ -90,4 +91,16 @@ class TimeOff extends BaseModel<TimeOff> {
   String toString() {
     return 'TimeOff(id: $id, startDate: $startDate, endDate: $endDate, managersToSign: $managersToSign, timeOffType: $timeOffType, timeOffTypeId: $timeOffTypeId, signHistories: $signHistories, description: $description)';
   }
+
+  @override
+  DataGridRow toDataGridRow() => DataGridRow(cells: [
+        DataGridCell<DateTime>(
+            columnName: 'startDate',
+            value: DateFormat("dd/MM/yyyy").parse(startDate ?? "00/00/0000")),
+        DataGridCell<DateTime>(
+            columnName: 'endDate',
+            value: DateFormat("dd/MM/yyyy").parse(endDate ?? "00/00/0000")),
+        DataGridCell<TimeOffStatus>(columnName: 'status', value: status),
+        DataGridCell<String>(columnName: "timeOffType", value: timeOffType)
+      ]);
 }

@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:webapp/core/cache/secure_storage.dart';
 import 'package:webapp/core/widgets/other/simple_container.dart';
 
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
 import '../../core/util/size_config.dart';
-import '../../core/widgets/other/input_text.dart';
 import '../../core/widgets/other/input_text2.dart';
 import '../model/site.dart';
 import '../service/access_location_service.dart';
 import '../service/site_service.dart';
 import '../viewModel/access_location_detail_view_model.dart';
-import 'main_view.dart';
 
 class AccessLocationDetailView extends StatelessWidget {
   final int? id;

@@ -3,9 +3,9 @@ import 'package:webapp/core/util/size_config.dart';
 
 class SearchField extends StatelessWidget {
   final TextEditingController? textEditingController;
-  void Function(String)? onChanged;
+  final void Function(String)? onChanged;
 
-  SearchField({
+  const SearchField({
     super.key,
     this.textEditingController,
     this.onChanged,

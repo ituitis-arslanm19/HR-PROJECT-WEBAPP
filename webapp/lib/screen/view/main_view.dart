@@ -5,17 +5,24 @@ import 'package:webapp/core/cache/secure_storage.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/util/size_config.dart';
 import 'package:webapp/core/widgets/other/nav_item.dart';
+import 'package:webapp/screen/view/access_location_view.dart';
 import 'package:webapp/screen/view/admin_view.dart';
+import 'package:webapp/screen/view/asset_view.dart';
+import 'package:webapp/screen/view/department_admin_view.dart';
 import 'package:webapp/screen/view/department_list_view.dart';
+import 'package:webapp/screen/view/employee_admin_view.dart';
 import 'package:webapp/screen/view/employee_list_view.dart';
 import 'package:webapp/screen/view/home_view.dart';
 import 'package:webapp/screen/view/hr_view.dart';
+import 'package:webapp/screen/view/reader_view.dart';
+import 'package:webapp/screen/view/shift_view.dart';
+import 'package:webapp/screen/view/site_view.dart';
 import 'package:webapp/screen/view/time_off_approval_view.dart';
+import 'package:webapp/screen/view/time_off_sign_view.dart';
+import 'package:webapp/screen/view/time_off_type_view.dart';
 
 import 'package:webapp/screen/view/time_off_view.dart';
 import 'package:webapp/screen/viewModel/main_view_model.dart';
-
-import '../../core/base/base_view.dart';
 
 class MainView extends StatelessWidget {
   final List<ClientType> roles;
@@ -50,7 +57,7 @@ class MainView extends StatelessWidget {
                         return const HomeView();
 
                       case 1:
-                        return TimeOffView();
+                        return const TimeOffView();
 
                       case 2:
                         return TimeOffApprovalView();
@@ -70,8 +77,28 @@ class MainView extends StatelessWidget {
                       case 5:
                         return const HrView();
 
+                      case 51:
+                        return const EmployeeView();
+                      case 52:
+                        return const AssetView();
+                      case 53:
+                        return const TimeOffTypeView();
+                      case 54:
+                        return const TimeOffSignView();
+
                       case 6:
                         return const AdminView();
+
+                      case 61:
+                        return const DepartmentView();
+                      case 62:
+                        return const SiteView();
+                      case 63:
+                        return const AccessLocationView();
+                      case 64:
+                        return const ReaderView();
+                      case 65:
+                        return const ShiftView();
 
                       default:
                         //return HomeView();
@@ -153,49 +180,59 @@ class MainView extends StatelessWidget {
               }),
             if (roles.contains(ClientType.HR))
               Observer(builder: (_) {
-                return AnimatedContainer(
-                  height: !mainViewModel.hrSubMenu
-                      ? SizeConfig.blockSizeVertical * 7.5
-                      : SizeConfig.blockSizeVertical * 27.5,
-                  curve: Curves.linear,
-                  duration: const Duration(milliseconds: 100),
-                  child: !mainViewModel.hrSubMenu
-                      ? NavItem(
-                          endIcon: Icons.arrow_right,
-                          onTap: () {
-                            mainViewModel
-                                .changeHrSubMenu(!mainViewModel.hrSubMenu);
-                          },
-                          icon: Icons.edit,
-                          title: 'İK',
-                          isSelected:
-                              mainViewModel.bnbIndex == 5 ? true : false)
-                      : Column(
-                          children: [
-                            NavItem(
-                                endIcon: Icons.arrow_drop_down,
-                                onTap: () {
-                                  mainViewModel.changeHrSubMenu(
-                                      !mainViewModel.hrSubMenu);
-                                },
-                                icon: Icons.edit,
-                                title: 'İK',
-                                isSelected:
-                                    mainViewModel.bnbIndex == 5 ? true : false),
-                            buildHrSubMenu(mainViewModel),
-                          ],
-                        ),
+                return Column(
+                  children: [
+                    NavItem(
+                        endIcon: !mainViewModel.hrSubMenu
+                            ? Icons.arrow_right
+                            : Icons.arrow_drop_down,
+                        onTap: () {
+                          mainViewModel
+                              .changeHrSubMenu(!mainViewModel.hrSubMenu);
+                        },
+                        icon: Icons.edit,
+                        title: 'İK',
+                        isSelected: mainViewModel.bnbIndex == 5 ? true : false),
+                    AnimatedSize(
+                      curve: Curves.linear,
+                      duration: const Duration(milliseconds: 200),
+                      child: !mainViewModel.hrSubMenu
+                          ? const SizedBox(
+                              height: 0,
+                              width: 0,
+                            )
+                          : buildHrSubMenu(mainViewModel),
+                    ),
+                  ],
                 );
               }),
             if (roles.contains(ClientType.ADMIN))
               Observer(builder: (_) {
-                return NavItem(
-                    onTap: () {
-                      _onItemTapped(6, mainViewModel);
-                    },
-                    icon: Icons.edit,
-                    title: 'Admin',
-                    isSelected: mainViewModel.bnbIndex == 6 ? true : false);
+                return Column(
+                  children: [
+                    NavItem(
+                        endIcon: !mainViewModel.hrSubMenu
+                            ? Icons.arrow_right
+                            : Icons.arrow_drop_down,
+                        onTap: () {
+                          mainViewModel
+                              .changeHrSubMenu(!mainViewModel.hrSubMenu);
+                        },
+                        icon: Icons.edit,
+                        title: 'Admin',
+                        isSelected: mainViewModel.bnbIndex == 5 ? true : false),
+                    AnimatedSize(
+                      curve: Curves.linear,
+                      duration: const Duration(milliseconds: 200),
+                      child: !mainViewModel.hrSubMenu
+                          ? const SizedBox(
+                              height: 0,
+                              width: 0,
+                            )
+                          : buildAdminSubMenu(mainViewModel),
+                    ),
+                  ],
+                );
               }),
             buildLogout(mainViewModel, context, theme, colorScheme)
           ]
@@ -244,6 +281,55 @@ class MainView extends StatelessWidget {
               icon: Icons.edit,
               title: 'İzin Takibi',
               isSelected: mainViewModel.bnbIndex == 54 ? true : false),
+        ],
+      ),
+    );
+  }
+
+  Padding buildAdminSubMenu(MainViewModel mainViewModel) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Column(
+        children: [
+          NavItem(
+              isSubItem: true,
+              onTap: () {
+                _onItemTapped(61, mainViewModel);
+              },
+              title: 'Departman',
+              isSelected: mainViewModel.bnbIndex == 61 ? true : false),
+          NavItem(
+              isSubItem: true,
+              onTap: () {
+                _onItemTapped(62, mainViewModel);
+              },
+              icon: Icons.edit,
+              title: 'Alan',
+              isSelected: mainViewModel.bnbIndex == 62 ? true : false),
+          NavItem(
+              isSubItem: true,
+              onTap: () {
+                _onItemTapped(63, mainViewModel);
+              },
+              icon: Icons.edit,
+              title: 'Giriş Noktası',
+              isSelected: mainViewModel.bnbIndex == 63 ? true : false),
+          NavItem(
+              isSubItem: true,
+              onTap: () {
+                _onItemTapped(64, mainViewModel);
+              },
+              icon: Icons.edit,
+              title: 'Okuyucu',
+              isSelected: mainViewModel.bnbIndex == 64 ? true : false),
+          NavItem(
+              isSubItem: true,
+              onTap: () {
+                _onItemTapped(65, mainViewModel);
+              },
+              icon: Icons.edit,
+              title: 'Vardiya',
+              isSelected: mainViewModel.bnbIndex == 65 ? true : false),
         ],
       ),
     );

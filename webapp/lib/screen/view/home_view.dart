@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:webapp/core/cache/secure_storage.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/network/network_manager.dart';
 import 'package:webapp/core/util/size_config.dart';
@@ -11,14 +10,9 @@ import 'package:webapp/core/widgets/other/simple_container.dart';
 import 'package:webapp/screen/model/dashboard/department_pie_chart.dart';
 import 'package:webapp/screen/model/dashboard/upcoming_birthday.dart';
 import 'package:webapp/screen/service/home_service.dart';
-import 'package:webapp/screen/view/new_time_off_view.dart';
 import 'package:webapp/screen/view/product_view.dart';
 import 'package:webapp/screen/view/profile_view.dart';
-import 'package:webapp/screen/view/time_off_approval_view.dart';
-import 'package:webapp/screen/view/time_off_view.dart';
 import 'package:webapp/screen/viewModel/home_view_model.dart';
-
-import '../../core/widgets/other/shadow_container.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -340,9 +334,9 @@ class HomeView extends StatelessWidget {
       ColorScheme colorScheme, ThemeData theme, HomeViewModel homeViewModel) {
     return List.generate(2, (i) {
       final isTouched = homeViewModel.pieChartIndex1 == i;
-      final fontSize = isTouched ? 25.0 : 16.0;
+      //final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 50.0 : 40.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+      //const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
       switch (i) {
         case 0:
           return PieChartSectionData(
@@ -373,9 +367,9 @@ class HomeView extends StatelessWidget {
         homeViewModel.dashboard!.departmentPieChart!;
     return List.generate(departmentList.length, (i) {
       final isTouched = homeViewModel.pieChartIndex2 == i;
-      final fontSize = isTouched ? 25.0 : 16.0;
+      //final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 50.0 : 40.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+      //const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
 
       return PieChartSectionData(
         showTitle: false,
@@ -441,7 +435,6 @@ class HomeView extends StatelessWidget {
   // NewTimeOffView buildTopRight() => NewTimeOffView();
   // TimeOffView buildTopLeft(ThemeData theme, ColorScheme colorScheme) =>
   //     TimeOffView();
-
 }
 
 //  Expanded(

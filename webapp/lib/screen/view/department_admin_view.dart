@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:webapp/core/cache/secure_storage.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/network/network_manager.dart';
 import 'package:webapp/core/util/size_config.dart';
 import 'package:webapp/core/widgets/other/button.dart';
 import 'package:webapp/core/widgets/other/list_widget.dart';
 import 'package:webapp/core/widgets/other/search_field.dart';
-import 'package:webapp/screen/service/access_location_service.dart';
 import 'package:webapp/screen/service/department_service.dart';
-import 'package:webapp/screen/view/access_location_detail_view.dart';
 import 'package:webapp/screen/view/department_detail_view.dart';
-import 'package:webapp/screen/viewModel/access_location_view_model.dart';
 import 'package:webapp/screen/viewModel/department_view_model.dart';
 
 class DepartmentView extends StatelessWidget {

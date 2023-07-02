@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   AppTheme._();
@@ -11,7 +10,7 @@ class AppTheme {
   static const Color _lightPrimaryVariantColor = Color(0xFFFCFDFE);
   //static const Color _lightSecondaryColor = Color(0xFF707A8B);
   static const Color _lightOnPrimaryColor = Colors.white;
-  static const Color _old = Color(0xFF61C3DE);
+  //static const Color _old = Color(0xFF61C3DE);
   static const Color _onBackground = Color.fromARGB(255, 247, 247, 248);
   static const Color _lightPrimaryTextColor = Colors.black;
 

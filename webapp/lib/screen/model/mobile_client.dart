@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:webapp/core/base/base_model.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 
@@ -12,8 +9,6 @@ class MobileClient extends BaseModel<MobileClient> {
 
   @override
   MobileClient fromJson(Map<String, dynamic> json) {
-    ClientType clientTypeResult = ClientType.EMPLOYEE;
-
     return MobileClient(
         accessToken: json['accessToken'],
         refreshToken: json['refreshToken'],

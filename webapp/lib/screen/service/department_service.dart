@@ -7,7 +7,6 @@ import 'package:webapp/core/constant/strings.dart';
 import '../../core/network/model/response_model.dart';
 import '../../core/network/network_manager.dart';
 import '../model/department.dart';
-import '../model/department_list_item.dart';
 import '../model/department_detail.dart';
 
 class DepartmentService {

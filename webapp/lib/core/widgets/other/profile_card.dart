@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:webapp/core/theme/app_theme.dart';
 import 'package:webapp/core/util/size_config.dart';
 
 class ProfileCard extends StatelessWidget {

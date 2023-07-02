@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../util/size_config.dart';
-
 class InputText2 extends StatelessWidget {
   final String? hintText;
   final Icon? icon;
   final TextEditingController textEditingController;
-  void Function()? onTap;
+  final void Function()? onTap;
 
-  InputText2(
+  const InputText2(
       {super.key,
       this.hintText,
       this.icon,
@@ -21,14 +19,11 @@ class InputText2 extends StatelessWidget {
       padding: const EdgeInsets.all(4.0),
       child: Column(
         children: [
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(hintText ?? "Hata")),
-                TextFormField(
+          Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: TextFormField(
                   onTap: onTap,
                   controller: textEditingController,
                   decoration: InputDecoration(
@@ -37,8 +32,27 @@ class InputText2 extends StatelessWidget {
                       iconColor: Theme.of(context).colorScheme.primary,
                       prefixIcon: icon),
                 ),
-              ],
-            ),
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Container(
+                    color: Theme.of(context).colorScheme.background,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 3.0, right: 3.0),
+                      child: Text(hintText ?? "Hata",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.primary)),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           )
         ],
       ),

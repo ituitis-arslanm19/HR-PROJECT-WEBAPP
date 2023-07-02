@@ -4,7 +4,6 @@ import 'package:mobx/mobx.dart';
 import '../../core/constant/enum/enums.dart';
 import '../model/asset_detail.dart';
 import '../model/employee.dart';
-import '../model/employee_detail.dart';
 import '../service/asset_service.dart';
 import '../service/employee_service.dart';
 part 'asset_detail_view_model.g.dart';

@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:webapp/core/base/base_view_model.dart';
 import 'package:webapp/core/cache/secure_storage.dart';
-import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/screen/view/login_view.dart';
 import 'package:mobx/mobx.dart';
 part 'main_view_model.g.dart';
@@ -21,7 +20,7 @@ abstract class _MainViewModelBase extends BaseViewModel with Store {
   int bnbIndex = 0;
 
   @observable
-  bool hrSubMenu = true;
+  bool hrSubMenu = false;
 
   @observable
   bool adminSubMenu = false;

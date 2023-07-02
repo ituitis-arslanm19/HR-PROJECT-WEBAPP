@@ -6,10 +6,10 @@ import '../../util/size_config.dart';
 class ListWidget extends StatelessWidget {
   final List<String> titles;
   final List<List<Widget>> data;
-  void Function(int)? onTap;
+  final void Function(int)? onTap;
   final double? rowElementWidth;
 
-  ListWidget({
+  const ListWidget({
     Key? key,
     required this.titles,
     required this.data,

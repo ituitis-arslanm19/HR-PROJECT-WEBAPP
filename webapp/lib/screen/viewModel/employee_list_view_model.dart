@@ -3,9 +3,7 @@ import 'package:webapp/core/base/base_view_model.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/network/model/response_model.dart';
 import 'package:webapp/screen/service/employee_list_service.dart';
-import 'package:webapp/screen/service/home_service.dart';
 
-import '../model/dashboard/dashboard.dart';
 import '../model/employee_list_item.dart';
 part 'employee_list_view_model.g.dart';
 

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:typed_data';
 
-import 'package:webapp/core/base/base_model.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/constant/strings.dart';
 import 'package:webapp/core/network/model/response_model.dart';
@@ -12,9 +11,6 @@ import 'package:webapp/screen/model/request/create_time_off_request.dart';
 import 'package:webapp/screen/model/time_off.dart';
 import 'package:webapp/screen/model/time_off_sign.dart';
 import 'package:webapp/screen/model/time_off_type.dart';
-import 'package:mobx/mobx.dart';
-
-import '../model/mobile_client.dart';
 
 class TimeOffService {
   NetworkManager networkManager;
@@ -55,14 +51,15 @@ class TimeOffService {
   }
 
   Future<TimeOffSign?> signTimeOff(int id) async {
-    ResponseModel<TimeOffSign?> result = 
-      await networkManager.send<TimeOffSign, TimeOffSign>("/timeOff/sign/$id", HttpMethod.PUT, TimeOffSign(), null, TOKEN);
+    ResponseModel<TimeOffSign?> result =
+        await networkManager.send<TimeOffSign, TimeOffSign>(
+            "/timeOff/sign/$id", HttpMethod.PUT, TimeOffSign(), null, TOKEN);
     return result.data;
   }
 
   Future<Uint8List?> printTimeOff(int id) async {
-    ResponseModel<Uint8List?> result = 
-      await networkManager.send("/timeOff/document/$id", HttpMethod.GET, null, null, TOKEN);
+    ResponseModel<Uint8List?> result = await networkManager.send(
+        "/timeOff/document/$id", HttpMethod.GET, null, null, TOKEN);
     return base64Decode(result.description!);
   }
 }

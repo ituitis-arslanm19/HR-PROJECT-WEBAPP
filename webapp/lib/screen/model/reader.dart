@@ -1,6 +1,9 @@
-import '../../core/base/base_model.dart';
+import 'package:syncfusion_flutter_datagrid/src/datagrid_widget/sfdatagrid.dart';
 
-class Reader extends BaseModel<Reader> {
+import '../../core/base/base_model.dart';
+import '../../core/base/data_grid_model.dart';
+
+class Reader extends BaseModel<Reader> with DataGridModel {
   int? id;
   String? name;
   int? type;
@@ -32,4 +35,12 @@ class Reader extends BaseModel<Reader> {
       direction: json['direction'] != null ? json['direction'] as int : null,
     );
   }
+
+  @override
+  DataGridRow toDataGridRow() => DataGridRow(cells: [
+        DataGridCell<int>(columnName: 'id', value: id),
+        DataGridCell<String>(columnName: 'name', value: name),
+        DataGridCell<int>(columnName: 'type', value: type),
+        DataGridCell<int>(columnName: 'direction', value: direction),
+      ]);
 }

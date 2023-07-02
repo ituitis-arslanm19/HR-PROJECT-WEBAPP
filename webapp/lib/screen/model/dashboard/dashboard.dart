@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:webapp/core/base/base_model.dart';
 import 'package:webapp/screen/model/dashboard/department_pie_chart.dart';
 import 'package:webapp/screen/model/dashboard/gender_pie_chart.dart';
