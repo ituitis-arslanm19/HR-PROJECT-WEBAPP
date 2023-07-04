@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 class DropDownInputText extends StatefulWidget {
   final String? hintText;
   final List<String?> items;
-  final bool selected;
-  final TextEditingController textEditingController;
-  final void Function()? onTap;
+  final String? title;
+  final TextEditingController? textEditingController;
+  final void Function(int)? onTap;
   final String? Function(String?)? validator;
 
   const DropDownInputText(
       {Key? key,
       this.hintText,
       required this.items,
-      required this.selected,
-      required this.textEditingController,
+      this.title,
+      this.textEditingController,
       this.onTap,
       this.validator})
       : super(key: key);
@@ -51,7 +51,7 @@ class _DropDownInputTextState extends State<DropDownInputText> {
       builder: (context) => Positioned(
         width: size.width,
         child: CompositedTransformFollower(
-            offset: Offset(0, size.height - 3),
+            offset: Offset(0, size.height - 20),
             link: layerLink,
             showWhenUnlinked: false,
             child: buildOverlay()),
@@ -106,8 +106,10 @@ class _DropDownInputTextState extends State<DropDownInputText> {
                                 ),
                               ),
                               onTap: () {
-                                widget.textEditingController.text =
-                                    widget.items[index] ?? "Error";
+                                if (widget.textEditingController != null)
+                                  widget.textEditingController!.text =
+                                      widget.items[index] ?? "Error";
+                                if (widget.onTap != null) widget.onTap!(index);
                                 hideOverlay();
                                 focusNode.unfocus();
                               },
@@ -134,16 +136,12 @@ class _DropDownInputTextState extends State<DropDownInputText> {
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-        child: Column(
+        child: Stack(
           children: [
-            CompositedTransformTarget(
-              link: layerLink,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(10),
-                ),
+            Padding(
+              padding: EdgeInsets.only(top: widget.title != null ? 10 : 0),
+              child: CompositedTransformTarget(
+                link: layerLink,
                 child: TextFormField(
                   validator: widget.validator,
                   focusNode: focusNode,
@@ -151,17 +149,41 @@ class _DropDownInputTextState extends State<DropDownInputText> {
                   readOnly: true,
                   controller: widget.textEditingController,
                   decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              width: 1, color: Colors.grey.shade300)),
                       iconColor: Theme.of(context).colorScheme.primary,
                       prefixIcon: Icon(Icons.arrow_drop_down),
-                      border: InputBorder.none,
                       labelStyle: Theme.of(context)
                           .textTheme
                           .bodySmall!
                           .copyWith(color: Theme.of(context).hintColor),
-                      labelText: widget.hintText),
+                      border: InputBorder.none,
+                      labelText: widget.hintText ?? "Hata"),
                 ),
               ),
             ),
+            if (widget.title != null)
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Container(
+                    color: Theme.of(context).colorScheme.background,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 3.0, right: 3.0),
+                      child: Text(widget.title!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.primary)),
+                    ),
+                  ),
+                ),
+              )
           ],
         ),
       ),

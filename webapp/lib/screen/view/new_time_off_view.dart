@@ -70,7 +70,6 @@ class NewTimeOffView extends StatelessWidget {
                           context, newTimeOffViewModel.controllers[1]),
                     ),
                     DropDownInputText(
-                      selected: newTimeOffViewModel.timeOffTypeSelected,
                       textEditingController: newTimeOffViewModel.controllers[2],
                       hintText: "İzin Tipi",
                       validator: newTimeOffViewModel.inputTextValidator,

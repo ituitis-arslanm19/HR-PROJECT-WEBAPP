@@ -47,9 +47,6 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
   @observable
   DateTime selectedDate = DateTime.now();
 
-  @observable
-  bool timeOffTypeSelected = false;
-
   @action
   @override
   Future<void> init() async {
@@ -96,11 +93,6 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
       description = result.description;
       dataStateTimeOffType = DataState.ERROR;
     }
-  }
-
-  @action
-  changeTimeOffTypeSelected() {
-    timeOffTypeSelected = !timeOffTypeSelected;
   }
 
   String? inputTextValidator(String? value) {

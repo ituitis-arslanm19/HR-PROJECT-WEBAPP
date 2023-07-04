@@ -9,3 +9,5 @@ enum ClientType { MANAGER, EMPLOYEE, HR, ADMIN }
 enum TimeOffStatus { APPROVED, PENDING, DENIED, COMPLETED }
 
 enum ProductType { LAPTOP, HEADPHONE, MOUSE, KEYBOARD, OTHER }
+
+enum ProductStatus { RETURNED, NOT_RETURNED, AT_EMPLOYEE }

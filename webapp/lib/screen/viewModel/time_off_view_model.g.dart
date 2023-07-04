@@ -138,22 +138,6 @@ mixin _$TimeOffViewModel on _TimeOffViewModelBase, Store {
     });
   }
 
-  late final _$timeOffTypeSelectedAtom =
-      Atom(name: '_TimeOffViewModelBase.timeOffTypeSelected', context: context);
-
-  @override
-  bool get timeOffTypeSelected {
-    _$timeOffTypeSelectedAtom.reportRead();
-    return super.timeOffTypeSelected;
-  }
-
-  @override
-  set timeOffTypeSelected(bool value) {
-    _$timeOffTypeSelectedAtom.reportWrite(value, super.timeOffTypeSelected, () {
-      super.timeOffTypeSelected = value;
-    });
-  }
-
   late final _$initAsyncAction =
       AsyncAction('_TimeOffViewModelBase.init', context: context);
 
@@ -186,20 +170,6 @@ mixin _$TimeOffViewModel on _TimeOffViewModelBase, Store {
     return _$deleteTimeOffAsyncAction.run(() => super.deleteTimeOff());
   }
 
-  late final _$_TimeOffViewModelBaseActionController =
-      ActionController(name: '_TimeOffViewModelBase', context: context);
-
-  @override
-  dynamic changeTimeOffTypeSelected() {
-    final _$actionInfo = _$_TimeOffViewModelBaseActionController.startAction(
-        name: '_TimeOffViewModelBase.changeTimeOffTypeSelected');
-    try {
-      return super.changeTimeOffTypeSelected();
-    } finally {
-      _$_TimeOffViewModelBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
   @override
   String toString() {
     return '''
@@ -210,8 +180,7 @@ dataState1: ${dataState1},
 dataState2: ${dataState2},
 dataStateTimeOffType: ${dataStateTimeOffType},
 description: ${description},
-selectedDate: ${selectedDate},
-timeOffTypeSelected: ${timeOffTypeSelected}
+selectedDate: ${selectedDate}
     ''';
   }
 }

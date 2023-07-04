@@ -77,39 +77,40 @@ abstract class _EmployeeDetailViewModelBase with Store {
     } else {
       employeeDetail = await employeeService.getEmployeeDetail(id!);
     }
-    isManager = employeeDetail!.roles != null
-        ? employeeDetail!.roles!.contains("MANAGER")
-        : false;
-    isEmployee = employeeDetail!.roles != null
-        ? employeeDetail!.roles!.contains("EMPLOYEE")
-        : false;
-    isHR = employeeDetail!.roles != null
-        ? employeeDetail!.roles!.contains("HR")
-        : false;
-    isAdmin = employeeDetail!.roles != null
-        ? employeeDetail!.roles!.contains("ADMIN")
-        : false;
-    textEditingControllerList
-        .add(TextEditingController(text: employeeDetail!.firstName));
-    textEditingControllerList
-        .add(TextEditingController(text: employeeDetail!.lastName));
-    textEditingControllerList
-        .add(TextEditingController(text: employeeDetail!.email));
-    textEditingControllerList.add(TextEditingController(
-        text: employeeDetail!.identityNum != null
-            ? employeeDetail!.identityNum.toString()
-            : ""));
-    textEditingControllerList
-        .add(TextEditingController(text: employeeDetail!.birthDate));
-    textEditingControllerList
-        .add(TextEditingController(text: employeeDetail!.startDate));
-    textEditingControllerList.add(TextEditingController(
-        text: employeeDetail!.remainingTimeOffDays != null
-            ? employeeDetail!.remainingTimeOffDays.toString()
-            : ""));
-
     if (employeeDetail != null) {
+      isManager = employeeDetail!.roles != null
+          ? employeeDetail!.roles!.contains("MANAGER")
+          : false;
+      isEmployee = employeeDetail!.roles != null
+          ? employeeDetail!.roles!.contains("EMPLOYEE")
+          : false;
+      isHR = employeeDetail!.roles != null
+          ? employeeDetail!.roles!.contains("HR")
+          : false;
+      isAdmin = employeeDetail!.roles != null
+          ? employeeDetail!.roles!.contains("ADMIN")
+          : false;
+      textEditingControllerList
+          .add(TextEditingController(text: employeeDetail!.firstName));
+      textEditingControllerList
+          .add(TextEditingController(text: employeeDetail!.lastName));
+      textEditingControllerList
+          .add(TextEditingController(text: employeeDetail!.email));
+      textEditingControllerList.add(TextEditingController(
+          text: employeeDetail!.identityNum != null
+              ? employeeDetail!.identityNum.toString()
+              : ""));
+      textEditingControllerList
+          .add(TextEditingController(text: employeeDetail!.birthDate));
+      textEditingControllerList
+          .add(TextEditingController(text: employeeDetail!.startDate));
+      textEditingControllerList.add(TextEditingController(
+          text: employeeDetail!.remainingTimeOffDays != null
+              ? employeeDetail!.remainingTimeOffDays.toString()
+              : ""));
+
       dataState = DataState.READY;
+      print(employeeDetail);
     } else {
       dataState = DataState.ERROR;
     }
@@ -165,7 +166,7 @@ abstract class _EmployeeDetailViewModelBase with Store {
     employeeDetail!.lastName = textEditingControllerList[1].text;
     employeeDetail!.email = textEditingControllerList[2].text;
     employeeDetail!.identityNum = textEditingControllerList[3].text != ""
-        ? int.parse(textEditingControllerList[3].text)
+        ? textEditingControllerList[3].text
         : null;
     employeeDetail!.birthDate = textEditingControllerList[4].text;
     employeeDetail!.startDate = textEditingControllerList[5].text;

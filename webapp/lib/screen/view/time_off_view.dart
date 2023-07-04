@@ -227,7 +227,6 @@ class TimeOffView extends StatelessWidget {
                         _showCalendar(context, timeOffViewModel.controllers[1]),
                   ),
                   DropDownInputText(
-                    selected: timeOffViewModel.timeOffTypeSelected,
                     textEditingController: timeOffViewModel.controllers[2],
                     hintText: "İzin Tipi",
                     validator: timeOffViewModel.inputTextValidator,

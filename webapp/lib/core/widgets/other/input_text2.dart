@@ -28,7 +28,9 @@ class InputText2 extends StatelessWidget {
                   controller: textEditingController,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 1, color: Colors.grey)),
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              width: 1, color: Colors.grey.shade300)),
                       iconColor: Theme.of(context).colorScheme.primary,
                       prefixIcon: icon),
                 ),

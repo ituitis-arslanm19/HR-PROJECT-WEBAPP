@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:webapp/core/widgets/other/drop_down_input_text.dart';
 import 'package:webapp/core/widgets/other/simple_container.dart';
 
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
 import '../../core/util/size_config.dart';
 import '../../core/widgets/other/input_text2.dart';
-import '../model/site.dart';
 import '../service/access_location_service.dart';
 import '../service/site_service.dart';
 import '../viewModel/access_location_detail_view_model.dart';
@@ -71,34 +71,22 @@ class AccessLocationDetailView extends StatelessWidget {
                         flex: 5,
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("Alan")),
-                              DropdownButtonFormField(
-                                  value: viewModel.accessLocationDetail!.siteId,
-                                  decoration: InputDecoration(
-                                      enabledBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1, color: Colors.grey)),
-                                      iconColor:
-                                          Theme.of(context).colorScheme.primary,
-                                      prefixIcon:
-                                          const Icon(Icons.aspect_ratio)),
-                                  isExpanded: true,
-                                  items: viewModel.siteList?.map((Site items) {
-                                    return DropdownMenuItem(
-                                      value: items.id,
-                                      child: Text(items.name!),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    viewModel.accessLocationDetail!.siteId =
-                                        value;
-                                  }),
-                            ],
+                          child: DropDownInputText(
+                            title: "Alan",
+                            textEditingController: TextEditingController(
+                                text: viewModel.siteList!
+                                        .firstWhere((element) =>
+                                            element.id ==
+                                            viewModel
+                                                .accessLocationDetail!.siteId)
+                                        .name ??
+                                    ""),
+                            items:
+                                viewModel.siteList!.map((e) => e.name).toList(),
+                            onTap: (index) {
+                              viewModel.accessLocationDetail!.siteId =
+                                  viewModel.siteList![index].id;
+                            },
                           ),
                         ),
                       ),
