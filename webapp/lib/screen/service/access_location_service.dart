@@ -49,7 +49,7 @@ class AccessLocationService {
       AccessLocationDetail accessLocationDetail) async {
     ResponseModel<AccessLocationDetail?> result =
         await networkManager.send<AccessLocationDetail, AccessLocationDetail>(
-            "/accesslLocation",
+            "/accessLocation",
             HttpMethod.POST,
             AccessLocationDetail(),
             json.encode(accessLocationDetail.toJson()),
