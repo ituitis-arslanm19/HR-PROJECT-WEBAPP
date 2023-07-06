@@ -9,7 +9,7 @@ class TimeOffTypeViewModel = _TimeOffTypeViewModelBase
     with _$TimeOffTypeViewModel;
 
 abstract class _TimeOffTypeViewModelBase with Store {
-  final TimeOffTypeService siteService;
+  final TimeOffTypeService timeOffTypeService;
 
   @observable
   DataState dataState = DataState.LOADING;
@@ -20,11 +20,11 @@ abstract class _TimeOffTypeViewModelBase with Store {
   @observable
   List<TimeOffType>? timeOffTypes;
 
-  _TimeOffTypeViewModelBase(this.siteService);
+  _TimeOffTypeViewModelBase(this.timeOffTypeService);
 
   @action
   init() async {
-    timeOffTypes = await siteService.getTimeOffTypes();
+    timeOffTypes = await timeOffTypeService.getTimeOffTypes();
     timeOffTypeList = timeOffTypes;
     if (timeOffTypeList != null) {
       dataState = DataState.READY;
@@ -39,5 +39,10 @@ abstract class _TimeOffTypeViewModelBase with Store {
         ?.where((timeOffType) =>
             timeOffType.name!.toLowerCase().startsWith(name.toLowerCase))
         .toList();
+  }
+
+  @action
+  delete(int id) async {
+    return await timeOffTypeService.delete(id);
   }
 }

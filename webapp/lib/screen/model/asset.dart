@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import '../../core/base/base_model.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-class Asset extends BaseModel<Asset> {
+import '../../core/base/base_model.dart';
+import '../../core/base/data_grid_model.dart';
+
+class Asset extends BaseModel<Asset> with DataGridModel{
   int? id;
   String? name;
   String? description;
@@ -35,4 +38,11 @@ class Asset extends BaseModel<Asset> {
         dateOfIssue:
             map['dateOfIssue'] != null ? map['dateOfIssue'] as String : "");
   }
+
+  @override
+  DataGridRow toDataGridRow() => DataGridRow(cells: [
+        DataGridCell<int>(columnName: 'id', value: id),
+        DataGridCell<String>(columnName: 'name', value: name),
+        DataGridCell<String>(columnName: 'dateOfIssue', value: dateOfIssue)
+      ]);
 }

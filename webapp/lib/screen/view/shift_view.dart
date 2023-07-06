@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/network/network_manager.dart';
-import 'package:webapp/core/widgets/other/list_widget.dart';
 import 'package:webapp/screen/service/shift_service.dart';
 import 'package:webapp/screen/view/shift_detail_view.dart';
 import 'package:webapp/screen/viewModel/shift_view_model.dart';
+
 import '../../core/util/size_config.dart';
 import '../../core/widgets/other/button.dart';
+import '../../core/widgets/other/data_grid.dart';
 import '../../core/widgets/other/search_field.dart';
 
 class ShiftView extends StatelessWidget {
@@ -80,111 +81,19 @@ class ShiftView extends StatelessWidget {
       ThemeData theme,
       ColorScheme colorScheme) {
     return Expanded(
-      child: ListWidget(
-        titles: ["Id", "Ad", "Başlama Saati", "Bitiş Saati", "", ""],
-        data: viewModel.shiftList!
-            .map((e) => [
-                  Text(
-                    e.id.toString(),
-                    style: textStyle,
-                  ),
-                  Text(
-                    e.name.toString(),
-                    style: textStyle,
-                  ),
-                  Text(
-                    e.startTime.toString(),
-                    style: textStyle,
-                  ),
-                  Text(
-                    e.endTime.toString(),
-                    style: textStyle,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) => Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: ShiftDetailView(
-                                    buildContext: context, id: e.id),
-                              )).then((value) => viewModel.init());
-                    },
-                    icon: Icon(
-                      Icons.edit,
-                      color: primaryColor,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () => {
-                      showDialog(
-                        context: context,
-                        builder: (_) => Dialog(
-                          child: Container(
-                            height: SizeConfig.blockSizeVertical * 15,
-                            width: SizeConfig.blockSizeVertical * 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Silmek istediğinize emin misiniz?",
-                                    style: theme.textTheme.bodyMedium!.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    TextButton(
-                                      onPressed: () async {
-                                        if (await viewModel.delete(e.id!)) {
-                                          viewModel.init();
-                                          Navigator.of(context).pop();
-                                        }
-                                        ;
-                                      },
-                                      child: Text(
-                                        "SİL",
-                                        style: theme.textTheme.bodyMedium!
-                                            .copyWith(
-                                                color: colorScheme.primary,
-                                                fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(),
-                                      child: Text(
-                                        "İPTAL",
-                                        style: theme.textTheme.bodyMedium!
-                                            .copyWith(
-                                                color: colorScheme.primary,
-                                                fontWeight: FontWeight.bold),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ) //Your buttons here
-                          ,
-                        ),
-                      )
-                    },
-                    icon: Icon(
-                      Icons.delete,
-                      color: primaryColor,
-                    ),
-                  )
-                ])
-            .toList(),
+      child: DataGrid(
+        deleteFunction: (id) {viewModel.delete(id);},
+        onRowTap: (id) {
+          showDialog(
+              context: context,
+              builder: (context) => Dialog(
+                    backgroundColor: Colors.transparent,
+                    child: ShiftDetailView(buildContext: context, id: id),
+                  )).then((value) => viewModel.init());
+        },
+        titles: ["Id", "Ad", "Başlama Saati", "Bitiş Saati"],
+        columnNames: ["id", "name", "startTime", "endTime"],
+        dataSourceList: viewModel.shiftList!,
       ),
     );
   }

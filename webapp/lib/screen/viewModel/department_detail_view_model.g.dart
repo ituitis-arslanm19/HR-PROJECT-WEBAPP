@@ -106,19 +106,36 @@ mixin _$DepartmentDetailViewModel on _DepartmentDetailViewModelBase, Store {
     });
   }
 
-  late final _$departmentIdAtom = Atom(
-      name: '_DepartmentDetailViewModelBase.departmentId', context: context);
+  late final _$managerAtom =
+      Atom(name: '_DepartmentDetailViewModelBase.manager', context: context);
 
   @override
-  int? get departmentId {
-    _$departmentIdAtom.reportRead();
-    return super.departmentId;
+  EmployeeDetail? get manager {
+    _$managerAtom.reportRead();
+    return super.manager;
   }
 
   @override
-  set departmentId(int? value) {
-    _$departmentIdAtom.reportWrite(value, super.departmentId, () {
-      super.departmentId = value;
+  set manager(EmployeeDetail? value) {
+    _$managerAtom.reportWrite(value, super.manager, () {
+      super.manager = value;
+    });
+  }
+
+  late final _$parentDepartmentAtom = Atom(
+      name: '_DepartmentDetailViewModelBase.parentDepartment',
+      context: context);
+
+  @override
+  DepartmentDetail? get parentDepartment {
+    _$parentDepartmentAtom.reportRead();
+    return super.parentDepartment;
+  }
+
+  @override
+  set parentDepartment(DepartmentDetail? value) {
+    _$parentDepartmentAtom.reportWrite(value, super.parentDepartment, () {
+      super.parentDepartment = value;
     });
   }
 
@@ -200,17 +217,6 @@ mixin _$DepartmentDetailViewModel on _DepartmentDetailViewModelBase, Store {
   }
 
   @override
-  dynamic changeDepartmentId(int value) {
-    final _$actionInfo = _$_DepartmentDetailViewModelBaseActionController
-        .startAction(name: '_DepartmentDetailViewModelBase.changeDepartmentId');
-    try {
-      return super.changeDepartmentId(value);
-    } finally {
-      _$_DepartmentDetailViewModelBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 dataState: ${dataState},
@@ -219,7 +225,8 @@ employeeList: ${employeeList},
 departmentList: ${departmentList},
 managersToSign: ${managersToSign},
 employeeId: ${employeeId},
-departmentId: ${departmentId},
+manager: ${manager},
+parentDepartment: ${parentDepartment},
 employeeListDataState: ${employeeListDataState}
     ''';
   }

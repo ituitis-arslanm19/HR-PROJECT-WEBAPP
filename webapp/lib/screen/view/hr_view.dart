@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webapp/core/util/size_config.dart';
+import 'package:webapp/screen/view/asset_type_view.dart';
 import 'package:webapp/screen/view/asset_view.dart';
 import 'package:webapp/screen/view/employee_admin_view.dart';
 import 'package:webapp/screen/view/time_off_sign_view.dart';
@@ -14,11 +15,11 @@ class HrView extends StatelessWidget {
     ColorScheme colorScheme = theme.colorScheme;
     return Scaffold(
       body: DefaultTabController(
-        length: 4,
+        length: 5,
         child: Column(
           children: [
             SizedBox(
-              height: SizeConfig.blockSizeVertical * 4,
+              height: SizeConfig.blockSizeVertical * 5,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -30,6 +31,7 @@ class HrView extends StatelessWidget {
                   tabs: const [
                     Tab(text: "Çalışan"),
                     Tab(text: "Zimmet"),
+                    Tab(text: "Zimmet Tipi"),
                     Tab(text: "İzin Tipi"),
                     Tab(text: "İzin Onayı"),
                   ]),
@@ -45,6 +47,7 @@ class HrView extends StatelessWidget {
                 child: const TabBarView(children: [
                   EmployeeView(),
                   AssetView(),
+                  AssetTypeView(),
                   TimeOffTypeView(),
                   TimeOffSignView()
                 ]),

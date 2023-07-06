@@ -1,6 +1,9 @@
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:webapp/core/base/data_grid_model.dart';
+
 import '../../core/base/base_model.dart';
 
-class Site extends BaseModel<Site> {
+class Site extends BaseModel<Site> with DataGridModel{
   int? id;
   String? name;
 
@@ -31,6 +34,12 @@ class Site extends BaseModel<Site> {
 
     return other.id == id && other.name == name;
   }
+
+  @override
+  DataGridRow toDataGridRow() => DataGridRow(cells: [
+        DataGridCell<int>(columnName: 'id', value: id),
+        DataGridCell<String>(columnName: 'name', value: name)
+      ]);
 
   @override
   int get hashCode => id.hashCode ^ name.hashCode;

@@ -51,4 +51,15 @@ class TimeOffTypeService {
             null);
     return result.data;
   }
+
+  Future<bool?> delete(int id) async {
+    ResponseModel<TimeOffType?> result =
+        await networkManager.send<TimeOffType, TimeOffType>(
+            "/productType/$id",
+            HttpMethod.DELETE,
+            TimeOffType(),
+            null,
+            null);
+    return result.error;
+  }
 }

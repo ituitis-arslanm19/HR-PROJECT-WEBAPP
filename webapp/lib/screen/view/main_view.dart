@@ -7,6 +7,7 @@ import 'package:webapp/core/util/size_config.dart';
 import 'package:webapp/core/widgets/other/nav_item.dart';
 import 'package:webapp/screen/view/access_location_view.dart';
 import 'package:webapp/screen/view/admin_view.dart';
+import 'package:webapp/screen/view/asset_type_view.dart';
 import 'package:webapp/screen/view/asset_view.dart';
 import 'package:webapp/screen/view/department_admin_view.dart';
 import 'package:webapp/screen/view/department_list_view.dart';
@@ -82,8 +83,10 @@ class MainView extends StatelessWidget {
                       case 52:
                         return const AssetView();
                       case 53:
-                        return const TimeOffTypeView();
+                        return const AssetTypeView();
                       case 54:
+                        return const TimeOffTypeView();
+                      case 55:
                         return const TimeOffSignView();
 
                       case 6:
@@ -271,7 +274,7 @@ class MainView extends StatelessWidget {
                 _onItemTapped(53, mainViewModel);
               },
               icon: Icons.edit,
-              title: 'İzin Tipi',
+              title: 'Zimmet Tipi',
               isSelected: mainViewModel.bnbIndex == 53 ? true : false),
           NavItem(
               isSubItem: true,
@@ -279,8 +282,16 @@ class MainView extends StatelessWidget {
                 _onItemTapped(54, mainViewModel);
               },
               icon: Icons.edit,
-              title: 'İzin Takibi',
+              title: 'İzin Tipi',
               isSelected: mainViewModel.bnbIndex == 54 ? true : false),
+          NavItem(
+              isSubItem: true,
+              onTap: () {
+                _onItemTapped(55, mainViewModel);
+              },
+              icon: Icons.edit,
+              title: 'İzin Takibi',
+              isSelected: mainViewModel.bnbIndex == 55 ? true : false),
         ],
       ),
     );

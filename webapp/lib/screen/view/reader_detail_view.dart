@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
 import '../../core/util/size_config.dart';
+import '../../core/widgets/other/drop_down_input_text.dart';
 import '../../core/widgets/other/input_text2.dart';
 import '../../core/widgets/other/simple_container.dart';
 import '../model/access_location.dart';
@@ -76,36 +77,26 @@ class ReaderDetailView extends StatelessWidget {
                           flex: 5,
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("Giriş Noktası")),
-                                DropdownButtonFormField(
-                                    value: viewModel
-                                        .readerDetail!.accessLocationId,
-                                    decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 1, color: Colors.grey)),
-                                        iconColor: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        prefixIcon: Icon(Icons.room)),
-                                    isExpanded: true,
-                                    items: viewModel.accessLocationList!
-                                        .map((AccessLocation items) {
-                                      return DropdownMenuItem(
-                                        value: items.id,
-                                        child: Text(items.name!),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      viewModel.readerDetail!.accessLocationId =
-                                          value;
-                                    }),
-                              ],
+                            child: DropDownInputText(
+                              title: "Alan",
+                              textEditingController: TextEditingController(
+                                  text: viewModel
+                                              .readerDetail!.accessLocationId !=
+                                          null
+                                      ? viewModel.accessLocationList!
+                                          .firstWhere((element) =>
+                                              element.id ==
+                                              viewModel.readerDetail!
+                                                  .accessLocationId)
+                                          .name
+                                      : ""),
+                              items: viewModel.accessLocationList!
+                                  .map((e) => e.name)
+                                  .toList(),
+                              onTap: (index) {
+                                viewModel.readerDetail!.accessLocationId =
+                                    viewModel.accessLocationList![index].id;
+                              },
                             ),
                           ),
                         ),

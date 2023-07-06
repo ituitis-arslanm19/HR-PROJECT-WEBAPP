@@ -65,6 +65,14 @@ mixin _$TimeOffTypeViewModel on _TimeOffTypeViewModelBase, Store {
     return _$initAsyncAction.run(() => super.init());
   }
 
+  late final _$deleteAsyncAction =
+      AsyncAction('_TimeOffTypeViewModelBase.delete', context: context);
+
+  @override
+  Future delete(int id) {
+    return _$deleteAsyncAction.run(() => super.delete(id));
+  }
+
   late final _$_TimeOffTypeViewModelBaseActionController =
       ActionController(name: '_TimeOffTypeViewModelBase', context: context);
 
