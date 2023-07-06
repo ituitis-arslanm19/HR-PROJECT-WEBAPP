@@ -39,12 +39,6 @@ abstract class _DepartmentDetailViewModelBase with Store {
   int? employeeId;
 
   @observable
-  EmployeeDetail? manager;
-
-  @observable
-  DepartmentDetail? parentDepartment;
-
-  @observable
   DataState employeeListDataState = DataState.READY;
 
   _DepartmentDetailViewModelBase(
@@ -63,12 +57,6 @@ abstract class _DepartmentDetailViewModelBase with Store {
         .add(TextEditingController(text: departmentDetail!.name));
     employeeList = await employeeService.getManagers();
     departmentList = await departmentService.getDepartments();
-    if(departmentDetail!.managerId != null){
-       manager  = await employeeService.getEmployeeDetail(departmentDetail!.managerId!);
-    }
-    if(departmentDetail!.parentDepartmentId != null){
-          parentDepartment = await departmentService.getDepartmentDetail(departmentDetail!.parentDepartmentId!);
-    }
     if (departmentDetail != null) {
       dataState = DataState.READY;
     } else {

@@ -64,8 +64,15 @@ class DepartmentDetailView extends StatelessWidget {
                             child: DropDownInputText(
                               title: "Departman Yöneticisi",
                               textEditingController: TextEditingController(
-                                  text: viewModel.manager != null
-                                      ? "${viewModel.manager!.firstName!} ${viewModel.manager!.lastName!}"
+                                  text: viewModel
+                                              .departmentDetail!.managerId !=
+                                          null
+                                      ?  viewModel.employeeList!
+                                          .firstWhere((element) =>
+                                              element.id ==
+                                              viewModel.departmentDetail!
+                                                  .managerId)
+                                          .firstName
                                       : ""),
                               items: viewModel.employeeList!
                                   .map((e) => "${e.firstName!} ${e.lastName!}")
@@ -84,9 +91,16 @@ class DepartmentDetailView extends StatelessWidget {
                       child: DropDownInputText(
                         title: "Üst Departman",
                         textEditingController: TextEditingController(
-                            text: viewModel.parentDepartment != null
-                                ? viewModel.parentDepartment!.name
-                                : ""),
+                            text: viewModel
+                                              .departmentDetail!.parentDepartmentId !=
+                                          null
+                                      ?  viewModel.departmentList!
+                                          .firstWhere((element) =>
+                                              element.id ==
+                                              viewModel.departmentDetail!
+                                                  .parentDepartmentId)
+                                          .name
+                                      : ""),
                         items: viewModel.departmentList!
                             .map((e) => e.name!)
                             .toList(),
