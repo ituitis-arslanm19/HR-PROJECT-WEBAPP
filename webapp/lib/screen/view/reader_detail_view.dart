@@ -7,7 +7,6 @@ import '../../core/util/size_config.dart';
 import '../../core/widgets/other/drop_down_input_text.dart';
 import '../../core/widgets/other/input_text2.dart';
 import '../../core/widgets/other/simple_container.dart';
-import '../model/access_location.dart';
 import '../service/access_location_service.dart';
 import '../service/reader_service.dart';
 import '../viewModel/reader_detail_view_model.dart';
