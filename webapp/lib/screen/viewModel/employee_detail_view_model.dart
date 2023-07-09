@@ -6,6 +6,7 @@ import '../model/department.dart';
 import '../model/employee_detail.dart';
 import '../model/shift.dart';
 import '../model/site.dart';
+import '../model/time_off.dart';
 import '../service/department_service.dart';
 import '../service/employee_service.dart';
 import '../service/shift_service.dart';
@@ -26,6 +27,18 @@ abstract class _EmployeeDetailViewModelBase with Store {
 
   @observable
   DataState dataState = DataState.LOADING;
+
+  @observable
+  DataState previousTimeOffsDataState = DataState.LOADING;
+
+  @observable
+  DataState pendingTimeOffsDataState = DataState.LOADING;
+
+  @observable
+  TimeOff? currentTimeOff;
+
+  @observable
+  DataState productsDataState = DataState.LOADING;
 
   @observable
   EmployeeDetail? employeeDetail;
@@ -58,12 +71,13 @@ abstract class _EmployeeDetailViewModelBase with Store {
   int? siteId;
 
   _EmployeeDetailViewModelBase(
-      this.employeeService,
-      this.id,
-      this.departmentService,
-      this.siteService,
-      this.buildContext,
-      this.shiftService);
+    this.employeeService,
+    this.id,
+    this.departmentService,
+    this.siteService,
+    this.buildContext,
+    this.shiftService,
+  );
 
   @action
   init() async {
@@ -108,11 +122,40 @@ abstract class _EmployeeDetailViewModelBase with Store {
           text: employeeDetail!.remainingTimeOffDays != null
               ? employeeDetail!.remainingTimeOffDays.toString()
               : ""));
+      textEditingControllerList
+          .add(TextEditingController(text: employeeDetail!.phoneNumber));
+      textEditingControllerList
+          .add(TextEditingController(text: employeeDetail!.seniorityDate));
+      textEditingControllerList.add(
+          TextEditingController(text: employeeDetail!.emergencyContactName));
+      textEditingControllerList.add(
+          TextEditingController(text: employeeDetail!.emergencyContactNumber));
+      textEditingControllerList
+          .add(TextEditingController(text: employeeDetail!.address));
 
       dataState = DataState.READY;
-      print(employeeDetail);
+      if (employeeDetail!.previousTimeOffs!.isNotEmpty) {
+        previousTimeOffsDataState = DataState.READY;
+        currentTimeOff = employeeDetail!.previousTimeOffs!.first;
+      } else {
+        previousTimeOffsDataState = DataState.EMPTY;
+      }
+
+      if (employeeDetail!.productList!.isNotEmpty) {
+        productsDataState = DataState.READY;
+      } else {
+        productsDataState = DataState.EMPTY;
+      }
+
+      if (employeeDetail!.waitingTimeOffs!.isNotEmpty) {
+        pendingTimeOffsDataState = DataState.READY;
+        currentTimeOff = employeeDetail!.waitingTimeOffs!.first;
+      } else {
+        pendingTimeOffsDataState = DataState.EMPTY;
+      }
     } else {
-      dataState = DataState.ERROR;
+      dataState = previousTimeOffsDataState =
+          pendingTimeOffsDataState = DataState.ERROR;
     }
   }
 
@@ -174,6 +217,12 @@ abstract class _EmployeeDetailViewModelBase with Store {
         textEditingControllerList[6].text != ""
             ? int.parse(textEditingControllerList[6].text)
             : null;
+    employeeDetail!.phoneNumber = textEditingControllerList[7].text;
+    employeeDetail!.seniorityDate = textEditingControllerList[8].text;
+    employeeDetail!.emergencyContactName = textEditingControllerList[9].text;
+    employeeDetail!.emergencyContactNumber = textEditingControllerList[10].text;
+    employeeDetail!.address = textEditingControllerList[11].text;
+
     employeeDetail!.roles = [];
     if (isManager!) {
       employeeDetail!.roles!.add("MANAGER");
@@ -212,5 +261,10 @@ abstract class _EmployeeDetailViewModelBase with Store {
     }
     dataState = DataState.READY;
     return false;
+  }
+
+  @action
+  changeCurrentTimeOff(TimeOff timeOff) {
+    currentTimeOff = timeOff;
   }
 }

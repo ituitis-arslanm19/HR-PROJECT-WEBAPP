@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/network/network_manager.dart';
-import 'package:webapp/screen/service/asset_service.dart';
-import 'package:webapp/screen/view/asset_detail_view.dart';
-import 'package:webapp/screen/viewModel/asset_view_model.dart';
+import 'package:webapp/screen/service/asset_type_service.dart';
+import 'package:webapp/screen/view/asset_type_detail_view.dart';
+import 'package:webapp/screen/viewModel/asset_type_view_model.dart';
 
 import '../../core/util/size_config.dart';
 import '../../core/widgets/other/button.dart';
 import '../../core/widgets/other/data_grid.dart';
 import '../../core/widgets/other/search_field.dart';
 
-class AssetView extends StatelessWidget {
-  const AssetView({super.key});
+class AssetTypeView extends StatelessWidget {
+  const AssetTypeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,8 @@ class AssetView extends StatelessWidget {
     TextStyle textStyle =
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
-    AssetViewModel viewModel =
-        AssetViewModel(AssetService(networkManager: NetworkManager()));
+    AssetTypeViewModel viewModel =
+        AssetTypeViewModel(AssetTypeService(networkManager: NetworkManager()));
     viewModel.init();
 
     return Column(
@@ -48,7 +48,7 @@ class AssetView extends StatelessWidget {
                           context: context,
                           builder: (context) => Dialog(
                                 backgroundColor: Colors.transparent,
-                                child: AssetDetailView(
+                                child: AssetTypeDetailView(
                                     buildContext: context, id: null),
                               )).then((value) => viewModel.init());
                     },
@@ -74,7 +74,7 @@ class AssetView extends StatelessWidget {
   }
 
   Expanded buildList(
-      AssetViewModel viewModel,
+      AssetTypeViewModel viewModel,
       TextStyle textStyle,
       BuildContext context,
       Color primaryColor,
@@ -82,17 +82,18 @@ class AssetView extends StatelessWidget {
       ColorScheme colorScheme) {
     return Expanded(
       child: DataGrid(
+        deleteFunction: (id) {viewModel.delete(id);},
         onRowTap: (id) {
           showDialog(
               context: context,
               builder: (context) => Dialog(
                     backgroundColor: Colors.transparent,
-                    child: AssetDetailView(buildContext: context, id: id),
+                    child: AssetTypeDetailView(buildContext: context, id: id),
                   )).then((value) => viewModel.init());
         },
-        titles: ["Id", "Ad", "Veriliş Tarihi", "İade Bilgisi"],
-        columnNames: ["id", "name", "dateOfIssue", "status"],
-        dataSourceList: viewModel.assetList!,
+        titles: ["Id", "Ad"],
+        columnNames: ["id", "name"],
+        dataSourceList: viewModel.assetTypeList!,
       ),
     );
   }

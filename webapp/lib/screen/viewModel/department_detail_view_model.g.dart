@@ -106,22 +106,6 @@ mixin _$DepartmentDetailViewModel on _DepartmentDetailViewModelBase, Store {
     });
   }
 
-  late final _$departmentIdAtom = Atom(
-      name: '_DepartmentDetailViewModelBase.departmentId', context: context);
-
-  @override
-  int? get departmentId {
-    _$departmentIdAtom.reportRead();
-    return super.departmentId;
-  }
-
-  @override
-  set departmentId(int? value) {
-    _$departmentIdAtom.reportWrite(value, super.departmentId, () {
-      super.departmentId = value;
-    });
-  }
-
   late final _$employeeListDataStateAtom = Atom(
       name: '_DepartmentDetailViewModelBase.employeeListDataState',
       context: context);
@@ -200,17 +184,6 @@ mixin _$DepartmentDetailViewModel on _DepartmentDetailViewModelBase, Store {
   }
 
   @override
-  dynamic changeDepartmentId(int value) {
-    final _$actionInfo = _$_DepartmentDetailViewModelBaseActionController
-        .startAction(name: '_DepartmentDetailViewModelBase.changeDepartmentId');
-    try {
-      return super.changeDepartmentId(value);
-    } finally {
-      _$_DepartmentDetailViewModelBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 dataState: ${dataState},
@@ -219,7 +192,6 @@ employeeList: ${employeeList},
 departmentList: ${departmentList},
 managersToSign: ${managersToSign},
 employeeId: ${employeeId},
-departmentId: ${departmentId},
 employeeListDataState: ${employeeListDataState}
     ''';
   }

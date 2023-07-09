@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:webapp/core/constant/enum/enums.dart';
+import 'package:webapp/screen/model/request/update_asset_status_request.dart';
 
 import '../../core/network/model/response_model.dart';
 import '../../core/network/network_manager.dart';
@@ -46,6 +47,18 @@ class AssetService {
             HttpMethod.POST,
             AssetDetail(),
             json.encode(assetDetail.toJson()),
+            null);
+    return result.data;
+  }
+
+  Future<AssetDetail?> updateAssetStatus(
+      UpdateAssetStatusRequest updateAssetStatusRequest) async {
+    ResponseModel<AssetDetail?> result =
+        await networkManager.send<AssetDetail, AssetDetail>(
+            "/product/status",
+            HttpMethod.PUT,
+            AssetDetail(),
+            json.encode(updateAssetStatusRequest.toJson()),
             null);
     return result.data;
   }

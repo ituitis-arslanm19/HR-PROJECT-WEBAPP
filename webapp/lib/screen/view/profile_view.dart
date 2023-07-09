@@ -8,36 +8,40 @@ import 'package:webapp/core/widgets/other/profile_card.dart';
 import 'package:webapp/screen/service/profile_service.dart';
 import 'package:webapp/screen/viewModel/profile_view_model.dart';
 
+import '../../core/base/base_view.dart';
 import '../../core/util/size_config.dart';
 
 class ProfileView extends StatelessWidget {
   ProfileView({super.key});
-  final ProfileViewModel profileViewModel =
-      ProfileViewModel(ProfileService(networkManager: NetworkManager()));
+
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    ColorScheme colorScheme = theme.colorScheme;
-    SizeConfig().init(context);
-    profileViewModel.init();
-
-    return Observer(builder: (context) {
-      switch (profileViewModel.dataState) {
-        case DataState.READY:
-          return buildPage(colorScheme, theme);
-        case DataState.ERROR:
-          return Center(child: Text("hata meydana geldi."));
-        case DataState.LOADING:
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        default:
-          return Center(child: Text("hata meydana geldi."));
-      }
-    });
+    return BaseView<ProfileViewModel>(
+      viewModel:
+          ProfileViewModel(ProfileService(networkManager: NetworkManager())),
+      onModelReady: (model) {
+        model.init();
+      },
+      onPageBuilder: (context, viewModel, theme) =>
+          Observer(builder: (context) {
+        switch (viewModel.dataState) {
+          case DataState.READY:
+            return buildPage(theme.colorScheme, theme, viewModel);
+          case DataState.ERROR:
+            return Center(child: Text("hata meydana geldi."));
+          case DataState.LOADING:
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          default:
+            return Center(child: Text("hata meydana geldi."));
+        }
+      }),
+    );
   }
 
-  SizedBox buildPage(ColorScheme colorScheme, ThemeData theme) {
+  SizedBox buildPage(
+      ColorScheme colorScheme, ThemeData theme, ProfileViewModel viewModel) {
     return SizedBox(
       height: SizeConfig.blockSizeVertical * 60,
       child: Column(
@@ -47,50 +51,51 @@ class ProfileView extends StatelessWidget {
             child: buildProfileImage(
                 colorScheme,
                 theme,
-                profileViewModel.profile!.firstName![0] +
-                    profileViewModel.profile!.lastName![0]),
+                viewModel.profile!.firstName![0] +
+                    viewModel.profile!.lastName![0],
+                viewModel),
           ),
           Expanded(
             flex: 5,
-            child: buildProfileInfos(),
+            child: buildProfileInfos(viewModel),
           ),
         ],
       ),
     );
   }
 
-  Padding buildProfileInfos() {
+  Padding buildProfileInfos(ProfileViewModel viewModel) {
     return Padding(
       padding: EdgeInsets.all(20),
       child: Column(
         children: [
           ProfileCard(
             title: "Departman",
-            value: profileViewModel.profile!.department ?? "Error",
+            value: viewModel.profile!.department ?? "Error",
           ),
           ProfileCard(
             title: "Doğum Günü",
-            value: profileViewModel.profile!.birthDate ?? "Error",
+            value: viewModel.profile!.birthDate ?? "Error",
           ),
           ProfileCard(
             title: "Başlangıç Tarihi",
-            value: profileViewModel.profile!.startDate ?? "Error",
+            value: viewModel.profile!.startDate ?? "Error",
           ),
           ProfileCard(
             title: "Kalan İzin Günleri",
-            value: profileViewModel.profile!.remainingTimeOffDays.toString(),
+            value: viewModel.profile!.remainingTimeOffDays.toString(),
           ),
           // ProfileCard(
           //   title: "İşe Giriş Tarihi",
-          //   value: profileViewModel.profile!. ?? "Error",
+          //   value: viewModel.profile!. ?? "Error",
           // ),
         ],
       ),
     );
   }
 
-  Container buildProfileImage(
-      ColorScheme colorScheme, ThemeData theme, String nameInitials) {
+  Container buildProfileImage(ColorScheme colorScheme, ThemeData theme,
+      String nameInitials, ProfileViewModel viewModel) {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
@@ -100,26 +105,26 @@ class ProfileView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildCircularImage(colorScheme, theme, nameInitials),
-            buildName(theme),
-            buildEmail(theme)
+            buildName(theme, viewModel),
+            buildEmail(theme, viewModel)
           ],
         ),
       ),
     );
   }
 
-  Text buildEmail(ThemeData theme) {
+  Text buildEmail(ThemeData theme, ProfileViewModel viewModel) {
     return Text(
-      profileViewModel.profile!.email ?? "Error",
+      viewModel.profile!.email ?? "Error",
       style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),
     );
   }
 
-  Padding buildName(ThemeData theme) {
+  Padding buildName(ThemeData theme, ProfileViewModel viewModel) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
-        profileViewModel.profile!.firstName ?? "Error",
+        viewModel.profile!.firstName ?? "Error",
         style: theme.textTheme.headlineMedium,
       ),
     );

@@ -41,6 +41,22 @@ mixin _$MainViewModel on _MainViewModelBase, Store {
     });
   }
 
+  late final _$managerSubMenuAtom =
+      Atom(name: '_MainViewModelBase.managerSubMenu', context: context);
+
+  @override
+  bool get managerSubMenu {
+    _$managerSubMenuAtom.reportRead();
+    return super.managerSubMenu;
+  }
+
+  @override
+  set managerSubMenu(bool value) {
+    _$managerSubMenuAtom.reportWrite(value, super.managerSubMenu, () {
+      super.managerSubMenu = value;
+    });
+  }
+
   late final _$hrSubMenuAtom =
       Atom(name: '_MainViewModelBase.hrSubMenu', context: context);
 
@@ -99,11 +115,22 @@ mixin _$MainViewModel on _MainViewModelBase, Store {
   }
 
   @override
-  dynamic changeHrSubMenu(bool value) {
+  dynamic changeManagerSubMenu() {
+    final _$actionInfo = _$_MainViewModelBaseActionController.startAction(
+        name: '_MainViewModelBase.changeManagerSubMenu');
+    try {
+      return super.changeManagerSubMenu();
+    } finally {
+      _$_MainViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeHrSubMenu() {
     final _$actionInfo = _$_MainViewModelBaseActionController.startAction(
         name: '_MainViewModelBase.changeHrSubMenu');
     try {
-      return super.changeHrSubMenu(value);
+      return super.changeHrSubMenu();
     } finally {
       _$_MainViewModelBaseActionController.endAction(_$actionInfo);
     }
@@ -125,6 +152,7 @@ mixin _$MainViewModel on _MainViewModelBase, Store {
     return '''
 isLoading: ${isLoading},
 bnbIndex: ${bnbIndex},
+managerSubMenu: ${managerSubMenu},
 hrSubMenu: ${hrSubMenu},
 adminSubMenu: ${adminSubMenu}
     ''';

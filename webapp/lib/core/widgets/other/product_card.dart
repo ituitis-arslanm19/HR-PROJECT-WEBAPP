@@ -36,7 +36,7 @@ class ProductCard extends StatelessWidget {
                     bottomLeft: Radius.circular(10)),
               ),
               child: Icon(
-                getIcon(type),
+                Icons.laptop,
                 color: colorScheme.background,
                 size: SizeConfig.blockSizeVertical * 6,
               ),

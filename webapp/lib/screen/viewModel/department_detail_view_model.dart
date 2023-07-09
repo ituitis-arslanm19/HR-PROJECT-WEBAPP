@@ -39,9 +39,6 @@ abstract class _DepartmentDetailViewModelBase with Store {
   int? employeeId;
 
   @observable
-  int? departmentId;
-
-  @observable
   DataState employeeListDataState = DataState.READY;
 
   _DepartmentDetailViewModelBase(
@@ -81,11 +78,6 @@ abstract class _DepartmentDetailViewModelBase with Store {
   @action
   changeEmployeeId(int value) {
     employeeId = value;
-  }
-
-  @action
-  changeDepartmentId(int value) {
-    departmentId = value;
   }
 
   @action

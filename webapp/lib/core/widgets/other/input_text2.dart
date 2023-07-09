@@ -4,6 +4,7 @@ class InputText2 extends StatelessWidget {
   final String? hintText;
   final Icon? icon;
   final TextEditingController textEditingController;
+  final bool? enabled;
   final void Function()? onTap;
 
   const InputText2(
@@ -11,52 +12,60 @@ class InputText2 extends StatelessWidget {
       this.hintText,
       this.icon,
       required this.textEditingController,
-      this.onTap});
+      this.onTap,
+      this.enabled = true});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: TextFormField(
-                  onTap: onTap,
-                  controller: textEditingController,
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              width: 1, color: Colors.grey.shade300)),
-                      iconColor: Theme.of(context).colorScheme.primary,
-                      prefixIcon: icon),
+      child: Container(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: TextFormField(
+                    enabled: enabled,
+                    onTap: onTap,
+                    controller: textEditingController,
+                    decoration: InputDecoration(
+                        disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                                width: 1, color: Colors.grey.shade300)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                                width: 1, color: Colors.grey.shade300)),
+                        iconColor: Theme.of(context).colorScheme.primary,
+                        prefixIcon: icon),
+                  ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Container(
-                    color: Theme.of(context).colorScheme.background,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 3.0, right: 3.0),
-                      child: Text(hintText ?? "Hata",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.primary)),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Container(
+                      color: Theme.of(context).colorScheme.background,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 3.0, right: 3.0),
+                        child: Text(hintText ?? "Hata",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary)),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

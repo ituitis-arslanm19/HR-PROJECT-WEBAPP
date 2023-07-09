@@ -1,6 +1,9 @@
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:webapp/core/base/data_grid_model.dart';
+
 import '../../core/base/base_model.dart';
 
-class Department extends BaseModel<Department> {
+class Department extends BaseModel<Department> with DataGridModel{
   int? id;
   String? name;
   String? managerName;
@@ -29,4 +32,11 @@ class Department extends BaseModel<Department> {
           json['managerName'] != null ? json['managerName'] as String : null,
     );
   }
+
+  @override
+  DataGridRow toDataGridRow() => DataGridRow(cells: [
+        DataGridCell<int>(columnName: 'id', value: id),
+        DataGridCell<String>(columnName: 'name', value: name),
+        DataGridCell<String>(columnName: 'managerName', value: managerName)
+      ]);
 }

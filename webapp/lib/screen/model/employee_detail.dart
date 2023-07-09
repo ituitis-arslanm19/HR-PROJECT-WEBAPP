@@ -1,11 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
 
-import 'package:webapp/screen/model/product.dart';
 import 'package:webapp/screen/model/site.dart';
 import 'package:webapp/screen/model/time_off.dart';
 
 import '../../core/base/base_model.dart';
+import 'asset.dart';
 
 class EmployeeDetail extends BaseModel<EmployeeDetail> {
   int? id;
@@ -30,7 +30,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
   List<String>? departmentHistory;
   List<TimeOff>? previousTimeOffs;
   List<TimeOff>? waitingTimeOffs;
-  List<Product>? productList;
+  List<Asset>? productList;
 
   EmployeeDetail({
     this.id,
@@ -144,9 +144,8 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
               .toList())
           : null,
       productList: map['productList'] != null
-          ? List<Product>.from(map['productList']
-              .map((json) => Product().fromJson(json))
-              .toList())
+          ? List<Asset>.from(
+              map['productList'].map((json) => Asset().fromJson(json)).toList())
           : null,
     );
   }

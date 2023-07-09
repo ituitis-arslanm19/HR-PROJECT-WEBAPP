@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:webapp/screen/model/department.dart';
-
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
 import '../../core/util/size_config.dart';
+import '../../core/widgets/other/drop_down_input_text.dart';
 import '../../core/widgets/other/input_text2.dart';
 import '../../core/widgets/other/simple_container.dart';
-import '../model/employee.dart';
 import '../service/department_service.dart';
 import '../service/employee_service.dart';
 import '../viewModel/department_detail_view_model.dart';
@@ -41,7 +39,7 @@ class DepartmentDetailView extends StatelessWidget {
           default:
             return SizedBox(
               width: SizeConfig.blockSizeHorizontal * 30,
-              height: SizeConfig.blockSizeVertical * 58,
+              height: SizeConfig.blockSizeVertical * 63,
               child: SimpleContainer(
                 padding: 0,
                 title: "Departman",
@@ -58,137 +56,99 @@ class DepartmentDetailView extends StatelessWidget {
                                     viewModel.textEditingControllerList[0])),
                         Expanded(
                           flex: 5,
-                          child: Column(
-                            children: [
-                              Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("Departman Yöneticisi")),
-                              DropdownButtonFormField(
-                                  value: viewModel.departmentDetail!.managerId,
-                                  decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1, color: Colors.grey)),
-                                      iconColor:
-                                          Theme.of(context).colorScheme.primary,
-                                      prefixIcon: Icon(Icons.person)),
-                                  isExpanded: true,
-                                  items: viewModel.employeeList!
-                                      .map((Employee items) {
-                                    return DropdownMenuItem(
-                                      value: items.id,
-                                      child: Text(items.firstName! +
-                                          " " +
-                                          items.lastName!),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    viewModel.departmentDetail!.managerId =
-                                        value;
-                                  }),
-                            ],
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: DropDownInputText(
+                              title: "Departman Yöneticisi",
+                              textEditingController: TextEditingController(
+                                  text: viewModel
+                                              .departmentDetail!.managerId !=
+                                          null
+                                      ?  viewModel.employeeList!
+                                          .firstWhere((element) =>
+                                              element.id ==
+                                              viewModel.departmentDetail!
+                                                  .managerId)
+                                          .firstName
+                                      : ""),
+                              items: viewModel.employeeList!
+                                  .map((e) => "${e.firstName!} ${e.lastName!}")
+                                  .toList(),
+                              onTap: (index) {
+                                viewModel.departmentDetail!.managerId =
+                                    viewModel.employeeList![index].id;
+                              },
+                            ),
                           ),
                         ),
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 6),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text("Üst Departman")),
-                          DropdownButtonFormField(
-                              value: viewModel
-                                  .departmentDetail!.parentDepartmentId,
-                              decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.grey)),
-                                  iconColor:
-                                      Theme.of(context).colorScheme.primary,
-                                  prefixIcon: Icon(Icons.work)),
-                              isExpanded: true,
-                              items: viewModel.departmentList!
-                                  .map((Department items) {
-                                return DropdownMenuItem(
-                                  value: items.id,
-                                  child: Text(items.name!),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                viewModel.departmentDetail!.parentDepartmentId =
-                                    value;
-                              }),
-                        ],
+                      padding: const EdgeInsets.all(4.0),
+                      child: DropDownInputText(
+                        title: "Üst Departman",
+                        textEditingController: TextEditingController(
+                            text: viewModel
+                                              .departmentDetail!.parentDepartmentId !=
+                                          null
+                                      ?  viewModel.departmentList!
+                                          .firstWhere((element) =>
+                                              element.id ==
+                                              viewModel.departmentDetail!
+                                                  .parentDepartmentId)
+                                          .name
+                                      : ""),
+                        items: viewModel.departmentList!
+                            .map((e) => e.name!)
+                            .toList(),
+                        onTap: (index) {
+                          viewModel.departmentDetail!.parentDepartmentId =
+                              viewModel.departmentList![index].id;
+                        },
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 6),
-                      child: Column(
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("Yönetici")),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    flex: 8,
-                                    child: Container(
-                                      height: 50,
-                                      child: DropdownButtonFormField(
-                                          decoration: InputDecoration(
-                                              enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      width: 1,
-                                                      color: Colors.grey)),
-                                              iconColor: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              prefixIcon: Icon(Icons.people)),
-                                          isExpanded: true,
-                                          items: viewModel.employeeList!
-                                              .map((Employee items) {
-                                            return DropdownMenuItem(
-                                              value: items.id,
-                                              child: Text(items.firstName! +
-                                                  " " +
-                                                  items.lastName!),
-                                            );
-                                          }).toList(),
-                                          onChanged: (value) => viewModel
-                                              .changeEmployeeId(value!)),
-                                    ),
-                                  ),
-                                  Expanded(
-                                      flex: 2,
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                            left: 4.0, bottom: 2.0),
-                                        height: 50,
-                                        child: TextButton(
-                                            onPressed: () =>
-                                                viewModel.addEmployee(
-                                                    viewModel.employeeId!),
-                                            child: Text("Ekle",
-                                                style: TextStyle(
-                                                    color: Colors.white)),
-                                            style: TextButton.styleFrom(
-                                                backgroundColor:
-                                                    Theme.of(buildContext)
-                                                        .colorScheme
-                                                        .primary)),
-                                      )),
-                                ],
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 5,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: DropDownInputText(
+                                  title: "Yönetici",
+                                  textEditingController: TextEditingController(
+                                      text: ""),
+                                  items: viewModel.employeeList!
+                                      .map((e) =>
+                                          "${e.firstName!} ${e.lastName!}")
+                                      .toList(),
+                                  onTap: (index) {
+                                    viewModel.employeeId =
+                                        viewModel.employeeList![index].id;
+                                  },
+                                ),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            Expanded(
+                                flex: 2,
+                                child: Container(
+                                  height: 50,
+                                  child: TextButton(
+                                      onPressed: () => viewModel
+                                          .addEmployee(viewModel.employeeId!),
+                                      child: Text("Ekle",
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      style: TextButton.styleFrom(
+                                          backgroundColor:
+                                              Theme.of(buildContext)
+                                                  .colorScheme
+                                                  .primary)),
+                                )),
+                          ],
+                        ),
+                      ],
                     ),
                     Container(
                       padding: EdgeInsets.all(4.0),

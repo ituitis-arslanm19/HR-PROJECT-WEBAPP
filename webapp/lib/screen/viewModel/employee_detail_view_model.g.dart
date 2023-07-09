@@ -25,6 +25,74 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
     });
   }
 
+  late final _$previousTimeOffsDataStateAtom = Atom(
+      name: '_EmployeeDetailViewModelBase.previousTimeOffsDataState',
+      context: context);
+
+  @override
+  DataState get previousTimeOffsDataState {
+    _$previousTimeOffsDataStateAtom.reportRead();
+    return super.previousTimeOffsDataState;
+  }
+
+  @override
+  set previousTimeOffsDataState(DataState value) {
+    _$previousTimeOffsDataStateAtom
+        .reportWrite(value, super.previousTimeOffsDataState, () {
+      super.previousTimeOffsDataState = value;
+    });
+  }
+
+  late final _$pendingTimeOffsDataStateAtom = Atom(
+      name: '_EmployeeDetailViewModelBase.pendingTimeOffsDataState',
+      context: context);
+
+  @override
+  DataState get pendingTimeOffsDataState {
+    _$pendingTimeOffsDataStateAtom.reportRead();
+    return super.pendingTimeOffsDataState;
+  }
+
+  @override
+  set pendingTimeOffsDataState(DataState value) {
+    _$pendingTimeOffsDataStateAtom
+        .reportWrite(value, super.pendingTimeOffsDataState, () {
+      super.pendingTimeOffsDataState = value;
+    });
+  }
+
+  late final _$currentTimeOffAtom = Atom(
+      name: '_EmployeeDetailViewModelBase.currentTimeOff', context: context);
+
+  @override
+  TimeOff? get currentTimeOff {
+    _$currentTimeOffAtom.reportRead();
+    return super.currentTimeOff;
+  }
+
+  @override
+  set currentTimeOff(TimeOff? value) {
+    _$currentTimeOffAtom.reportWrite(value, super.currentTimeOff, () {
+      super.currentTimeOff = value;
+    });
+  }
+
+  late final _$productsDataStateAtom = Atom(
+      name: '_EmployeeDetailViewModelBase.productsDataState', context: context);
+
+  @override
+  DataState get productsDataState {
+    _$productsDataStateAtom.reportRead();
+    return super.productsDataState;
+  }
+
+  @override
+  set productsDataState(DataState value) {
+    _$productsDataStateAtom.reportWrite(value, super.productsDataState, () {
+      super.productsDataState = value;
+    });
+  }
+
   late final _$employeeDetailAtom = Atom(
       name: '_EmployeeDetailViewModelBase.employeeDetail', context: context);
 
@@ -277,9 +345,24 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
   }
 
   @override
+  dynamic changeCurrentTimeOff(TimeOff timeOff) {
+    final _$actionInfo = _$_EmployeeDetailViewModelBaseActionController
+        .startAction(name: '_EmployeeDetailViewModelBase.changeCurrentTimeOff');
+    try {
+      return super.changeCurrentTimeOff(timeOff);
+    } finally {
+      _$_EmployeeDetailViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 dataState: ${dataState},
+previousTimeOffsDataState: ${previousTimeOffsDataState},
+pendingTimeOffsDataState: ${pendingTimeOffsDataState},
+currentTimeOff: ${currentTimeOff},
+productsDataState: ${productsDataState},
 employeeDetail: ${employeeDetail},
 departmentList: ${departmentList},
 siteList: ${siteList},

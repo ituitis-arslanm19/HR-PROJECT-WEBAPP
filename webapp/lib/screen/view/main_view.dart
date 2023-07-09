@@ -6,14 +6,12 @@ import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/util/size_config.dart';
 import 'package:webapp/core/widgets/other/nav_item.dart';
 import 'package:webapp/screen/view/access_location_view.dart';
-import 'package:webapp/screen/view/admin_view.dart';
+import 'package:webapp/screen/view/asset_type_view.dart';
 import 'package:webapp/screen/view/asset_view.dart';
 import 'package:webapp/screen/view/department_admin_view.dart';
 import 'package:webapp/screen/view/department_list_view.dart';
-import 'package:webapp/screen/view/employee_admin_view.dart';
-import 'package:webapp/screen/view/employee_list_view.dart';
+import 'package:webapp/screen/view/employee_view.dart';
 import 'package:webapp/screen/view/home_view.dart';
-import 'package:webapp/screen/view/hr_view.dart';
 import 'package:webapp/screen/view/reader_view.dart';
 import 'package:webapp/screen/view/shift_view.dart';
 import 'package:webapp/screen/view/site_view.dart';
@@ -24,97 +22,99 @@ import 'package:webapp/screen/view/time_off_type_view.dart';
 import 'package:webapp/screen/view/time_off_view.dart';
 import 'package:webapp/screen/viewModel/main_view_model.dart';
 
+import '../../core/base/base_view.dart';
+import '../../core/widgets/other/scrollable_page.dart';
+
 class MainView extends StatelessWidget {
   final List<ClientType> roles;
   const MainView({super.key, required this.roles});
   @override
   Widget build(BuildContext context) {
-    MainViewModel mainViewModel = MainViewModel(context, SecureStorage());
-
-    ThemeData theme = Theme.of(context);
-    ColorScheme colorScheme = Theme.of(context).colorScheme;
     SizeConfig().init(context);
 
-    return Scaffold(
-        body: SingleChildScrollView(
-      child: SizedBox(
-        height: SizeConfig.screenHeight * 7 / 8,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              SizedBox(
-                  width: 3 / 19 * SizeConfig.screenWidth,
-                  child: buildNavigationBar(
-                      mainViewModel, theme, colorScheme, context)),
-              SizedBox(
-                width: 16 / 19 * SizeConfig.screenWidth,
-                child: Container(
-                  color: Colors.grey[50],
-                  child: Observer(builder: (context) {
-                    switch (mainViewModel.bnbIndex) {
-                      case 0:
-                        return const HomeView();
+    return BaseView<MainViewModel>(
+      viewModel: MainViewModel(context, SecureStorage()),
+      onModelReady: (model) {
+        model.init();
+        SizeConfig().init(context);
+      },
+      onPageBuilder: (context, viewModel, theme) => Scaffold(
+          body: ScrollablePage(
+        child: Row(
+          children: [
+            SizedBox(
+                width: 3 / 19 * SizeConfig.screenWidth,
+                child: buildNavigationBar(
+                    viewModel, theme, theme.colorScheme, context)),
+            SizedBox(
+              width: 16 / 19 * SizeConfig.screenWidth,
+              child: Container(
+                color: Colors.grey[50],
+                child: Observer(builder: (context) {
+                  switch (viewModel.bnbIndex) {
+                    case 0:
+                      return const HomeView();
 
-                      case 1:
-                        return const TimeOffView();
+                    case 1:
+                      return const TimeOffView();
 
-                      case 2:
-                        return TimeOffApprovalView();
+                    case 21:
+                      return TimeOffApprovalView();
+                    case 22:
+                      return const EmployeeView(
+                        clientType: ClientType.MANAGER,
+                      );
 
-                      case 3:
-                        //return TimeOffApprovalView();
-                        return EmployeeListView(
-                          clientType: roles.contains(ClientType.MANAGER)
-                              ? ClientType.MANAGER
-                              : ClientType.HR,
-                        );
+                    // case 3:
+                    //   //return TimeOffApprovalView();
+                    //   return EmployeeListView(
+                    //     clientType: roles.contains(ClientType.MANAGER)
+                    //         ? ClientType.MANAGER
+                    //         : ClientType.HR,
+                    //   );
 
-                      case 4:
-                        //return TimeOffApprovalView();
-                        return const DepartmentListView();
+                    case 4:
+                      //return TimeOffApprovalView();
+                      return const DepartmentListView();
 
-                      case 5:
-                        return const HrView();
+                    case 51:
+                      return const EmployeeView(
+                        clientType: ClientType.HR,
+                      );
+                    case 52:
+                      return const AssetView();
+                    case 53:
+                      return const AssetTypeView();
+                    case 54:
+                      return const TimeOffTypeView();
+                    case 55:
+                      return const TimeOffSignView();
 
-                      case 51:
-                        return const EmployeeView();
-                      case 52:
-                        return const AssetView();
-                      case 53:
-                        return const TimeOffTypeView();
-                      case 54:
-                        return const TimeOffSignView();
+                    case 61:
+                      return const DepartmentView();
+                    case 62:
+                      return const SiteView();
+                    case 63:
+                      return const AccessLocationView();
+                    case 64:
+                      return const ReaderView();
+                    case 65:
+                      return const ShiftView();
 
-                      case 6:
-                        return const AdminView();
-
-                      case 61:
-                        return const DepartmentView();
-                      case 62:
-                        return const SiteView();
-                      case 63:
-                        return const AccessLocationView();
-                      case 64:
-                        return const ReaderView();
-                      case 65:
-                        return const ShiftView();
-
-                      default:
-                        //return HomeView();
-                        return const HomeView();
-                    }
-                  }),
-                ),
+                    default:
+                      //return HomeView();
+                      return const HomeView();
+                  }
+                }),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ),
-    ));
+      )),
+    );
   }
 
-  Drawer buildNavigationBar(MainViewModel mainViewModel, ThemeData theme,
+  Drawer buildNavigationBar(MainViewModel viewModel, ThemeData theme,
       ColorScheme colorScheme, BuildContext context) {
     return Drawer(
       backgroundColor: colorScheme.background,
@@ -132,204 +132,135 @@ class MainView extends StatelessWidget {
             Observer(builder: (_) {
               return NavItem(
                   onTap: () {
-                    _onItemTapped(0, mainViewModel);
+                    _onItemTapped(0, viewModel);
                   },
                   icon: Icons.home,
                   title: 'Ana Ekran',
-                  isSelected: mainViewModel.bnbIndex == 0 ? true : false);
+                  isSelected: viewModel.bnbIndex == 0 ? true : false);
             }),
             Observer(builder: (_) {
               return NavItem(
                   onTap: () {
-                    _onItemTapped(1, mainViewModel);
+                    _onItemTapped(1, viewModel);
                   },
                   icon: Icons.sunny,
                   title: 'İzin',
-                  isSelected: mainViewModel.bnbIndex == 1 ? true : false);
+                  isSelected: viewModel.bnbIndex == 1 ? true : false);
             }),
             if (roles.contains(ClientType.MANAGER))
               Observer(builder: (_) {
-                return NavItem(
-                    onTap: () {
-                      _onItemTapped(2, mainViewModel);
-                    },
-                    icon: Icons.check,
-                    title: 'Onay',
-                    isSelected: mainViewModel.bnbIndex == 2 ? true : false);
-              }),
-            if (roles.contains(ClientType.HR) ||
-                roles.contains(ClientType.MANAGER))
-              Observer(builder: (_) {
-                return NavItem(
-                    onTap: () {
-                      _onItemTapped(3, mainViewModel);
-                    },
-                    icon: Icons.group,
-                    title: 'Çalışanlar',
-                    isSelected: mainViewModel.bnbIndex == 3 ? true : false);
+                return buildMenu(
+                    viewModel,
+                    "Yönetici",
+                    Icons.edit,
+                    ["Onay", "Çalışanlar"],
+                    21,
+                    viewModel.changeManagerSubMenu,
+                    viewModel.managerSubMenu);
               }),
             if (roles.contains(ClientType.ADMIN))
               Observer(builder: (_) {
                 return NavItem(
                     onTap: () {
-                      _onItemTapped(4, mainViewModel);
+                      _onItemTapped(4, viewModel);
                     },
                     icon: Icons.handshake,
                     title: 'Departmanlar',
-                    isSelected: mainViewModel.bnbIndex == 4 ? true : false);
+                    isSelected: viewModel.bnbIndex == 4 ? true : false);
               }),
             if (roles.contains(ClientType.HR))
               Observer(builder: (_) {
-                return Column(
-                  children: [
-                    NavItem(
-                        endIcon: !mainViewModel.hrSubMenu
-                            ? Icons.arrow_right
-                            : Icons.arrow_drop_down,
-                        onTap: () {
-                          mainViewModel
-                              .changeHrSubMenu(!mainViewModel.hrSubMenu);
-                        },
-                        icon: Icons.edit,
-                        title: 'İK',
-                        isSelected: mainViewModel.bnbIndex == 5 ? true : false),
-                    AnimatedSize(
-                      curve: Curves.linear,
-                      duration: const Duration(milliseconds: 200),
-                      child: !mainViewModel.hrSubMenu
-                          ? const SizedBox(
-                              height: 0,
-                              width: 0,
-                            )
-                          : buildHrSubMenu(mainViewModel),
-                    ),
-                  ],
-                );
+                return buildMenu(
+                    viewModel,
+                    "İK",
+                    Icons.edit,
+                    [
+                      "Çalışan",
+                      "Zimmet",
+                      "Zimmet Tipi",
+                      "İzin Tipi",
+                      "İzin Takibi",
+                    ],
+                    51,
+                    viewModel.changeHrSubMenu,
+                    viewModel.hrSubMenu);
               }),
             if (roles.contains(ClientType.ADMIN))
               Observer(builder: (_) {
-                return Column(
-                  children: [
-                    NavItem(
-                        endIcon: !mainViewModel.hrSubMenu
-                            ? Icons.arrow_right
-                            : Icons.arrow_drop_down,
-                        onTap: () {
-                          mainViewModel
-                              .changeHrSubMenu(!mainViewModel.hrSubMenu);
-                        },
-                        icon: Icons.edit,
-                        title: 'Admin',
-                        isSelected: mainViewModel.bnbIndex == 5 ? true : false),
-                    AnimatedSize(
-                      curve: Curves.linear,
-                      duration: const Duration(milliseconds: 200),
-                      child: !mainViewModel.hrSubMenu
-                          ? const SizedBox(
-                              height: 0,
-                              width: 0,
-                            )
-                          : buildAdminSubMenu(mainViewModel),
-                    ),
-                  ],
-                );
+                return buildMenu(
+                    viewModel,
+                    "Admin",
+                    Icons.edit,
+                    [
+                      "Departman",
+                      "Alan",
+                      "Giriş Noktası",
+                      "Okuyucu",
+                      "Vardiya"
+                    ],
+                    61,
+                    viewModel.changeAdminSubMenu,
+                    viewModel.adminSubMenu);
               }),
-            buildLogout(mainViewModel, context, theme, colorScheme)
+            buildLogout(viewModel, context, theme, colorScheme)
           ]
 
-              // selectedIndex: mainViewModel.bnbIndex,
-              // onDestinationSelected: (index) => _onItemTapped(index, mainViewModel),
+              // selectedIndex: viewModel.bnbIndex,
+              // onDestinationSelected: (index) => _onItemTapped(index, viewModel),
               ),
         ),
       ),
     );
   }
 
-  Padding buildHrSubMenu(MainViewModel mainViewModel) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
-      child: Column(
-        children: [
-          NavItem(
-              isSubItem: true,
-              onTap: () {
-                _onItemTapped(51, mainViewModel);
-              },
-              title: 'Çalışan',
-              isSelected: mainViewModel.bnbIndex == 51 ? true : false),
-          NavItem(
-              isSubItem: true,
-              onTap: () {
-                _onItemTapped(52, mainViewModel);
-              },
-              icon: Icons.edit,
-              title: 'Zimmet',
-              isSelected: mainViewModel.bnbIndex == 52 ? true : false),
-          NavItem(
-              isSubItem: true,
-              onTap: () {
-                _onItemTapped(53, mainViewModel);
-              },
-              icon: Icons.edit,
-              title: 'İzin Tipi',
-              isSelected: mainViewModel.bnbIndex == 53 ? true : false),
-          NavItem(
-              isSubItem: true,
-              onTap: () {
-                _onItemTapped(54, mainViewModel);
-              },
-              icon: Icons.edit,
-              title: 'İzin Takibi',
-              isSelected: mainViewModel.bnbIndex == 54 ? true : false),
-        ],
-      ),
+  Column buildMenu(
+      MainViewModel viewModel,
+      String mainTitle,
+      IconData mainIcon,
+      List<String> subTitles,
+      int startIndex,
+      Function() onTapFunction,
+      bool onTapVar) {
+    return Column(
+      children: [
+        NavItem(
+            endIcon: !onTapVar ? Icons.arrow_right : Icons.arrow_drop_down,
+            onTap: () {
+              onTapFunction();
+            },
+            icon: mainIcon,
+            title: mainTitle,
+            isSelected: viewModel.bnbIndex == startIndex / 10 ? true : false),
+        AnimatedSize(
+          curve: Curves.linear,
+          duration: const Duration(milliseconds: 200),
+          child: !onTapVar
+              ? const SizedBox(
+                  height: 0,
+                  width: 0,
+                )
+              : buildSubMenu(viewModel, subTitles, startIndex),
+        ),
+      ],
     );
   }
 
-  Padding buildAdminSubMenu(MainViewModel mainViewModel) {
+  Padding buildSubMenu(
+      MainViewModel viewModel, List<String> titles, int startIndex) {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0),
       child: Column(
         children: [
-          NavItem(
-              isSubItem: true,
-              onTap: () {
-                _onItemTapped(61, mainViewModel);
-              },
-              title: 'Departman',
-              isSelected: mainViewModel.bnbIndex == 61 ? true : false),
-          NavItem(
-              isSubItem: true,
-              onTap: () {
-                _onItemTapped(62, mainViewModel);
-              },
-              icon: Icons.edit,
-              title: 'Alan',
-              isSelected: mainViewModel.bnbIndex == 62 ? true : false),
-          NavItem(
-              isSubItem: true,
-              onTap: () {
-                _onItemTapped(63, mainViewModel);
-              },
-              icon: Icons.edit,
-              title: 'Giriş Noktası',
-              isSelected: mainViewModel.bnbIndex == 63 ? true : false),
-          NavItem(
-              isSubItem: true,
-              onTap: () {
-                _onItemTapped(64, mainViewModel);
-              },
-              icon: Icons.edit,
-              title: 'Okuyucu',
-              isSelected: mainViewModel.bnbIndex == 64 ? true : false),
-          NavItem(
-              isSubItem: true,
-              onTap: () {
-                _onItemTapped(65, mainViewModel);
-              },
-              icon: Icons.edit,
-              title: 'Vardiya',
-              isSelected: mainViewModel.bnbIndex == 65 ? true : false),
+          ...titles.asMap().entries.map((e) {
+            return NavItem(
+                isSubItem: true,
+                onTap: () {
+                  _onItemTapped(startIndex + e.key, viewModel);
+                },
+                title: e.value,
+                isSelected:
+                    viewModel.bnbIndex == startIndex + e.key ? true : false);
+          }),
         ],
       ),
     );
@@ -371,7 +302,7 @@ class MainView extends StatelessWidget {
     );
   }
 
-  Observer buildLogout(MainViewModel mainViewModel, BuildContext context,
+  Observer buildLogout(MainViewModel viewModel, BuildContext context,
       ThemeData theme, ColorScheme colorScheme) {
     return Observer(builder: (_) {
       return NavItem(
@@ -400,7 +331,7 @@ class MainView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           TextButton(
-                            onPressed: () => mainViewModel.logout(),
+                            onPressed: () => viewModel.logout(),
                             child: Text(
                               "ÇIKIŞ YAP",
                               style: theme.textTheme.bodyMedium!.copyWith(
@@ -427,11 +358,11 @@ class MainView extends StatelessWidget {
           },
           icon: Icons.logout,
           title: 'Çıkış Yap',
-          isSelected: mainViewModel.bnbIndex == 7 ? true : false);
+          isSelected: viewModel.bnbIndex == 7 ? true : false);
     });
   }
 
-  void _onItemTapped(int index, MainViewModel mainViewModel) {
-    if (index != mainViewModel.bnbIndex) mainViewModel.setBnbIndex(index);
+  void _onItemTapped(int index, MainViewModel viewModel) {
+    if (index != viewModel.bnbIndex) viewModel.setBnbIndex(index);
   }
 }

@@ -9,6 +9,7 @@ class EmployeeViewModel = _EmployeeViewModelBase with _$EmployeeViewModel;
 
 abstract class _EmployeeViewModelBase with Store {
   final EmployeeService employeeService;
+  final ClientType clientType;
 
   @observable
   DataState dataState = DataState.LOADING;
@@ -19,7 +20,7 @@ abstract class _EmployeeViewModelBase with Store {
   @observable
   List<Employee>? employees;
 
-  _EmployeeViewModelBase(this.employeeService);
+  _EmployeeViewModelBase(this.employeeService, this.clientType);
 
   @action
   init() async {

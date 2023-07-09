@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/network/network_manager.dart';
-import 'package:webapp/core/widgets/other/list_widget.dart';
 import 'package:webapp/screen/service/time_off_type_service.dart';
 import 'package:webapp/screen/view/time_off_type_detail_view.dart';
 import 'package:webapp/screen/viewModel/time_off_type_view_model.dart';
+
 import '../../core/util/size_config.dart';
 import '../../core/widgets/other/button.dart';
+import '../../core/widgets/other/data_grid.dart';
 import '../../core/widgets/other/search_field.dart';
 
 class TimeOffTypeView extends StatelessWidget {
@@ -19,8 +20,8 @@ class TimeOffTypeView extends StatelessWidget {
     TextStyle textStyle =
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
-    TimeOffTypeViewModel viewModel = TimeOffTypeViewModel(
-        TimeOffTypeService(networkManager: NetworkManager()));
+    TimeOffTypeViewModel viewModel =
+        TimeOffTypeViewModel(TimeOffTypeService(networkManager: NetworkManager()));
     viewModel.init();
 
     return Column(
@@ -57,12 +58,8 @@ class TimeOffTypeView extends StatelessWidget {
         Observer(builder: (_) {
           switch (viewModel.dataState) {
             case DataState.READY:
-              return buildList(
-                viewModel,
-                textStyle,
-                context,
-                primaryColor,
-              );
+              return buildList(viewModel, textStyle, context, primaryColor,
+                  theme, theme.colorScheme);
             case DataState.LOADING:
               return const Center(
                 child: CircularProgressIndicator(),
@@ -76,53 +73,27 @@ class TimeOffTypeView extends StatelessWidget {
     );
   }
 
-  Expanded buildList(TimeOffTypeViewModel viewModel, TextStyle textStyle,
-      BuildContext context, Color primaryColor) {
+  Expanded buildList(
+      TimeOffTypeViewModel viewModel,
+      TextStyle textStyle,
+      BuildContext context,
+      Color primaryColor,
+      ThemeData theme,
+      ColorScheme colorScheme) {
     return Expanded(
-      child: ListWidget(
-        titles: ["Id", "Ad", "Açıklama", "Yıllık İzin Hakkı", "", ""],
-        data: viewModel.timeOffTypeList!
-            .map((e) => [
-                  Text(
-                    e.id.toString(),
-                    style: textStyle,
-                  ),
-                  Text(
-                    e.name.toString(),
-                    style: textStyle,
-                  ),
-                  Text(
-                    e.description.toString(),
-                    style: textStyle,
-                  ),
-                  Text(
-                    e.numOfTimeOffDay.toString(),
-                    style: textStyle,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) => Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: TimeOffTypeDetailView(
-                                    buildContext: context, id: e.id),
-                              )).then((value) => viewModel.init());
-                    },
-                    icon: Icon(
-                      Icons.edit,
-                      color: primaryColor,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.delete,
-                      color: primaryColor,
-                    ),
-                  )
-                ])
-            .toList(),
+      child: DataGrid(
+        deleteFunction: (id) {viewModel.delete(id);},
+        onRowTap: (id) {
+          showDialog(
+              context: context,
+              builder: (context) => Dialog(
+                    backgroundColor: Colors.transparent,
+                    child: TimeOffTypeDetailView(buildContext: context, id: id),
+                  )).then((value) => viewModel.init());
+        },
+        titles: ["Id", "Ad", "Açıklama", "İzin Günü"],
+        columnNames: ["id", "name", "description", "numOfTimeOffDays"],
+        dataSourceList: viewModel.timeOffTypeList!,
       ),
     );
   }

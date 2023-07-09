@@ -9,6 +9,22 @@ part of 'asset_detail_view_model.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AssetDetailViewModel on _AssetDetailViewModelBase, Store {
+  late final _$assetTypeListAtom =
+      Atom(name: '_AssetDetailViewModelBase.assetTypeList', context: context);
+
+  @override
+  List<AssetType>? get assetTypeList {
+    _$assetTypeListAtom.reportRead();
+    return super.assetTypeList;
+  }
+
+  @override
+  set assetTypeList(List<AssetType>? value) {
+    _$assetTypeListAtom.reportWrite(value, super.assetTypeList, () {
+      super.assetTypeList = value;
+    });
+  }
+
   late final _$dataStateAtom =
       Atom(name: '_AssetDetailViewModelBase.dataState', context: context);
 
@@ -22,6 +38,22 @@ mixin _$AssetDetailViewModel on _AssetDetailViewModelBase, Store {
   set dataState(DataState value) {
     _$dataStateAtom.reportWrite(value, super.dataState, () {
       super.dataState = value;
+    });
+  }
+
+  late final _$pageStateAtom =
+      Atom(name: '_AssetDetailViewModelBase.pageState', context: context);
+
+  @override
+  bool get pageState {
+    _$pageStateAtom.reportRead();
+    return super.pageState;
+  }
+
+  @override
+  set pageState(bool value) {
+    _$pageStateAtom.reportWrite(value, super.pageState, () {
+      super.pageState = value;
     });
   }
 
@@ -73,10 +105,21 @@ mixin _$AssetDetailViewModel on _AssetDetailViewModelBase, Store {
     return _$updateAssetAsyncAction.run(() => super.updateAsset());
   }
 
+  late final _$updateAssetStatusAsyncAction = AsyncAction(
+      '_AssetDetailViewModelBase.updateAssetStatus',
+      context: context);
+
+  @override
+  Future<bool> updateAssetStatus() {
+    return _$updateAssetStatusAsyncAction.run(() => super.updateAssetStatus());
+  }
+
   @override
   String toString() {
     return '''
+assetTypeList: ${assetTypeList},
 dataState: ${dataState},
+pageState: ${pageState},
 assetDetail: ${assetDetail},
 employeeList: ${employeeList}
     ''';

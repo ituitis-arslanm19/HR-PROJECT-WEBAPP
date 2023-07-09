@@ -7,16 +7,20 @@ import '../../util/size_config.dart';
 class StepProgressIndicator extends StatelessWidget {
   final List<SignHistory> previousSteps;
   final List<String> futureSteps;
+  final double? padding;
 
   const StepProgressIndicator(
-      {super.key, required this.previousSteps, required this.futureSteps});
+      {super.key,
+      required this.previousSteps,
+      required this.futureSteps,
+      this.padding});
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     ColorScheme colorScheme = theme.colorScheme;
     return Padding(
-        padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 7),
+        padding: EdgeInsets.all(padding ?? SizeConfig.blockSizeVertical * 5),
         child: previousSteps.length + futureSteps.length == 1
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,

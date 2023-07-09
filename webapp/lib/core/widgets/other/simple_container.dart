@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:webapp/core/util/size_config.dart';
+import 'package:webapp/core/widgets/other/data_grid.dart';
 
 class SimpleContainer extends StatelessWidget {
   final String? title;
@@ -26,7 +27,7 @@ class SimpleContainer extends StatelessWidget {
             color: theme.colorScheme.background,
             border: Border.all(color: Colors.grey.shade300)),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(child is DataGrid ? 2 : 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

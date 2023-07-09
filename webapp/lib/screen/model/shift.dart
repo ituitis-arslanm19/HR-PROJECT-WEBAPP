@@ -1,6 +1,9 @@
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:webapp/core/base/data_grid_model.dart';
+
 import '../../core/base/base_model.dart';
 
-class Shift extends BaseModel<Shift> {
+class Shift extends BaseModel<Shift> with DataGridModel{
   int? id;
   String? name;
   String? startTime;
@@ -27,4 +30,12 @@ class Shift extends BaseModel<Shift> {
       endTime: json['endTime'] != null ? json['endTime'] as String : null,
     );
   }
+
+  @override
+  DataGridRow toDataGridRow() => DataGridRow(cells: [
+        DataGridCell<int>(columnName: 'id', value: id),
+        DataGridCell<String>(columnName: 'name', value: name),
+        DataGridCell<String>(columnName: 'startTime', value: startTime),
+        DataGridCell<String>(columnName: 'endTime', value: endTime),
+      ]);
 }

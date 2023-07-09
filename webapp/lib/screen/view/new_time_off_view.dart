@@ -5,6 +5,7 @@ import 'package:webapp/core/network/network_manager.dart';
 import 'package:webapp/screen/service/new_time_off_service.dart';
 import 'package:webapp/screen/viewModel/new_time_off_view_model.dart';
 
+import '../../core/base/base_view.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/util/size_config.dart';
 import '../../core/widgets/other/button.dart';
@@ -16,31 +17,33 @@ class NewTimeOffView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    ColorScheme colorScheme = theme.colorScheme;
-    NewTimeOffViewModel newTimeOffViewModel = NewTimeOffViewModel(
-        NewTimeOffService(networkManager: NetworkManager()), context);
-    newTimeOffViewModel.init();
-    return Observer(builder: (_) {
-      switch (newTimeOffViewModel.dataState) {
-        case DataState.READY:
-          return buildNewTimeOff(
-              theme, colorScheme, newTimeOffViewModel, context);
-        case DataState.ERROR:
-          return Center(child: Text("hata meydana geldi."));
-        case DataState.LOADING:
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+    return BaseView<NewTimeOffViewModel>(
+      viewModel: NewTimeOffViewModel(
+          NewTimeOffService(networkManager: NetworkManager()), context),
+      onModelReady: (model) {
+        model.init();
+      },
+      onPageBuilder: (context, viewModel, theme) => Observer(builder: (_) {
+        switch (viewModel.dataState) {
+          case DataState.READY:
+            return buildNewTimeOff(
+                theme, theme.colorScheme, viewModel, context);
+          case DataState.ERROR:
+            return Center(child: Text("hata meydana geldi."));
+          case DataState.LOADING:
+            return Center(
+              child: CircularProgressIndicator(),
+            );
 
-        default:
-          return Center(child: Text("hata meydana geldi."));
-      }
-    });
+          default:
+            return Center(child: Text("hata meydana geldi."));
+        }
+      }),
+    );
   }
 
   Column buildNewTimeOff(ThemeData theme, ColorScheme colorScheme,
-      NewTimeOffViewModel newTimeOffViewModel, BuildContext context) {
+      NewTimeOffViewModel viewModel, BuildContext context) {
     return Column(
       children: [
         Column(
@@ -48,32 +51,32 @@ class NewTimeOffView extends StatelessWidget {
           children: [
             Container(
               child: Form(
-                key: newTimeOffViewModel.formKeyNewTimeOff,
+                key: viewModel.formKeyNewTimeOff,
                 child: Column(
                   children: [
                     InputText(
                       icon: const Icon(Icons.calendar_month),
-                      textEditingController: newTimeOffViewModel.controllers[0],
+                      textEditingController: viewModel.controllers[0],
                       hintText: "Başlangıç tarihi",
                       enabled: true,
-                      validator: newTimeOffViewModel.inputTextValidator,
-                      onTap: () => _showCalendar(
-                          context, newTimeOffViewModel.controllers[0]),
+                      validator: viewModel.inputTextValidator,
+                      onTap: () =>
+                          _showCalendar(context, viewModel.controllers[0]),
                     ),
                     InputText(
                       icon: const Icon(Icons.calendar_month),
-                      textEditingController: newTimeOffViewModel.controllers[1],
+                      textEditingController: viewModel.controllers[1],
                       hintText: "Bitiş Tarihi",
                       enabled: true,
-                      validator: newTimeOffViewModel.inputTextValidator,
-                      onTap: () => _showCalendar(
-                          context, newTimeOffViewModel.controllers[1]),
+                      validator: viewModel.inputTextValidator,
+                      onTap: () =>
+                          _showCalendar(context, viewModel.controllers[1]),
                     ),
                     DropDownInputText(
-                      textEditingController: newTimeOffViewModel.controllers[2],
+                      textEditingController: viewModel.controllers[2],
                       hintText: "İzin Tipi",
-                      validator: newTimeOffViewModel.inputTextValidator,
-                      items: newTimeOffViewModel.timeOffTypeList!
+                      validator: viewModel.inputTextValidator,
+                      items: viewModel.timeOffTypeList!
                           .map((e) => e.name)
                           .toList(),
                     ),
@@ -85,7 +88,7 @@ class NewTimeOffView extends StatelessWidget {
                         height: SizeConfig.blockSizeVertical * 5,
                         child: Button(
                           onPressed: () {
-                            newTimeOffViewModel.requestNewTimeOff();
+                            viewModel.requestNewTimeOff();
                           },
                           text: "İZİN TALEBİ OLUŞTUR",
                         ),

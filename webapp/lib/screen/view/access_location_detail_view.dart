@@ -74,13 +74,13 @@ class AccessLocationDetailView extends StatelessWidget {
                           child: DropDownInputText(
                             title: "Alan",
                             textEditingController: TextEditingController(
-                                text: viewModel.siteList!
+                                text: viewModel.accessLocationDetail!.siteId != null ? viewModel.siteList!
                                         .firstWhere((element) =>
                                             element.id ==
                                             viewModel
                                                 .accessLocationDetail!.siteId)
                                         .name ??
-                                    ""),
+                                    "" : ""),
                             items:
                                 viewModel.siteList!.map((e) => e.name).toList(),
                             onTap: (index) {

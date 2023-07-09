@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:webapp/core/constant/enum/enums.dart';
 import 'package:webapp/core/network/network_manager.dart';
-import 'package:webapp/core/widgets/other/list_widget.dart';
 import 'package:webapp/screen/service/employee_service.dart';
 import 'package:webapp/screen/view/employee_detail_view.dart';
 import 'package:webapp/screen/viewModel/employee_view_model.dart';
 
 import '../../core/util/size_config.dart';
 import '../../core/widgets/other/button.dart';
+import '../../core/widgets/other/data_grid.dart';
 import '../../core/widgets/other/search_field.dart';
 
 class EmployeeView extends StatelessWidget {
-  const EmployeeView({super.key});
+  final ClientType clientType;
+  const EmployeeView({super.key, required this.clientType});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +21,8 @@ class EmployeeView extends StatelessWidget {
     TextStyle textStyle =
         theme.textTheme.bodySmall!.copyWith(color: theme.hintColor);
     Color primaryColor = theme.colorScheme.primary;
-    EmployeeViewModel viewModel =
-        EmployeeViewModel(EmployeeService(networkManager: NetworkManager()));
+    EmployeeViewModel viewModel = EmployeeViewModel(
+        EmployeeService(networkManager: NetworkManager()), clientType);
     viewModel.init();
 
     return Column(
@@ -58,12 +59,8 @@ class EmployeeView extends StatelessWidget {
         Observer(builder: (_) {
           switch (viewModel.dataState) {
             case DataState.READY:
-              return buildList(
-                viewModel,
-                textStyle,
-                context,
-                primaryColor,
-              );
+              return buildList(viewModel, textStyle, context, primaryColor,
+                  theme, theme.colorScheme);
             case DataState.LOADING:
               return const Center(
                 child: CircularProgressIndicator(),
@@ -77,53 +74,29 @@ class EmployeeView extends StatelessWidget {
     );
   }
 
-  Expanded buildList(EmployeeViewModel viewModel, TextStyle textStyle,
-      BuildContext context, Color primaryColor) {
+  Expanded buildList(
+      EmployeeViewModel viewModel,
+      TextStyle textStyle,
+      BuildContext context,
+      Color primaryColor,
+      ThemeData theme,
+      ColorScheme colorScheme) {
     return Expanded(
-      child: ListWidget(
-        titles: ["Id", "Ad", "Soyad", "Email", "", ""],
-        data: viewModel.employeeList!
-            .map((e) => [
-                  Text(
-                    e.id.toString(),
-                    style: textStyle,
-                  ),
-                  Text(
-                    e.firstName.toString(),
-                    style: textStyle,
-                  ),
-                  Text(
-                    e.lastName.toString(),
-                    style: textStyle,
-                  ),
-                  Text(
-                    e.email.toString(),
-                    style: textStyle,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) => Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: EmployeeDetailView(
-                                    buildContext: context, id: e.id),
-                              )).then((value) => viewModel.init());
-                    },
-                    icon: Icon(
-                      Icons.edit,
-                      color: primaryColor,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.delete,
-                      color: primaryColor,
-                    ),
-                  )
-                ])
-            .toList(),
+      child: DataGrid(
+        deleteFunction: (id) {
+          viewModel.delete(id);
+        },
+        onRowTap: (id) {
+          showDialog(
+              context: context,
+              builder: (context) => Dialog(
+                    backgroundColor: Colors.transparent,
+                    child: EmployeeDetailView(buildContext: context, id: id),
+                  )).then((value) => viewModel.init());
+        },
+        titles: ["Id", "Ad", "Soyad", "Email", "Departman"],
+        columnNames: ["id", "firstName", "lastName", "email", "departmantName"],
+        dataSourceList: viewModel.employeeList!,
       ),
     );
   }

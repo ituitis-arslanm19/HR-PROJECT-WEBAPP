@@ -20,6 +20,9 @@ abstract class _MainViewModelBase extends BaseViewModel with Store {
   int bnbIndex = 0;
 
   @observable
+  bool managerSubMenu = false;
+
+  @observable
   bool hrSubMenu = false;
 
   @observable
@@ -39,8 +42,13 @@ abstract class _MainViewModelBase extends BaseViewModel with Store {
   }
 
   @action
-  changeHrSubMenu(bool value) {
-    hrSubMenu = value;
+  changeManagerSubMenu() {
+    managerSubMenu = !managerSubMenu;
+  }
+
+  @action
+  changeHrSubMenu() {
+    hrSubMenu = !hrSubMenu;
   }
 
   @action

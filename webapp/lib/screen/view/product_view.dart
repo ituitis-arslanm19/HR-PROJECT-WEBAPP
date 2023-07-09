@@ -4,6 +4,7 @@ import 'package:webapp/core/network/network_manager.dart';
 import 'package:webapp/core/widgets/other/product_card.dart';
 import 'package:webapp/screen/service/product_service.dart';
 import 'package:webapp/screen/viewModel/product_view_model.dart';
+import '../../core/base/base_view.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/util/size_config.dart';
 
@@ -13,24 +14,24 @@ class ProductView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    ColorScheme colorScheme = theme.colorScheme;
-    ProductViewModel productViewModel =
-        ProductViewModel(ProductService(networkManager: NetworkManager()));
-    productViewModel.init();
-
-    SizeConfig().init(context);
-    return buildProducts(theme, colorScheme, productViewModel);
+    return BaseView<ProductViewModel>(
+        viewModel:
+            ProductViewModel(ProductService(networkManager: NetworkManager())),
+        onModelReady: (model) {
+          model.init();
+        },
+        onPageBuilder: (context, viewModel, theme) =>
+            buildProducts(theme, theme.colorScheme, viewModel));
   }
 
-  Column buildProducts(ThemeData theme, ColorScheme colorScheme,
-      ProductViewModel productViewModel) {
+  Column buildProducts(
+      ThemeData theme, ColorScheme colorScheme, ProductViewModel viewModel) {
     return Column(
       children: [
         Observer(builder: (_) {
-          switch (productViewModel.dataState) {
+          switch (viewModel.dataState) {
             case DataState.READY:
-              return buildProductList(productViewModel);
+              return buildProductList(viewModel);
             case DataState.ERROR:
               return const Center(child: Text("Hata meydana geldi."));
             case DataState.LOADING:
@@ -48,7 +49,7 @@ class ProductView extends StatelessWidget {
     );
   }
 
-  SizedBox buildProductList(ProductViewModel productViewModel) {
+  SizedBox buildProductList(ProductViewModel viewModel) {
     return SizedBox(
         width: SizeConfig.blockSizeHorizontal * 60,
         child: Center(
@@ -56,7 +57,7 @@ class ProductView extends StatelessWidget {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  ...productViewModel.products!.map(
+                  ...viewModel.products!.map(
                     (element) => SizedBox(
                       height: SizeConfig.blockSizeVertical * 10,
                       width: SizeConfig.blockSizeHorizontal * 60,

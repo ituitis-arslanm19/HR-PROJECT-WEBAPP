@@ -14,84 +14,90 @@ import 'package:webapp/screen/view/product_view.dart';
 import 'package:webapp/screen/view/profile_view.dart';
 import 'package:webapp/screen/viewModel/home_view_model.dart';
 
+import '../../core/base/base_view.dart';
+
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    HomeViewModel homeViewModel = HomeViewModel(HomeService(NetworkManager()));
-    homeViewModel.init();
-    ThemeData theme = Theme.of(context);
-    ColorScheme colorScheme = theme.colorScheme;
-    return Row(
-      children: [
-        Flexible(
-          flex: 1,
-          child: Column(
-            children: [
-              Flexible(
-                  flex: 6,
-                  child:
-                      SimpleContainer(title: "Profil", child: ProfileView())),
-            ],
+    return BaseView<HomeViewModel>(
+      viewModel: HomeViewModel(HomeService(NetworkManager())),
+      onModelReady: (model) {
+        model.init();
+      },
+      onPageBuilder: (context, viewModel, theme) => Row(
+        children: [
+          Flexible(
+            flex: 1,
+            child: Column(
+              children: [
+                Flexible(
+                    flex: 6,
+                    child:
+                        SimpleContainer(title: "Profil", child: ProfileView())),
+              ],
+            ),
           ),
-        ),
-        Flexible(
-          flex: 1,
-          child: Column(
-            children: [
-              Flexible(
-                  flex: 4,
-                  child:
-                      buildGenderPieChart(colorScheme, theme, homeViewModel)),
-              Flexible(
-                  flex: 6,
-                  child: SimpleContainer(
-                      title: "Üzerime Zimmetli Ürünler", child: ProductView())),
-            ],
+          Flexible(
+            flex: 1,
+            child: Column(
+              children: [
+                Flexible(
+                    flex: 4,
+                    child: buildGenderPieChart(
+                        theme.colorScheme, theme, viewModel)),
+                Flexible(
+                    flex: 6,
+                    child: SimpleContainer(
+                        title: "Üzerime Zimmetli Ürünler",
+                        child: ProductView())),
+              ],
+            ),
           ),
-        ),
-        Flexible(
-          flex: 1,
-          child: Column(
-            children: [
-              Flexible(
-                  flex: 4,
-                  child: buildDepartmentPieChart(
-                      colorScheme, theme, homeViewModel)),
-              Flexible(
-                  flex: 6,
-                  child: SimpleContainer(
-                    title: "Yaklaşan Doğum Günleri",
-                    child: Observer(builder: (_) {
-                      switch (homeViewModel.dataState) {
-                        case DataState.READY:
-                          return buildUpcomingBirthdayList(
-                              homeViewModel, colorScheme, theme);
-                        case DataState.ERROR:
-                          return const Center(
-                              child: Text("Hata meydana geldi."));
-                        case DataState.LOADING:
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        case DataState.EMPTY:
-                          return const Center(
-                              child: Text("Yaklaşan doğum günü bulunmamakta"));
-                      }
-                    }),
-                  )),
-            ],
+          Flexible(
+            flex: 1,
+            child: Column(
+              children: [
+                Flexible(
+                    flex: 4,
+                    child: buildDepartmentPieChart(
+                        theme.colorScheme, theme, viewModel)),
+                Flexible(
+                    flex: 6,
+                    child: SimpleContainer(
+                      title: "Yaklaşan Doğum Günleri",
+                      child: Observer(builder: (_) {
+                        switch (viewModel.dataState) {
+                          case DataState.READY:
+                            return buildUpcomingBirthdayList(
+                                viewModel, theme.colorScheme, theme);
+                          case DataState.ERROR:
+                            return const Center(
+                                child: Text("Hata meydana geldi."));
+                          case DataState.LOADING:
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          case DataState.EMPTY:
+                            return const Center(
+                                child:
+                                    Text("Yaklaşan doğum günü bulunmamakta"));
+                        }
+                      }),
+                    )),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Column buildUpcomingBirthdayList(
-      HomeViewModel homeViewModel, ColorScheme colorScheme, ThemeData theme) {
+      HomeViewModel viewModel, ColorScheme colorScheme, ThemeData theme) {
     List<UpcomingBirthday> upcomingBirthdayList =
-        homeViewModel.dashboard!.birthdays!;
+        viewModel.dashboard!.birthdays!;
     return Column(
       children: [
         Expanded(
@@ -104,7 +110,7 @@ class HomeView extends StatelessWidget {
                         padding: const EdgeInsets.all(2.0),
                         child: CircleAvatar(
                           backgroundColor: colorScheme.primary,
-                          child: Text(homeViewModel.getInitials(e.name!),
+                          child: Text(viewModel.getInitials(e.name!),
                               style: theme.textTheme.headlineSmall!
                                   .copyWith(color: colorScheme.background)),
                           radius: SizeConfig.blockSizeHorizontal * 3,
@@ -120,13 +126,13 @@ class HomeView extends StatelessWidget {
   }
 
   SimpleContainer buildGenderPieChart(
-      ColorScheme colorScheme, ThemeData theme, HomeViewModel homeViewModel) {
+      ColorScheme colorScheme, ThemeData theme, HomeViewModel viewModel) {
     return SimpleContainer(
       title: "Cinsiyet Dağılımı",
       child: Observer(builder: (_) {
-        switch (homeViewModel.dataState) {
+        switch (viewModel.dataState) {
           case DataState.READY:
-            return buildReadyGenderPieChart(colorScheme, theme, homeViewModel);
+            return buildReadyGenderPieChart(colorScheme, theme, viewModel);
           case DataState.ERROR:
             return const Center(child: Text("Hata meydana geldi."));
           case DataState.LOADING:
@@ -134,14 +140,14 @@ class HomeView extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           case DataState.EMPTY:
-            return buildReadyGenderPieChart(colorScheme, theme, homeViewModel);
+            return buildReadyGenderPieChart(colorScheme, theme, viewModel);
         }
       }),
     );
   }
 
   SizedBox buildReadyGenderPieChart(
-      ColorScheme colorScheme, ThemeData theme, HomeViewModel homeViewModel) {
+      ColorScheme colorScheme, ThemeData theme, HomeViewModel viewModel) {
     return SizedBox(
       child: SizedBox(
         height: SizeConfig.blockSizeVertical * 15,
@@ -150,29 +156,26 @@ class HomeView extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Observer(builder: (_) {
-                return homeViewModel
-                                .dashboard!.genderPieChart!.femaleEmployeeNum !=
+                return viewModel.dashboard!.genderPieChart!.femaleEmployeeNum !=
                             0 ||
-                        homeViewModel
-                                .dashboard!.genderPieChart!.maleEmployeeNum !=
+                        viewModel.dashboard!.genderPieChart!.maleEmployeeNum !=
                             0
                     ? PieChart(
                         PieChartData(
                           centerSpaceRadius: SizeConfig.blockSizeVertical * 4,
                           sections: showingGenderSections(
-                              colorScheme, theme, homeViewModel),
+                              colorScheme, theme, viewModel),
                           pieTouchData: PieTouchData(
                             touchCallback:
                                 (FlTouchEvent event, pieTouchResponse) {
                               if (!event.isInterestedForInteractions ||
                                   pieTouchResponse == null ||
                                   pieTouchResponse.touchedSection == null) {
-                                homeViewModel.pieChartIndex1 = -1;
+                                viewModel.pieChartIndex1 = -1;
                                 return;
                               }
-                              homeViewModel.changePieChartIndex1(
-                                  pieTouchResponse
-                                      .touchedSection!.touchedSectionIndex);
+                              viewModel.changePieChartIndex1(pieTouchResponse
+                                  .touchedSection!.touchedSectionIndex);
                             },
                           ),
                         ),
@@ -200,8 +203,7 @@ class HomeView extends StatelessWidget {
                             width: SizeConfig.blockSizeHorizontal * 2,
                           ),
                           Text(
-                            homeViewModel
-                                .dashboard!.genderPieChart!.maleEmployeeNum
+                            viewModel.dashboard!.genderPieChart!.maleEmployeeNum
                                 .toString(),
                             style: theme.textTheme.bodySmall,
                           ),
@@ -218,7 +220,7 @@ class HomeView extends StatelessWidget {
                             width: SizeConfig.blockSizeHorizontal * 2,
                           ),
                           Text(
-                            homeViewModel
+                            viewModel
                                 .dashboard!.genderPieChart!.femaleEmployeeNum
                                 .toString(),
                             style: theme.textTheme.bodySmall,
@@ -235,14 +237,13 @@ class HomeView extends StatelessWidget {
   }
 
   SimpleContainer buildDepartmentPieChart(
-      ColorScheme colorScheme, ThemeData theme, HomeViewModel homeViewModel) {
+      ColorScheme colorScheme, ThemeData theme, HomeViewModel viewModel) {
     return SimpleContainer(
       title: "Departmanlar",
       child: Observer(builder: (_) {
-        switch (homeViewModel.dataState) {
+        switch (viewModel.dataState) {
           case DataState.READY:
-            return buildReadyDepartmentPieChart(
-                colorScheme, theme, homeViewModel);
+            return buildReadyDepartmentPieChart(colorScheme, theme, viewModel);
           case DataState.ERROR:
             return const Center(child: Text("Hata meydana geldi."));
           case DataState.LOADING:
@@ -250,17 +251,16 @@ class HomeView extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           case DataState.EMPTY:
-            return buildReadyDepartmentPieChart(
-                colorScheme, theme, homeViewModel);
+            return buildReadyDepartmentPieChart(colorScheme, theme, viewModel);
         }
       }),
     );
   }
 
   SizedBox buildReadyDepartmentPieChart(
-      ColorScheme colorScheme, ThemeData theme, HomeViewModel homeViewModel) {
+      ColorScheme colorScheme, ThemeData theme, HomeViewModel viewModel) {
     List<DepartmentPieChart> departmentList =
-        homeViewModel.dashboard!.departmentPieChart!;
+        viewModel.dashboard!.departmentPieChart!;
     return SizedBox(
       height: SizeConfig.blockSizeVertical * 15,
       child: Row(
@@ -271,17 +271,17 @@ class HomeView extends StatelessWidget {
               return PieChart(
                 PieChartData(
                   centerSpaceRadius: SizeConfig.blockSizeVertical * 4,
-                  sections: showingDepartmentSections(
-                      colorScheme, theme, homeViewModel),
+                  sections:
+                      showingDepartmentSections(colorScheme, theme, viewModel),
                   pieTouchData: PieTouchData(
                     touchCallback: (FlTouchEvent event, pieTouchResponse) {
                       if (!event.isInterestedForInteractions ||
                           pieTouchResponse == null ||
                           pieTouchResponse.touchedSection == null) {
-                        homeViewModel.pieChartIndex1 = -1;
+                        viewModel.pieChartIndex1 = -1;
                         return;
                       }
-                      homeViewModel.changePieChartIndex2(
+                      viewModel.changePieChartIndex2(
                           pieTouchResponse.touchedSection!.touchedSectionIndex);
                     },
                   ),
@@ -331,9 +331,9 @@ class HomeView extends StatelessWidget {
   }
 
   List<PieChartSectionData> showingGenderSections(
-      ColorScheme colorScheme, ThemeData theme, HomeViewModel homeViewModel) {
+      ColorScheme colorScheme, ThemeData theme, HomeViewModel viewModel) {
     return List.generate(2, (i) {
-      final isTouched = homeViewModel.pieChartIndex1 == i;
+      final isTouched = viewModel.pieChartIndex1 == i;
       //final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 50.0 : 40.0;
       //const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
@@ -342,7 +342,7 @@ class HomeView extends StatelessWidget {
           return PieChartSectionData(
             showTitle: false,
             color: colorScheme.primary,
-            value: homeViewModel.dashboard!.genderPieChart!.maleEmployeeNum!
+            value: viewModel.dashboard!.genderPieChart!.maleEmployeeNum!
                 .toDouble(),
             radius: radius,
           );
@@ -350,7 +350,7 @@ class HomeView extends StatelessWidget {
           return PieChartSectionData(
             showTitle: false,
             color: colorScheme.secondary,
-            value: homeViewModel.dashboard!.genderPieChart!.femaleEmployeeNum!
+            value: viewModel.dashboard!.genderPieChart!.femaleEmployeeNum!
                 .toDouble(),
             radius: radius,
           );
@@ -362,11 +362,11 @@ class HomeView extends StatelessWidget {
   }
 
   List<PieChartSectionData> showingDepartmentSections(
-      ColorScheme colorScheme, ThemeData theme, HomeViewModel homeViewModel) {
+      ColorScheme colorScheme, ThemeData theme, HomeViewModel viewModel) {
     List<DepartmentPieChart> departmentList =
-        homeViewModel.dashboard!.departmentPieChart!;
+        viewModel.dashboard!.departmentPieChart!;
     return List.generate(departmentList.length, (i) {
-      final isTouched = homeViewModel.pieChartIndex2 == i;
+      final isTouched = viewModel.pieChartIndex2 == i;
       //final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 50.0 : 40.0;
       //const shadows = [Shadow(color: Colors.black, blurRadius: 2)];

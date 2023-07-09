@@ -8,6 +8,8 @@ import 'package:webapp/core/widgets/other/input_text.dart';
 import 'package:webapp/screen/service/login_service.dart';
 import 'package:webapp/screen/viewModel/login_view_model.dart';
 
+import '../../core/base/base_view.dart';
+import '../../core/widgets/other/scrollable_page.dart';
 import '../../core/widgets/other/shadow_container.dart';
 
 class LoginView extends StatelessWidget {
@@ -15,32 +17,32 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LoginViewModel loginViewModel = LoginViewModel(
-        LoginService(SecureStorage(), networkManager: NetworkManager()),
-        context);
-
     TextEditingController textController = TextEditingController();
-    SizeConfig().init(context);
 
-    loginViewModel.init();
-    ThemeData theme = Theme.of(context);
-    ColorScheme colorScheme = theme.colorScheme;
-
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      body: Center(
-        child: SizedBox(
-          height: SizeConfig.blockSizeVertical * 60,
-          width: SizeConfig.blockSizeVertical * 60,
-          child: ShadowContainer(
-            child: DefaultTabController(
-              length: 2,
-              child: Column(
-                children: [
-                  buildTittle(theme, colorScheme),
-                  buildTabBar(colorScheme, theme),
-                  buildTabViews(textController, theme, loginViewModel),
-                ],
+    return BaseView<LoginViewModel>(
+      viewModel: LoginViewModel(
+          LoginService(SecureStorage(), networkManager: NetworkManager()),
+          context),
+      onModelReady: (model) {
+        model.init();
+        SizeConfig().init(context);
+      },
+      onPageBuilder: (context, viewModel, theme) => Scaffold(
+        backgroundColor: Colors.grey[50],
+        body: ScrollablePage(
+          child: SizedBox(
+            height: SizeConfig.blockSizeVertical * 60,
+            width: SizeConfig.blockSizeVertical * 60,
+            child: ShadowContainer(
+              child: DefaultTabController(
+                length: 2,
+                child: Column(
+                  children: [
+                    buildTittle(theme, theme.colorScheme),
+                    buildTabBar(theme.colorScheme, theme),
+                    buildTabViews(textController, theme, viewModel),
+                  ],
+                ),
               ),
             ),
           ),
@@ -50,13 +52,13 @@ class LoginView extends StatelessWidget {
   }
 
   SizedBox buildTabViews(TextEditingController textController, ThemeData theme,
-      LoginViewModel loginViewModel) {
+      LoginViewModel viewModel) {
     return SizedBox(
       height: SizeConfig.blockSizeVertical * 30,
       width: SizeConfig.blockSizeVertical * 50,
       child: TabBarView(children: [
-        buildLoginView(textController, theme, loginViewModel),
-        buildRegisterView(textController, theme, loginViewModel)
+        buildLoginView(textController, theme, viewModel),
+        buildRegisterView(textController, theme, viewModel)
       ]),
     );
   }
@@ -94,11 +96,11 @@ class LoginView extends StatelessWidget {
   }
 
   Padding buildRegisterView(TextEditingController textController,
-      ThemeData theme, LoginViewModel loginViewModel) {
+      ThemeData theme, LoginViewModel viewModel) {
     return Padding(
       padding: const EdgeInsets.only(top: 12.0),
       child: Form(
-        key: loginViewModel.formKeyRegister,
+        key: viewModel.formKeyRegister,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -107,25 +109,23 @@ class LoginView extends StatelessWidget {
               child: Column(
                 children: [
                   InputText(
-                    textEditingController:
-                        loginViewModel.controllers.elementAt(0),
+                    textEditingController: viewModel.controllers.elementAt(0),
                     icon: const Icon(Icons.email),
                     hintText: "Email",
-                    validator: loginViewModel.inputTextValidator,
+                    validator: viewModel.inputTextValidator,
                   ),
                   InputText(
-                    textEditingController:
-                        loginViewModel.controllers.elementAt(1),
+                    textEditingController: viewModel.controllers.elementAt(1),
                     icon: const Icon(Icons.key),
                     hintText: "Şifre",
-                    validator: loginViewModel.inputTextValidator,
+                    validator: viewModel.inputTextValidator,
                     obscure: true,
                   ),
                   InputText(
                     textEditingController: textController,
                     icon: const Icon(Icons.repeat),
                     hintText: "Şifre Tekrarı",
-                    validator: loginViewModel.confirmPassValidator,
+                    validator: viewModel.confirmPassValidator,
                     obscure: true,
                   ),
                   Padding(
@@ -135,7 +135,7 @@ class LoginView extends StatelessWidget {
                       width: SizeConfig.blockSizeVertical * 50,
                       child: Button(
                           onPressed: () {
-                            loginViewModel.register();
+                            viewModel.register();
                           },
                           text: "KAYIT OL"),
                     ),
@@ -150,11 +150,11 @@ class LoginView extends StatelessWidget {
   }
 
   Padding buildLoginView(TextEditingController textController, ThemeData theme,
-      LoginViewModel loginViewModel) {
+      LoginViewModel viewModel) {
     return Padding(
       padding: const EdgeInsets.only(top: 12.0),
       child: Form(
-        key: loginViewModel.formKeyLogin,
+        key: viewModel.formKeyLogin,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -163,18 +163,16 @@ class LoginView extends StatelessWidget {
               child: Column(
                 children: [
                   InputText(
-                    textEditingController:
-                        loginViewModel.controllers.elementAt(3),
+                    textEditingController: viewModel.controllers.elementAt(3),
                     icon: const Icon(Icons.email),
                     hintText: "Email",
-                    validator: loginViewModel.inputTextValidator,
+                    validator: viewModel.inputTextValidator,
                   ),
                   InputText(
-                    textEditingController:
-                        loginViewModel.controllers.elementAt(4),
+                    textEditingController: viewModel.controllers.elementAt(4),
                     icon: const Icon(Icons.key),
                     hintText: "Şifre",
-                    validator: loginViewModel.inputTextValidator,
+                    validator: viewModel.inputTextValidator,
                     obscure: true,
                   ),
                   Padding(
@@ -183,7 +181,7 @@ class LoginView extends StatelessWidget {
                       height: SizeConfig.blockSizeVertical * 5,
                       width: SizeConfig.blockSizeVertical * 90,
                       child: Button(
-                          onPressed: () => loginViewModel.login(),
+                          onPressed: () => viewModel.login(),
                           text: "GİRİŞ YAP"),
                     ),
                   ),
@@ -196,7 +194,7 @@ class LoginView extends StatelessWidget {
                             text: 'Şifremi Unuttum ',
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                loginViewModel.navigateToForgotPassword();
+                                viewModel.navigateToForgotPassword();
                               },
                             style: theme.textTheme.bodySmall!
                                 .copyWith(color: Colors.blue)),

@@ -1,16 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:webapp/core/util/size_config.dart';
+import 'package:mobx/mobx.dart';
+import 'package:webapp/core/base/base_view_model.dart';
 
-class BaseView extends StatelessWidget {
-  final Widget child;
-  const BaseView({super.key, required this.child});
+class BaseView<T extends Store> extends StatefulWidget {
+  const BaseView({
+    Key? key,
+    required this.viewModel,
+    required this.onPageBuilder,
+    required this.onModelReady,
+    this.onDispose,
+  }) : super(key: key);
+  final Widget Function(BuildContext context, T value, ThemeData theme)
+      onPageBuilder;
+  final T viewModel;
+  final void Function(T model) onModelReady;
+  final VoidCallback? onDispose;
+
+  @override
+  _BaseViewState<T> createState() => _BaseViewState<T>();
+}
+
+class _BaseViewState<T extends Store> extends State<BaseView<T>> {
+  late T model;
+  late ThemeData theme;
+  @override
+  void initState() {
+    model = widget.viewModel;
+    widget.onModelReady(model);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (widget.onDispose != null) widget.onDispose?.call();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: SizeConfig.screenHeight,
-      width: SizeConfig.screenWidth,
-      child: child,
-    );
+    theme = Theme.of(context);
+
+    return widget.onPageBuilder(context, model, theme);
   }
 }

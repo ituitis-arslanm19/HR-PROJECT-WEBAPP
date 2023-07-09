@@ -23,7 +23,7 @@ class InputText extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 4, right: 4),
       child: Container(
         decoration: BoxDecoration(
           color: theme.colorScheme.background,

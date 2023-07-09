@@ -8,16 +8,18 @@ class DropDownInputText extends StatefulWidget {
   final TextEditingController? textEditingController;
   final void Function(int)? onTap;
   final String? Function(String?)? validator;
+  final bool? enabled;
 
-  const DropDownInputText(
-      {Key? key,
-      this.hintText,
-      required this.items,
-      this.title,
-      this.textEditingController,
-      this.onTap,
-      this.validator})
-      : super(key: key);
+  DropDownInputText({
+    Key? key,
+    this.hintText,
+    required this.items,
+    this.title,
+    this.textEditingController,
+    this.onTap,
+    this.validator,
+    this.enabled = true,
+  }) : super(key: key);
 
   @override
   State<DropDownInputText> createState() => _DropDownInputTextState();
@@ -27,9 +29,11 @@ class _DropDownInputTextState extends State<DropDownInputText> {
   OverlayEntry? overlayEntry;
   final layerLink = LayerLink();
   final FocusNode focusNode = FocusNode();
+  late List<String?> filteredItems = [];
 
   @override
   void initState() {
+    filteredItems = widget.items;
     focusNode.addListener(() {
       focusNode.hasFocus ? showOverlay() : hideOverlay();
     });
@@ -79,7 +83,7 @@ class _DropDownInputTextState extends State<DropDownInputText> {
             Flexible(
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: widget.items.length,
+                itemCount: filteredItems.length,
                 itemBuilder: (context, index) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +100,7 @@ class _DropDownInputTextState extends State<DropDownInputText> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        widget.items[index] ?? "Error",
+                                        filteredItems[index] ?? "Error",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall,
@@ -108,16 +112,15 @@ class _DropDownInputTextState extends State<DropDownInputText> {
                               onTap: () {
                                 if (widget.textEditingController != null)
                                   widget.textEditingController!.text =
-                                      widget.items[index] ?? "Error";
-                                if (widget.onTap != null) widget.onTap!(index);
+                                      filteredItems[index] ?? "Error";
+                                if (widget.onTap != null)
+                                  widget.onTap!(findRealIndex(
+                                      filteredItems[index] ?? ""));
                                 hideOverlay();
                                 focusNode.unfocus();
                               },
                             )),
                       ),
-                      const Divider(
-                        thickness: 1,
-                      )
                     ],
                   );
                 },
@@ -126,6 +129,9 @@ class _DropDownInputTextState extends State<DropDownInputText> {
           ],
         ),
       );
+  int findRealIndex(String item) {
+    return widget.items.indexOf(item);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,32 +141,44 @@ class _DropDownInputTextState extends State<DropDownInputText> {
         hideOverlay();
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+        padding: const EdgeInsets.all(4),
         child: Stack(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: widget.title != null ? 10 : 0),
+              padding: EdgeInsets.only(top: widget.title != null ? 10 : 8),
               child: CompositedTransformTarget(
                 link: layerLink,
                 child: TextFormField(
+                  enabled: widget.enabled,
                   validator: widget.validator,
                   focusNode: focusNode,
                   onTap: () {},
-                  readOnly: true,
+                  onChanged: (text) {
+                    hideOverlay();
+                    filteredItems = widget.items
+                        .where((e) =>
+                            e!.toLowerCase().startsWith(text.toLowerCase()))
+                        .toList();
+                    showOverlay();
+                  },
                   controller: widget.textEditingController,
                   decoration: InputDecoration(
+                      disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              width: 1, color: Colors.grey.shade300)),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(
                               width: 1, color: Colors.grey.shade300)),
                       iconColor: Theme.of(context).colorScheme.primary,
-                      prefixIcon: Icon(Icons.arrow_drop_down),
+                      prefixIcon: const Icon(Icons.arrow_drop_down),
                       labelStyle: Theme.of(context)
                           .textTheme
                           .bodySmall!
                           .copyWith(color: Theme.of(context).hintColor),
                       border: InputBorder.none,
-                      labelText: widget.hintText ?? "Hata"),
+                      labelText: widget.hintText ?? ""),
                 ),
               ),
             ),
