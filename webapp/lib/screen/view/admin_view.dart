@@ -5,7 +5,7 @@ import 'package:webapp/screen/view/shift_view.dart';
 import 'package:webapp/screen/view/site_view.dart';
 
 import 'access_location_view.dart';
-import 'department_admin_view.dart';
+import 'department_view.dart';
 
 class AdminView extends StatelessWidget {
   const AdminView({super.key});

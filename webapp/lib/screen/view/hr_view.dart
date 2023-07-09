@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:webapp/core/util/size_config.dart';
 import 'package:webapp/screen/view/asset_type_view.dart';
 import 'package:webapp/screen/view/asset_view.dart';
-import 'package:webapp/screen/view/employee_admin_view.dart';
+import 'package:webapp/screen/view/employee_view.dart';
 import 'package:webapp/screen/view/time_off_sign_view.dart';
 import 'package:webapp/screen/view/time_off_type_view.dart';
 
