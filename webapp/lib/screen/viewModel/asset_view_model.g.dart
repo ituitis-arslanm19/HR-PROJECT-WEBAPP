@@ -65,6 +65,14 @@ mixin _$AssetViewModel on _AssetViewModelBase, Store {
     return _$initAsyncAction.run(() => super.init());
   }
 
+  late final _$deleteAsyncAction =
+      AsyncAction('_AssetViewModelBase.delete', context: context);
+
+  @override
+  Future delete(int id) {
+    return _$deleteAsyncAction.run(() => super.delete(id));
+  }
+
   late final _$_AssetViewModelBaseActionController =
       ActionController(name: '_AssetViewModelBase', context: context);
 

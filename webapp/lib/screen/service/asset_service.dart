@@ -62,4 +62,11 @@ class AssetService {
             null);
     return result.data;
   }
+
+  Future<bool?> delete(int id) async {
+    ResponseModel<AssetDetail?> result =
+        await networkManager.send<AssetDetail, AssetDetail>(
+            "/product/$id", HttpMethod.DELETE, AssetDetail(), null, null);
+    return result.error;
+  }
 }

@@ -16,7 +16,12 @@ import '../viewModel/asset_detail_view_model.dart';
 class AssetDetailView extends StatelessWidget {
   final int? id;
   final BuildContext buildContext;
-  const AssetDetailView({super.key, this.id, required this.buildContext});
+  final bool? isEmployeeInputEnable;
+  const AssetDetailView(
+      {super.key,
+      this.id,
+      required this.buildContext,
+      this.isEmployeeInputEnable = true});
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +147,8 @@ class AssetDetailView extends StatelessWidget {
   Column buildPage1(AssetDetailViewModel viewModel, BuildContext context,
       void Function(BuildContext, TextEditingController) showCalendar) {
     bool enabled;
-    enabled = (viewModel.assetDetail?.status == ProductStatus.AT_EMPLOYEE)
+    enabled = (viewModel.assetDetail?.status == ProductStatus.AT_EMPLOYEE ||
+            viewModel.assetDetail?.status == null)
         ? true
         : false;
     Employee? employee = viewModel.employeeList!.firstWhere(
@@ -163,7 +169,7 @@ class AssetDetailView extends StatelessWidget {
             Expanded(
               flex: 5,
               child: DropDownInputText(
-                enabled: enabled,
+                enabled: enabled && isEmployeeInputEnable!,
                 title: "Çalışan",
                 textEditingController: TextEditingController(
                     text: viewModel.assetDetail!.employeeId != null
@@ -214,7 +220,7 @@ class AssetDetailView extends StatelessWidget {
             icon: const Icon(Icons.description),
             hintText: "Açıklama",
             textEditingController: viewModel.textEditingControllerList[2]),
-        if (viewModel.assetDetail?.status == ProductStatus.AT_EMPLOYEE)
+        if (enabled)
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

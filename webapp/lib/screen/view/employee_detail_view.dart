@@ -5,7 +5,6 @@ import 'package:webapp/core/constant/strings.dart';
 import 'package:webapp/core/widgets/other/data_grid.dart';
 import 'package:webapp/core/widgets/other/simple_container.dart';
 import 'package:webapp/core/widgets/other/step_progress_indicator.dart';
-import 'package:webapp/screen/service/asset_type_service.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
 import '../../core/util/size_config.dart';
@@ -17,11 +16,13 @@ import '../service/employee_service.dart';
 import '../service/shift_service.dart';
 import '../service/site_service.dart';
 import '../viewModel/employee_detail_view_model.dart';
+import 'asset_detail_view.dart';
 
 class EmployeeDetailView extends StatelessWidget {
   final int? id;
   final BuildContext buildContext;
-  EmployeeDetailView({super.key, required this.id, required this.buildContext});
+  const EmployeeDetailView(
+      {super.key, required this.id, required this.buildContext});
 
   void _showCalendar(
       BuildContext context, TextEditingController textEditingController) async {
@@ -58,8 +59,9 @@ class EmployeeDetailView extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: SizedBox(
                     width: SizeConfig.blockSizeHorizontal * 90,
-                    child:
-                        buildPopUp(context, viewModel, _showCalendar, id)))));
+                    child: Scaffold(
+                        body: buildPopUp(
+                            context, viewModel, _showCalendar, id))))));
   }
 
   Widget buildPopUp(
@@ -80,7 +82,7 @@ class EmployeeDetailView extends StatelessWidget {
               padding: 0,
               title: id == null
                   ? "Yeni Çalışan"
-                  : "${viewModel.employeeDetail!.firstName ?? "Hata"} ${viewModel.employeeDetail!.firstName ?? ""}",
+                  : "${viewModel.employeeDetail!.firstName ?? "Hata"} ${viewModel.employeeDetail!.lastName ?? ""}",
               child: id == null
                   ? buildGeneralInfo(viewModel, context)
                   : DefaultTabController(
@@ -107,20 +109,37 @@ class EmployeeDetailView extends StatelessWidget {
                               buildGeneralInfo(viewModel, context),
                               buildTimeOffs(viewModel),
                               Observer(builder: (_) {
-                                switch (viewModel.previousTimeOffsDataState) {
+                                print("dADSNADKAFLSŞKSFAASFŞŞAS");
+                                switch (viewModel.productsDataState) {
                                   case DataState.READY:
                                     return DataGrid(
+                                      onRowTap: (id) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => Dialog(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                child: AssetDetailView(
+                                                  buildContext: context,
+                                                  id: id,
+                                                  isEmployeeInputEnable: false,
+                                                ))).then((value) {
+                                          return viewModel.init();
+                                        });
+                                      },
                                       dataSourceList: viewModel
                                           .employeeDetail!.productList!,
                                       titles: const [
                                         "Id",
                                         "İsim",
-                                        "Veriliş Tarihi"
+                                        "Veriliş Tarihi",
+                                        "İade Bilgisi"
                                       ],
                                       columnNames: const [
                                         "id",
                                         "name",
-                                        "dateOfIssue"
+                                        "dateOfIssue",
+                                        "status"
                                       ],
                                     );
 

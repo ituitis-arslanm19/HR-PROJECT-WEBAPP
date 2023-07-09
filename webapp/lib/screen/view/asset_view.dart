@@ -82,6 +82,9 @@ class AssetView extends StatelessWidget {
       ColorScheme colorScheme) {
     return Expanded(
       child: DataGrid(
+        deleteFunction: (id) {
+          viewModel.delete(id);
+        },
         onRowTap: (id) {
           showDialog(
               context: context,

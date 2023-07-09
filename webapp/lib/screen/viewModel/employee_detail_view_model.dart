@@ -81,6 +81,10 @@ abstract class _EmployeeDetailViewModelBase with Store {
 
   @action
   init() async {
+    if (textEditingControllerList == [])
+      textEditingControllerList =
+          List.generate(11, (i) => TextEditingController());
+    productsDataState = DataState.LOADING;
     departmentList = await departmentService.getDepartments();
     siteList = await siteService.getSites();
     shiftList = await shiftService.getShifts();
@@ -104,36 +108,38 @@ abstract class _EmployeeDetailViewModelBase with Store {
       isAdmin = employeeDetail!.roles != null
           ? employeeDetail!.roles!.contains("ADMIN")
           : false;
-      textEditingControllerList
-          .add(TextEditingController(text: employeeDetail!.firstName));
-      textEditingControllerList
-          .add(TextEditingController(text: employeeDetail!.lastName));
-      textEditingControllerList
-          .add(TextEditingController(text: employeeDetail!.email));
-      textEditingControllerList.add(TextEditingController(
-          text: employeeDetail!.identityNum != null
-              ? employeeDetail!.identityNum.toString()
-              : ""));
-      textEditingControllerList
-          .add(TextEditingController(text: employeeDetail!.birthDate));
-      textEditingControllerList
-          .add(TextEditingController(text: employeeDetail!.startDate));
+      textEditingControllerList.insert(
+          0, TextEditingController(text: employeeDetail!.firstName));
+      textEditingControllerList.insert(
+          1, TextEditingController(text: employeeDetail!.lastName));
+      textEditingControllerList.insert(
+          2, TextEditingController(text: employeeDetail!.email));
+      textEditingControllerList.insert(
+          3,
+          TextEditingController(
+              text: employeeDetail!.identityNum != null
+                  ? employeeDetail!.identityNum.toString()
+                  : ""));
+      textEditingControllerList.insert(
+          4, TextEditingController(text: employeeDetail!.birthDate));
+      textEditingControllerList.insert(
+          5, TextEditingController(text: employeeDetail!.startDate));
       textEditingControllerList.add(TextEditingController(
           text: employeeDetail!.remainingTimeOffDays != null
               ? employeeDetail!.remainingTimeOffDays.toString()
               : ""));
-      textEditingControllerList
-          .add(TextEditingController(text: employeeDetail!.phoneNumber));
-      textEditingControllerList
-          .add(TextEditingController(text: employeeDetail!.seniorityDate));
-      textEditingControllerList.add(
-          TextEditingController(text: employeeDetail!.emergencyContactName));
-      textEditingControllerList.add(
+      textEditingControllerList.insert(
+          6, TextEditingController(text: employeeDetail!.phoneNumber));
+      textEditingControllerList.insert(
+          7, TextEditingController(text: employeeDetail!.seniorityDate));
+      textEditingControllerList.insert(
+          8, TextEditingController(text: employeeDetail!.emergencyContactName));
+      textEditingControllerList.insert(9,
           TextEditingController(text: employeeDetail!.emergencyContactNumber));
-      textEditingControllerList
-          .add(TextEditingController(text: employeeDetail!.address));
-
+      textEditingControllerList.insert(
+          10, TextEditingController(text: employeeDetail!.address));
       dataState = DataState.READY;
+
       if (employeeDetail!.previousTimeOffs!.isNotEmpty) {
         previousTimeOffsDataState = DataState.READY;
         currentTimeOff = employeeDetail!.previousTimeOffs!.first;

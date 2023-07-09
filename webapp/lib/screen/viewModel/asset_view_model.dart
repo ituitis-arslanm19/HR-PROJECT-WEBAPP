@@ -39,4 +39,9 @@ abstract class _AssetViewModelBase with Store {
             (asset) => asset.name!.toLowerCase().startsWith(name.toLowerCase()))
         .toList();
   }
+
+  @action
+  delete(int id) async {
+    return await assetService.delete(id);
+  }
 }
