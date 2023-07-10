@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
+import 'package:webapp/screen/model/department_history.dart';
 
 import 'package:webapp/screen/model/site.dart';
 import 'package:webapp/screen/model/time_off.dart';
@@ -31,6 +32,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
   List<TimeOff>? previousTimeOffs;
   List<TimeOff>? waitingTimeOffs;
   List<Asset>? productList;
+  List<DepartmentHistory>? departmentHistories;
 
   EmployeeDetail({
     this.id,
@@ -56,6 +58,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
     this.previousTimeOffs,
     this.waitingTimeOffs,
     this.productList,
+    this.departmentHistories
   });
 
   @override
@@ -90,6 +93,9 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
       'productList': productList != null
           ? productList!.map((e) => e.toJson()).toList()
           : [],
+      'departmentHistories': departmentHistories != null
+          ? departmentHistories!.map((e) => e.toJson()).toList()
+          : []
     };
   }
 
@@ -147,6 +153,10 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
           ? List<Asset>.from(
               map['productList'].map((json) => Asset().fromJson(json)).toList())
           : null,
+      departmentHistories: map['departmentHistories'] != null
+          ? List<DepartmentHistory>.from(
+              map['departmentHistories'].map((json) => DepartmentHistory().fromJson(json)).toList())
+            : null
     );
   }
 
@@ -188,6 +198,6 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
 
   @override
   String toString() {
-    return 'EmployeeDetail(id: $id, firstName: $firstName, lastName: $lastName, email: $email, birthDate: $birthDate, startDate: $startDate, departmentId: $departmentId, departmentName: $departmentName, phoneNumber: $phoneNumber, roles: $roles, remainingTimeOffDays: $remainingTimeOffDays, gender: $gender, siteList: $siteList, identityNum: $identityNum, shiftId: $shiftId, seniorityDate: $seniorityDate, emergencyContactName: $emergencyContactName, emergencyContactNumber: $emergencyContactNumber, address: $address, departmentHistory: $departmentHistory, previousTimeOffs: $previousTimeOffs, waitingTimeOffs: $waitingTimeOffs, productList: $productList)';
+    return 'EmployeeDetail(id: $id, firstName: $firstName, lastName: $lastName, email: $email, birthDate: $birthDate, startDate: $startDate, departmentId: $departmentId, departmentName: $departmentName, phoneNumber: $phoneNumber, roles: $roles, remainingTimeOffDays: $remainingTimeOffDays, gender: $gender, siteList: $siteList, identityNum: $identityNum, shiftId: $shiftId, seniorityDate: $seniorityDate, emergencyContactName: $emergencyContactName, emergencyContactNumber: $emergencyContactNumber, address: $address, departmentHistory: $departmentHistory, previousTimeOffs: $previousTimeOffs, waitingTimeOffs: $waitingTimeOffs, productList: $productList, departmentHistories: $departmentHistories)';
   }
 }

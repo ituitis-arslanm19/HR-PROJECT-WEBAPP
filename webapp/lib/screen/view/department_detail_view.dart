@@ -160,8 +160,8 @@ class DepartmentDetailView extends StatelessWidget {
                               fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.30,
-                      height: MediaQuery.of(context).size.height * 0.18,
+                      width: SizeConfig.blockSizeHorizontal * 3,
+                      height: SizeConfig.blockSizeVertical * 2,
                       child: SingleChildScrollView(
                           child: viewModel.employeeListDataState ==
                                   DataState.READY

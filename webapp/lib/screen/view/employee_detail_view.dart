@@ -107,7 +107,7 @@ class EmployeeDetailView extends StatelessWidget {
                               buildGeneralInfo(viewModel, context),
                               buildTimeOffs(viewModel),
                               Observer(builder: (_) {
-                                switch (viewModel.previousTimeOffsDataState) {
+                                switch (viewModel.productsDataState) {
                                   case DataState.READY:
                                     return DataGrid(
                                       dataSourceList: viewModel

@@ -74,8 +74,8 @@ class TimeOffTypeDetailView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
-                            height: MediaQuery.of(context).size.height * 0.04,
-                            width: MediaQuery.of(context).size.width * 0.05,
+                            height: SizeConfig.blockSizeVertical * 4,
+                            width: SizeConfig.blockSizeHorizontal * 8,
                             child: TextButton(
                                 onPressed: () async {
                                   if (await viewModel.updateTimeOffType()) {
@@ -93,8 +93,8 @@ class TimeOffTypeDetailView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
-                            height: MediaQuery.of(context).size.height * 0.04,
-                            width: MediaQuery.of(context).size.width * 0.05,
+                            height: SizeConfig.blockSizeVertical * 4,
+                            width: SizeConfig.blockSizeHorizontal * 8,
                             child: TextButton(
                                 onPressed: () =>
                                     Navigator.of(buildContext).pop(),
