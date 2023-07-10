@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/foundation.dart';
 
 import 'package:webapp/screen/model/site.dart';
 import 'package:webapp/screen/model/time_off.dart';
@@ -41,13 +40,13 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
     this.startDate,
     this.departmentId,
     this.departmentName,
+    this.phoneNumber,
     this.roles,
     this.remainingTimeOffDays,
     this.gender,
     this.siteList,
     this.identityNum,
     this.shiftId,
-    this.phoneNumber,
     this.seniorityDate,
     this.emergencyContactName,
     this.emergencyContactNumber,
@@ -151,43 +150,60 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
   }
 
   @override
-  bool operator ==(covariant EmployeeDetail other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.firstName == firstName &&
-        other.lastName == lastName &&
-        other.email == email &&
-        other.birthDate == birthDate &&
-        other.startDate == startDate &&
-        other.departmentId == departmentId &&
-        listEquals(other.roles, roles) &&
-        other.remainingTimeOffDays == remainingTimeOffDays &&
-        other.gender == gender &&
-        listEquals(other.siteList, siteList) &&
-        other.identityNum == identityNum &&
-        other.shiftId == shiftId;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        firstName.hashCode ^
-        lastName.hashCode ^
-        email.hashCode ^
-        birthDate.hashCode ^
-        startDate.hashCode ^
-        departmentId.hashCode ^
-        roles.hashCode ^
-        remainingTimeOffDays.hashCode ^
-        gender.hashCode ^
-        siteList.hashCode ^
-        identityNum.hashCode ^
-        shiftId.hashCode;
-  }
-
-  @override
   String toString() {
     return 'EmployeeDetail(id: $id, firstName: $firstName, lastName: $lastName, email: $email, birthDate: $birthDate, startDate: $startDate, departmentId: $departmentId, departmentName: $departmentName, phoneNumber: $phoneNumber, roles: $roles, remainingTimeOffDays: $remainingTimeOffDays, gender: $gender, siteList: $siteList, identityNum: $identityNum, shiftId: $shiftId, seniorityDate: $seniorityDate, emergencyContactName: $emergencyContactName, emergencyContactNumber: $emergencyContactNumber, address: $address, departmentHistory: $departmentHistory, previousTimeOffs: $previousTimeOffs, waitingTimeOffs: $waitingTimeOffs, productList: $productList)';
+  }
+
+  EmployeeDetail copyWith({
+    int? id,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? birthDate,
+    String? startDate,
+    int? departmentId,
+    String? departmentName,
+    String? phoneNumber,
+    List<String>? roles,
+    int? remainingTimeOffDays,
+    String? gender,
+    List<Site>? siteList,
+    String? identityNum,
+    int? shiftId,
+    String? seniorityDate,
+    String? emergencyContactName,
+    String? emergencyContactNumber,
+    String? address,
+    List<String>? departmentHistory,
+    List<TimeOff>? previousTimeOffs,
+    List<TimeOff>? waitingTimeOffs,
+    List<Asset>? productList,
+  }) {
+    return EmployeeDetail(
+      id: id ?? this.id,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      email: email ?? this.email,
+      birthDate: birthDate ?? this.birthDate,
+      startDate: startDate ?? this.startDate,
+      departmentId: departmentId ?? this.departmentId,
+      departmentName: departmentName ?? this.departmentName,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      roles: roles ?? this.roles,
+      remainingTimeOffDays: remainingTimeOffDays ?? this.remainingTimeOffDays,
+      gender: gender ?? this.gender,
+      siteList: siteList ?? this.siteList,
+      identityNum: identityNum ?? this.identityNum,
+      shiftId: shiftId ?? this.shiftId,
+      seniorityDate: seniorityDate ?? this.seniorityDate,
+      emergencyContactName: emergencyContactName ?? this.emergencyContactName,
+      emergencyContactNumber:
+          emergencyContactNumber ?? this.emergencyContactNumber,
+      address: address ?? this.address,
+      departmentHistory: departmentHistory ?? this.departmentHistory,
+      previousTimeOffs: previousTimeOffs ?? this.previousTimeOffs,
+      waitingTimeOffs: waitingTimeOffs ?? this.waitingTimeOffs,
+      productList: productList ?? this.productList,
+    );
   }
 }

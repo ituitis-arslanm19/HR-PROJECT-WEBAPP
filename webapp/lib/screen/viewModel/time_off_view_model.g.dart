@@ -166,8 +166,8 @@ mixin _$TimeOffViewModel on _TimeOffViewModelBase, Store {
       AsyncAction('_TimeOffViewModelBase.deleteTimeOff', context: context);
 
   @override
-  Future deleteTimeOff() {
-    return _$deleteTimeOffAsyncAction.run(() => super.deleteTimeOff());
+  Future deleteTimeOff(int id) {
+    return _$deleteTimeOffAsyncAction.run(() => super.deleteTimeOff(id));
   }
 
   @override

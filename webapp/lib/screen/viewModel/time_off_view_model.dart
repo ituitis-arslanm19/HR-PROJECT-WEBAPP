@@ -121,7 +121,10 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
   }
 
   @action
-  deleteTimeOff() async {}
+  deleteTimeOff(int id) async {
+    await timeOffService.delete(id);
+    init();
+  }
 
   int? _getTimeOffTypeId(String name) {
     for (TimeOffType timeOffType in timeOffTypeList!) {

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../core/constant/enum/enums.dart';
+import '../model/asset.dart';
+import '../model/asset_detail.dart';
 import '../model/department.dart';
 import '../model/employee_detail.dart';
 import '../model/shift.dart';
@@ -56,6 +58,9 @@ abstract class _EmployeeDetailViewModelBase with Store {
   DataState siteListDataState = DataState.READY;
 
   @observable
+  List<Asset>? assetList;
+
+  @observable
   bool? isManager;
 
   @observable
@@ -83,8 +88,7 @@ abstract class _EmployeeDetailViewModelBase with Store {
   init() async {
     if (textEditingControllerList == [])
       textEditingControllerList =
-          List.generate(11, (i) => TextEditingController());
-    productsDataState = DataState.LOADING;
+          List.generate(12, (i) => TextEditingController());
     departmentList = await departmentService.getDepartments();
     siteList = await siteService.getSites();
     shiftList = await shiftService.getShifts();
@@ -124,20 +128,22 @@ abstract class _EmployeeDetailViewModelBase with Store {
           4, TextEditingController(text: employeeDetail!.birthDate));
       textEditingControllerList.insert(
           5, TextEditingController(text: employeeDetail!.startDate));
-      textEditingControllerList.add(TextEditingController(
-          text: employeeDetail!.remainingTimeOffDays != null
-              ? employeeDetail!.remainingTimeOffDays.toString()
-              : ""));
       textEditingControllerList.insert(
-          6, TextEditingController(text: employeeDetail!.phoneNumber));
+          6,
+          TextEditingController(
+              text: employeeDetail!.remainingTimeOffDays != null
+                  ? employeeDetail!.remainingTimeOffDays.toString()
+                  : ""));
       textEditingControllerList.insert(
-          7, TextEditingController(text: employeeDetail!.seniorityDate));
+          7, TextEditingController(text: employeeDetail!.phoneNumber));
       textEditingControllerList.insert(
-          8, TextEditingController(text: employeeDetail!.emergencyContactName));
-      textEditingControllerList.insert(9,
+          8, TextEditingController(text: employeeDetail!.seniorityDate));
+      textEditingControllerList.insert(
+          9, TextEditingController(text: employeeDetail!.emergencyContactName));
+      textEditingControllerList.insert(10,
           TextEditingController(text: employeeDetail!.emergencyContactNumber));
       textEditingControllerList.insert(
-          10, TextEditingController(text: employeeDetail!.address));
+          11, TextEditingController(text: employeeDetail!.address));
       dataState = DataState.READY;
 
       if (employeeDetail!.previousTimeOffs!.isNotEmpty) {
@@ -149,6 +155,7 @@ abstract class _EmployeeDetailViewModelBase with Store {
 
       if (employeeDetail!.productList!.isNotEmpty) {
         productsDataState = DataState.READY;
+        //print(employeeDetail!.productList![0].name);
       } else {
         productsDataState = DataState.EMPTY;
       }
@@ -168,6 +175,12 @@ abstract class _EmployeeDetailViewModelBase with Store {
   @action
   changeIsManager(bool value) {
     isManager = value;
+  }
+
+  @action
+  updateAssetList() async {
+    var x = await employeeService.getEmployeeDetail(id!);
+    assetList = x?.productList;
   }
 
   @action

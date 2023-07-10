@@ -98,10 +98,12 @@ class TimeOffView extends StatelessWidget {
     List<TimeOff> pendingTimeOffList = timeOffViewModel.pendingTimeOffList!;
 
     return buildDataGrid(context, colorScheme, pendingTimeOffList, (date) {
+      final DateFormat formatter = DateFormat('dd/MM/yyyy');
+      final String formatted = formatter.format(date);
       TimeOff delete = pendingTimeOffList
-          .firstWhere((element) => element.startDate == element.endDate);
+          .firstWhere((element) => element.startDate == formatted);
 
-      timeOffViewModel.deleteTimeOff();
+      timeOffViewModel.deleteTimeOff(delete.id!);
     });
   }
 
@@ -272,56 +274,5 @@ class TimeOffView extends StatelessWidget {
       String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
       textEditingController.text = formattedDate;
     }
-  }
-
-  void showDeletePopup(BuildContext context, TimeOffViewModel timeOffViewModel,
-      ThemeData theme, ColorScheme colorScheme, int timeOffId) {
-    showDialog(
-      context: context,
-      builder: (_) => Dialog(
-        child: Container(
-          height: SizeConfig.blockSizeVertical * 15,
-          width: SizeConfig.blockSizeVertical * 40,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "İzin talebinizi iptal etmek istediğinize emin misiniz?",
-                  style: theme.textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.bold, color: Colors.grey),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
-                    onPressed: () => timeOffViewModel.deleteTimeOff(),
-                    child: Text(
-                      "EVET",
-                      style: theme.textTheme.bodyMedium!.copyWith(
-                          color: colorScheme.primary,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(
-                      "HAYIR",
-                      style: theme.textTheme.bodyMedium!.copyWith(
-                          color: colorScheme.primary,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

@@ -109,7 +109,6 @@ class EmployeeDetailView extends StatelessWidget {
                               buildGeneralInfo(viewModel, context),
                               buildTimeOffs(viewModel),
                               Observer(builder: (_) {
-                                print("dADSNADKAFLSŞKSFAASFŞŞAS");
                                 switch (viewModel.productsDataState) {
                                   case DataState.READY:
                                     return DataGrid(
@@ -123,8 +122,8 @@ class EmployeeDetailView extends StatelessWidget {
                                                   buildContext: context,
                                                   id: id,
                                                   isEmployeeInputEnable: false,
-                                                ))).then((value) {
-                                          return viewModel.init();
+                                                ))).then((value) async {
+                                          return await viewModel.init();
                                         });
                                       },
                                       dataSourceList: viewModel

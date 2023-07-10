@@ -62,4 +62,11 @@ class TimeOffService {
         "/timeOff/document/$id", HttpMethod.GET, null, null, TOKEN);
     return base64Decode(result.description!);
   }
+
+  Future<bool?> delete(int id) async {
+    ResponseModel<TimeOff?> result =
+        await networkManager.send<TimeOff, TimeOff>(
+            "/timeOff/$id", HttpMethod.DELETE, TimeOff(), null, TOKEN);
+    return result.error;
+  }
 }

@@ -173,6 +173,22 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
     });
   }
 
+  late final _$assetListAtom =
+      Atom(name: '_EmployeeDetailViewModelBase.assetList', context: context);
+
+  @override
+  List<Asset>? get assetList {
+    _$assetListAtom.reportRead();
+    return super.assetList;
+  }
+
+  @override
+  set assetList(List<Asset>? value) {
+    _$assetListAtom.reportWrite(value, super.assetList, () {
+      super.assetList = value;
+    });
+  }
+
   late final _$isManagerAtom =
       Atom(name: '_EmployeeDetailViewModelBase.isManager', context: context);
 
@@ -259,6 +275,15 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
   @override
   Future init() {
     return _$initAsyncAction.run(() => super.init());
+  }
+
+  late final _$updateAssetListAsyncAction = AsyncAction(
+      '_EmployeeDetailViewModelBase.updateAssetList',
+      context: context);
+
+  @override
+  Future updateAssetList() {
+    return _$updateAssetListAsyncAction.run(() => super.updateAssetList());
   }
 
   late final _$addSiteAsyncAction =
@@ -368,6 +393,7 @@ departmentList: ${departmentList},
 siteList: ${siteList},
 shiftList: ${shiftList},
 siteListDataState: ${siteListDataState},
+assetList: ${assetList},
 isManager: ${isManager},
 isEmployee: ${isEmployee},
 isAdmin: ${isAdmin},
