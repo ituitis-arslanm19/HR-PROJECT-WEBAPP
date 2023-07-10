@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:webapp/screen/model/department_history.dart';
+import 'package:webapp/screen/service/asset_service.dart';
 
 import '../../core/constant/enum/enums.dart';
+import '../../core/network/model/response_model.dart';
 import '../model/asset.dart';
-import '../model/asset_detail.dart';
 import '../model/department.dart';
 import '../model/employee_detail.dart';
 import '../model/shift.dart';
@@ -23,6 +25,7 @@ abstract class _EmployeeDetailViewModelBase with Store {
   final DepartmentService departmentService;
   final SiteService siteService;
   final ShiftService shiftService;
+  final AssetService assetService;
   final int? id;
   final BuildContext buildContext;
   List<TextEditingController> textEditingControllerList = [];
@@ -43,10 +46,16 @@ abstract class _EmployeeDetailViewModelBase with Store {
   DataState productsDataState = DataState.LOADING;
 
   @observable
+  DataState departmentHistoriesDataState = DataState.LOADING;
+
+  @observable
   EmployeeDetail? employeeDetail;
 
   @observable
   List<Department>? departmentList;
+
+  @observable
+  List<DepartmentHistory>? departmentHistories;
 
   @observable
   List<Site>? siteList;
@@ -82,6 +91,7 @@ abstract class _EmployeeDetailViewModelBase with Store {
     this.siteService,
     this.buildContext,
     this.shiftService,
+    this.assetService,
   );
 
   @action
@@ -98,8 +108,36 @@ abstract class _EmployeeDetailViewModelBase with Store {
       employeeDetail!.siteList = <Site>[];
     } else {
       employeeDetail = await employeeService.getEmployeeDetail(id!);
+      if (employeeDetail!.previousTimeOffs!.isNotEmpty) {
+        previousTimeOffsDataState = DataState.READY;
+        currentTimeOff = employeeDetail!.previousTimeOffs!.first;
+      } else {
+        previousTimeOffsDataState = DataState.EMPTY;
+      }
+
+      if (employeeDetail!.productList!.isNotEmpty) {
+        productsDataState = DataState.READY;
+        //print(employeeDetail!.productList![0].name);
+      } else {
+        productsDataState = DataState.EMPTY;
+      }
+
+      if (employeeDetail!.waitingTimeOffs!.isNotEmpty) {
+        pendingTimeOffsDataState = DataState.READY;
+        currentTimeOff = employeeDetail!.waitingTimeOffs!.first;
+      } else {
+        pendingTimeOffsDataState = DataState.EMPTY;
+      }
+
+      if (employeeDetail!.departmentHistories!.isNotEmpty) {
+        departmentHistoriesDataState = DataState.READY;
+      } else {
+        departmentHistoriesDataState = DataState.EMPTY;
+      }
     }
     if (employeeDetail != null) {
+      assetList = employeeDetail!.productList;
+      departmentHistories = employeeDetail!.departmentHistories;
       isManager = employeeDetail!.roles != null
           ? employeeDetail!.roles!.contains("MANAGER")
           : false;
@@ -145,30 +183,9 @@ abstract class _EmployeeDetailViewModelBase with Store {
       textEditingControllerList.insert(
           11, TextEditingController(text: employeeDetail!.address));
       dataState = DataState.READY;
-
-      if (employeeDetail!.previousTimeOffs!.isNotEmpty) {
-        previousTimeOffsDataState = DataState.READY;
-        currentTimeOff = employeeDetail!.previousTimeOffs!.first;
-      } else {
-        previousTimeOffsDataState = DataState.EMPTY;
-      }
-
-      if (employeeDetail!.productList!.isNotEmpty) {
-        productsDataState = DataState.READY;
-        //print(employeeDetail!.productList![0].name);
-      } else {
-        productsDataState = DataState.EMPTY;
-      }
-
-      if (employeeDetail!.waitingTimeOffs!.isNotEmpty) {
-        pendingTimeOffsDataState = DataState.READY;
-        currentTimeOff = employeeDetail!.waitingTimeOffs!.first;
-      } else {
-        pendingTimeOffsDataState = DataState.EMPTY;
-      }
     } else {
-      dataState = previousTimeOffsDataState =
-          pendingTimeOffsDataState = DataState.ERROR;
+      dataState = previousTimeOffsDataState = pendingTimeOffsDataState =
+          departmentHistoriesDataState = DataState.ERROR;
     }
   }
 
@@ -181,6 +198,38 @@ abstract class _EmployeeDetailViewModelBase with Store {
   updateAssetList() async {
     var x = await employeeService.getEmployeeDetail(id!);
     assetList = x?.productList;
+    if (assetList == null) {
+      productsDataState = DataState.ERROR;
+    } else {
+      productsDataState =
+          assetList!.isEmpty ? DataState.EMPTY : DataState.READY;
+    }
+  }
+
+  @action
+  deleteAsset(int id) async {
+    await assetService.delete(id);
+
+    updateAssetList();
+  }
+
+  @action
+  deleteDepartmentHistory(int id) async {
+    var update = employeeDetail!.departmentHistories;
+  }
+
+  @action
+  updateDepartmentHistories(DepartmentHistory departmentHistory) async {
+    EmployeeDetail update = employeeDetail!;
+    update.departmentHistories?.add(departmentHistory);
+    var x = await employeeService.updateEmployee(update);
+    departmentHistories = x?.departmentHistories;
+    if (departmentHistories == null) {
+      departmentHistoriesDataState = DataState.ERROR;
+    } else {
+      departmentHistoriesDataState =
+          departmentHistories!.isEmpty ? DataState.EMPTY : DataState.READY;
+    }
   }
 
   @action

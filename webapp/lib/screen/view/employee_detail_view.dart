@@ -5,9 +5,11 @@ import 'package:webapp/core/constant/strings.dart';
 import 'package:webapp/core/widgets/other/data_grid.dart';
 import 'package:webapp/core/widgets/other/simple_container.dart';
 import 'package:webapp/core/widgets/other/step_progress_indicator.dart';
+import 'package:webapp/screen/service/asset_service.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
 import '../../core/util/size_config.dart';
+import '../../core/widgets/other/button.dart';
 import '../../core/widgets/other/drop_down_input_text.dart';
 import '../../core/widgets/other/input_text2.dart';
 import '../model/time_off.dart';
@@ -17,6 +19,7 @@ import '../service/shift_service.dart';
 import '../service/site_service.dart';
 import '../viewModel/employee_detail_view_model.dart';
 import 'asset_detail_view.dart';
+import 'department_history_detail_view.dart';
 
 class EmployeeDetailView extends StatelessWidget {
   final int? id;
@@ -44,13 +47,13 @@ class EmployeeDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     EmployeeDetailViewModel viewModel = EmployeeDetailViewModel(
-      EmployeeService(networkManager: NetworkManager()),
-      id,
-      DepartmentService(networkManager: NetworkManager()),
-      SiteService(networkManager: NetworkManager()),
-      context,
-      ShiftService(networkManager: NetworkManager()),
-    );
+        EmployeeService(networkManager: NetworkManager()),
+        id,
+        DepartmentService(networkManager: NetworkManager()),
+        SiteService(networkManager: NetworkManager()),
+        context,
+        ShiftService(networkManager: NetworkManager()),
+        AssetService(networkManager: NetworkManager()));
     viewModel.init();
     return SingleChildScrollView(
         child: SizedBox(
@@ -108,54 +111,8 @@ class EmployeeDetailView extends StatelessWidget {
                             child: TabBarView(children: [
                               buildGeneralInfo(viewModel, context),
                               buildTimeOffs(viewModel),
-                              Observer(builder: (_) {
-                                switch (viewModel.productsDataState) {
-                                  case DataState.READY:
-                                    return DataGrid(
-                                      onRowTap: (id) {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) => Dialog(
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                child: AssetDetailView(
-                                                  buildContext: context,
-                                                  id: id,
-                                                  isEmployeeInputEnable: false,
-                                                ))).then((value) async {
-                                          return await viewModel.init();
-                                        });
-                                      },
-                                      dataSourceList: viewModel
-                                          .employeeDetail!.productList!,
-                                      titles: const [
-                                        "Id",
-                                        "İsim",
-                                        "Veriliş Tarihi",
-                                        "İade Bilgisi"
-                                      ],
-                                      columnNames: const [
-                                        "id",
-                                        "name",
-                                        "dateOfIssue",
-                                        "status"
-                                      ],
-                                    );
-
-                                  case DataState.LOADING:
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  case DataState.ERROR:
-                                    return const Center(
-                                        child: Text(ERROR_MESSAGE));
-                                  case DataState.EMPTY:
-                                    return const Center(
-                                        child: Text(
-                                            "Üzerine zimmetli ürün bulunmamakta"));
-                                }
-                              }),
-                              Container(),
+                              buildAssets(viewModel, context),
+                              buildDepartmentHistories(viewModel, context),
                             ]),
                           ),
                         ],
@@ -164,6 +121,127 @@ class EmployeeDetailView extends StatelessWidget {
             );
         }
       }),
+    );
+  }
+
+  Stack buildDepartmentHistories(
+      EmployeeDetailViewModel viewModel, BuildContext context) {
+    return Stack(
+      children: [
+        Observer(builder: (_) {
+          switch (viewModel.departmentHistoriesDataState) {
+            case DataState.READY:
+              return DataGrid(
+                onRowTap: (id) {},
+                dataSourceList: viewModel.departmentHistories!,
+                titles: const [
+                  "Id",
+                  "Departman Adı",
+                  "Vardiya",
+                  "Pozisyon",
+                  "Başlangıç Tarihi",
+                  "Ayrılış Tarihi"
+                ],
+                columnNames: const [
+                  "id",
+                  "departmentName",
+                  "shift",
+                  "positionName",
+                  "startDate",
+                  "endDate"
+                ],
+              );
+
+            case DataState.LOADING:
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            case DataState.ERROR:
+              return const Center(child: Text(ERROR_MESSAGE));
+            case DataState.EMPTY:
+              return const Center(
+                  child: Text("Departman geçmişi bulunmamakta"));
+          }
+        }),
+        buildAddNewButton(context, viewModel, () {
+          showDialog(
+              context: context,
+              builder: (context) => Dialog(
+                    backgroundColor: Colors.transparent,
+                    child: DepartmentHistoryDetailView(
+                      buildContext: context,
+                      onSubmit: (departmenthistory) {
+                        viewModel.updateDepartmentHistories(departmenthistory);
+                      },
+                      shiftList: viewModel.shiftList!,
+                      departmentList: viewModel.departmentList!,
+                    ),
+                  )).then((value) => viewModel.updateAssetList());
+        })
+      ],
+    );
+  }
+
+  Align buildAddNewButton(BuildContext context,
+      EmployeeDetailViewModel viewModel, void Function() onPressed) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: SizedBox(
+        height: SizeConfig.blockSizeVertical * 5,
+        width: SizeConfig.blockSizeHorizontal * 10,
+        child: Button(onPressed: onPressed, text: "Yeni Ekle +"),
+      ),
+    );
+  }
+
+  Stack buildAssets(EmployeeDetailViewModel viewModel, BuildContext context) {
+    return Stack(
+      children: [
+        Observer(builder: (_) {
+          switch (viewModel.productsDataState) {
+            case DataState.READY:
+              return DataGrid(
+                deleteFunction: (id) {
+                  viewModel.deleteAsset(id);
+                },
+                onRowTap: (id) {
+                  showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                          backgroundColor: Colors.transparent,
+                          child: AssetDetailView(
+                            buildContext: context,
+                            id: id,
+                            isEmployeeInputEnable: false,
+                          ))).then((value) {
+                    return viewModel.updateAssetList();
+                  });
+                },
+                dataSourceList: viewModel.assetList!,
+                titles: const ["Id", "İsim", "Veriliş Tarihi", "İade Bilgisi"],
+                columnNames: const ["id", "name", "dateOfIssue", "status"],
+              );
+
+            case DataState.LOADING:
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            case DataState.ERROR:
+              return const Center(child: Text(ERROR_MESSAGE));
+            case DataState.EMPTY:
+              return const Center(
+                  child: Text("Üzerine zimmetli ürün bulunmamakta"));
+          }
+        }),
+        buildAddNewButton(context, viewModel, () {
+          showDialog(
+              context: context,
+              builder: (context) => Dialog(
+                    backgroundColor: Colors.transparent,
+                    child: AssetDetailView(buildContext: context, id: null),
+                  )).then((value) => viewModel.updateAssetList());
+        })
+      ],
     );
   }
 

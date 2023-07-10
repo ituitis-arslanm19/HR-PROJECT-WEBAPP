@@ -93,6 +93,24 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
     });
   }
 
+  late final _$departmentHistoriesDataStateAtom = Atom(
+      name: '_EmployeeDetailViewModelBase.departmentHistoriesDataState',
+      context: context);
+
+  @override
+  DataState get departmentHistoriesDataState {
+    _$departmentHistoriesDataStateAtom.reportRead();
+    return super.departmentHistoriesDataState;
+  }
+
+  @override
+  set departmentHistoriesDataState(DataState value) {
+    _$departmentHistoriesDataStateAtom
+        .reportWrite(value, super.departmentHistoriesDataState, () {
+      super.departmentHistoriesDataState = value;
+    });
+  }
+
   late final _$employeeDetailAtom = Atom(
       name: '_EmployeeDetailViewModelBase.employeeDetail', context: context);
 
@@ -122,6 +140,23 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
   set departmentList(List<Department>? value) {
     _$departmentListAtom.reportWrite(value, super.departmentList, () {
       super.departmentList = value;
+    });
+  }
+
+  late final _$departmentHistoriesAtom = Atom(
+      name: '_EmployeeDetailViewModelBase.departmentHistories',
+      context: context);
+
+  @override
+  List<DepartmentHistory>? get departmentHistories {
+    _$departmentHistoriesAtom.reportRead();
+    return super.departmentHistories;
+  }
+
+  @override
+  set departmentHistories(List<DepartmentHistory>? value) {
+    _$departmentHistoriesAtom.reportWrite(value, super.departmentHistories, () {
+      super.departmentHistories = value;
     });
   }
 
@@ -286,6 +321,34 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
     return _$updateAssetListAsyncAction.run(() => super.updateAssetList());
   }
 
+  late final _$deleteAssetAsyncAction =
+      AsyncAction('_EmployeeDetailViewModelBase.deleteAsset', context: context);
+
+  @override
+  Future deleteAsset(int id) {
+    return _$deleteAssetAsyncAction.run(() => super.deleteAsset(id));
+  }
+
+  late final _$deleteDepartmentHistoryAsyncAction = AsyncAction(
+      '_EmployeeDetailViewModelBase.deleteDepartmentHistory',
+      context: context);
+
+  @override
+  Future deleteDepartmentHistory(int id) {
+    return _$deleteDepartmentHistoryAsyncAction
+        .run(() => super.deleteDepartmentHistory(id));
+  }
+
+  late final _$updateDepartmentHistoriesAsyncAction = AsyncAction(
+      '_EmployeeDetailViewModelBase.updateDepartmentHistories',
+      context: context);
+
+  @override
+  Future updateDepartmentHistories(DepartmentHistory departmentHistory) {
+    return _$updateDepartmentHistoriesAsyncAction
+        .run(() => super.updateDepartmentHistories(departmentHistory));
+  }
+
   late final _$addSiteAsyncAction =
       AsyncAction('_EmployeeDetailViewModelBase.addSite', context: context);
 
@@ -388,8 +451,10 @@ previousTimeOffsDataState: ${previousTimeOffsDataState},
 pendingTimeOffsDataState: ${pendingTimeOffsDataState},
 currentTimeOff: ${currentTimeOff},
 productsDataState: ${productsDataState},
+departmentHistoriesDataState: ${departmentHistoriesDataState},
 employeeDetail: ${employeeDetail},
 departmentList: ${departmentList},
+departmentHistories: ${departmentHistories},
 siteList: ${siteList},
 shiftList: ${shiftList},
 siteListDataState: ${siteListDataState},

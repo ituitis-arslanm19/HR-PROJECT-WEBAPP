@@ -24,7 +24,9 @@ abstract class _EmployeeViewModelBase with Store {
 
   @action
   init() async {
-    employees = await employeeService.getEmployees();
+    employees = clientType == ClientType.HR
+        ? await employeeService.getEmployees()
+        : await employeeService.getEmployeesbyDepartment();
     employeeList = employees;
     if (employeeList != null && employeeList!.isNotEmpty) {
       dataState = DataState.READY;

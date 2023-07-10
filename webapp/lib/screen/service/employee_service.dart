@@ -22,6 +22,13 @@ class EmployeeService {
     return result.data;
   }
 
+  Future<List<Employee>?> getEmployeesbyDepartment() async {
+    ResponseModel<List<Employee>> result =
+        await networkManager.send<List<Employee>, Employee>(
+            "/employee/department", HttpMethod.GET, Employee(), null, null);
+    return result.data;
+  }
+
   Future<List<Employee>?> getManagers() async {
     ResponseModel<List<Employee>> result =
         await networkManager.send<List<Employee>, Employee>(
