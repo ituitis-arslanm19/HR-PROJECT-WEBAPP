@@ -68,8 +68,8 @@ class ShiftDetailView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
-                            height: MediaQuery.of(context).size.height * 0.04,
-                            width: MediaQuery.of(context).size.width * 0.05,
+                            height: SizeConfig.screenHeight * 0.04,
+                            width: SizeConfig.screenWidth * 0.05,
                             child: TextButton(
                                 onPressed: () async {
                                   if (await viewModel.updateShift()) {
@@ -87,8 +87,8 @@ class ShiftDetailView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
-                            height: MediaQuery.of(context).size.height * 0.04,
-                            width: MediaQuery.of(context).size.width * 0.05,
+                            height: SizeConfig.screenHeight * 0.04,
+                            width: SizeConfig.screenWidth * 0.05,
                             child: TextButton(
                                 onPressed: () =>
                                     Navigator.of(buildContext).pop(),

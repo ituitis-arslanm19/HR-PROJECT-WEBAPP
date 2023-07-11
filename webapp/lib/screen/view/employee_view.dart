@@ -40,21 +40,25 @@ class EmployeeView extends StatelessWidget {
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 10,
               ),
-              SizedBox(
-                height: SizeConfig.blockSizeVertical * 5,
-                width: SizeConfig.blockSizeHorizontal * 10,
-                child: Button(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) => Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: EmployeeDetailView(
-                                    buildContext: context, id: null),
-                              )).then((value) => viewModel.init());
-                    },
-                    text: "Yeni Ekle +"),
-              )
+              //Yönetici ise yeni ekleme yapamaz
+              if (clientType == ClientType.HR)
+                SizedBox(
+                  height: SizeConfig.blockSizeVertical * 5,
+                  width: SizeConfig.blockSizeHorizontal * 10,
+                  child: Button(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  child: EmployeeDetailView(
+                                      isHr: true,
+                                      buildContext: context,
+                                      id: null),
+                                )).then((value) => viewModel.init());
+                      },
+                      text: "Yeni Ekle +"),
+                )
             ])),
         Observer(builder: (_) {
           switch (viewModel.dataState) {
@@ -91,7 +95,11 @@ class EmployeeView extends StatelessWidget {
               context: context,
               builder: (context) => Dialog(
                     backgroundColor: Colors.transparent,
-                    child: EmployeeDetailView(buildContext: context, id: id),
+                    child: EmployeeDetailView(
+                      buildContext: context,
+                      id: id,
+                      isHr: clientType == ClientType.MANAGER ? false : true,
+                    ),
                   )).then((value) => viewModel.init());
         },
         titles: ["Id", "Ad", "Soyad", "Email", "Departman"],

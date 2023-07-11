@@ -102,6 +102,7 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
 
   @action
   requestNewTimeOff() async {
+    dataState1 = DataState.LOADING;
     if (formKeyNewTimeOff.currentState!.validate()) {
       ResponseModel<TimeOff?> result = await timeOffService.requestNewTimeOff(
           CreateTimeOffRequest(
@@ -109,9 +110,9 @@ abstract class _TimeOffViewModelBase extends BaseViewModel with Store {
               endDate: controllers[1].text,
               timeOffTypeId: _getTimeOffTypeId(controllers[2].text)));
       if ((!result.error!) || result.data != null) {
-        pendingTimeOffList!.add(result.data!);
-        if (dataState1 == DataState.EMPTY) dataState1 = DataState.READY;
+        pendingTimeOffList!.insert(0, result.data!);
       }
+      dataState1 = DataState.READY;
       ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
           content: Text(
         result.description!,

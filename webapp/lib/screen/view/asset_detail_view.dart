@@ -17,11 +17,13 @@ class AssetDetailView extends StatelessWidget {
   final int? id;
   final BuildContext buildContext;
   final bool? isEmployeeInputEnable;
+  final String? employeeName;
   const AssetDetailView(
       {super.key,
       this.id,
       required this.buildContext,
-      this.isEmployeeInputEnable = true});
+      this.isEmployeeInputEnable = true,
+      this.employeeName});
 
   @override
   Widget build(BuildContext context) {
@@ -109,8 +111,8 @@ class AssetDetailView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
-                width: MediaQuery.of(context).size.width * 0.05,
+                height: SizeConfig.screenHeight * 0.04,
+                width: SizeConfig.screenWidth * 0.05,
                 child: TextButton(
                     onPressed: () async {
                       if (await viewModel.updateAssetStatus()) {
@@ -127,8 +129,8 @@ class AssetDetailView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
-                width: MediaQuery.of(context).size.width * 0.05,
+                height: SizeConfig.screenHeight * 0.04,
+                width: SizeConfig.screenWidth * 0.05,
                 child: TextButton(
                     onPressed: () => Navigator.of(buildContext).pop(),
                     style: TextButton.styleFrom(
@@ -172,13 +174,15 @@ class AssetDetailView extends StatelessWidget {
                 enabled: enabled && isEmployeeInputEnable!,
                 title: "Çalışan",
                 textEditingController: TextEditingController(
-                    text: viewModel.assetDetail!.employeeId != null
-                        ? (employee.firstName ?? "") +
-                            " " +
-                            (employee.lastName ?? "")
-                        : ""),
+                    text: employeeName != null
+                        ? employeeName
+                        : viewModel.assetDetail!.employeeId != null
+                            ? (employee.firstName ?? "") +
+                                " " +
+                                (employee.lastName ?? "")
+                            : ""),
                 items: viewModel.employeeList!
-                    .map((e) => (e.firstName ?? "") + "" + (e.lastName ?? ""))
+                    .map((e) => (e.firstName ?? "") + " " + (e.lastName ?? ""))
                     .toList(),
                 onTap: (index) {
                   viewModel.assetDetail!.employeeId =
@@ -228,8 +232,8 @@ class AssetDetailView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.04,
-                    width: MediaQuery.of(context).size.width * 0.05,
+                    height: SizeConfig.screenHeight * 0.04,
+                    width: SizeConfig.screenWidth * 0.05,
                     child: TextButton(
                         onPressed: () {
                           viewModel.pageState = !viewModel.pageState;
@@ -244,8 +248,8 @@ class AssetDetailView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.04,
-                  width: MediaQuery.of(context).size.width * 0.05,
+                  height: SizeConfig.screenHeight * 0.04,
+                  width: SizeConfig.screenWidth * 0.05,
                   child: TextButton(
                       onPressed: () async {
                         if (await viewModel.updateAsset()) {
@@ -262,8 +266,8 @@ class AssetDetailView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.04,
-                  width: MediaQuery.of(context).size.width * 0.05,
+                  height: SizeConfig.screenHeight * 0.04,
+                  width: SizeConfig.screenWidth * 0.05,
                   child: TextButton(
                       onPressed: () => Navigator.of(buildContext).pop(),
                       style: TextButton.styleFrom(

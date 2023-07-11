@@ -61,14 +61,13 @@ class DepartmentDetailView extends StatelessWidget {
                             child: DropDownInputText(
                               title: "Departman Yöneticisi",
                               textEditingController: TextEditingController(
-                                  text: viewModel
-                                              .departmentDetail!.managerId !=
+                                  text: viewModel.departmentDetail!.managerId !=
                                           null
-                                      ?  viewModel.employeeList!
+                                      ? viewModel.employeeList!
                                           .firstWhere((element) =>
                                               element.id ==
-                                              viewModel.departmentDetail!
-                                                  .managerId)
+                                              viewModel
+                                                  .departmentDetail!.managerId)
                                           .firstName
                                       : ""),
                               items: viewModel.employeeList!
@@ -89,15 +88,15 @@ class DepartmentDetailView extends StatelessWidget {
                         title: "Üst Departman",
                         textEditingController: TextEditingController(
                             text: viewModel
-                                              .departmentDetail!.parentDepartmentId !=
-                                          null
-                                      ?  viewModel.departmentList!
-                                          .firstWhere((element) =>
-                                              element.id ==
-                                              viewModel.departmentDetail!
-                                                  .parentDepartmentId)
-                                          .name
-                                      : ""),
+                                        .departmentDetail!.parentDepartmentId !=
+                                    null
+                                ? viewModel.departmentList!
+                                    .firstWhere((element) =>
+                                        element.id ==
+                                        viewModel.departmentDetail!
+                                            .parentDepartmentId)
+                                    .name
+                                : ""),
                         items: viewModel.departmentList!
                             .map((e) => e.name!)
                             .toList(),
@@ -117,8 +116,8 @@ class DepartmentDetailView extends StatelessWidget {
                                 padding: const EdgeInsets.all(4.0),
                                 child: DropDownInputText(
                                   title: "Yönetici",
-                                  textEditingController: TextEditingController(
-                                      text: ""),
+                                  textEditingController:
+                                      TextEditingController(text: ""),
                                   items: viewModel.employeeList!
                                       .map((e) =>
                                           "${e.firstName!} ${e.lastName!}")
@@ -160,8 +159,8 @@ class DepartmentDetailView extends StatelessWidget {
                               fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.30,
-                      height: MediaQuery.of(context).size.height * 0.18,
+                      width: SizeConfig.screenWidth * 0.30,
+                      height: SizeConfig.screenHeight * 0.18,
                       child: SingleChildScrollView(
                           child: viewModel.employeeListDataState ==
                                   DataState.READY

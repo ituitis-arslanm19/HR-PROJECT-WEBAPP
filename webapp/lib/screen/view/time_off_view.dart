@@ -121,11 +121,15 @@ class TimeOffView extends StatelessWidget {
                 backgroundColor: colorScheme.background.withOpacity(0.8),
                 child: StepProgressIndicator(
                   previousSteps: timeOffList
-                      .firstWhere((element) => element.startDate == formatted)
-                      .signHistories!,
+                          .firstWhere(
+                              (element) => element.startDate == formatted)
+                          .signHistories ??
+                      [],
                   futureSteps: timeOffList
-                      .firstWhere((element) => element.startDate == formatted)
-                      .managersToSign!,
+                          .firstWhere(
+                              (element) => element.startDate == formatted)
+                          .managersToSign ??
+                      [],
                 ),
               );
             });

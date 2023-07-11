@@ -24,8 +24,9 @@ import 'department_history_detail_view.dart';
 class EmployeeDetailView extends StatelessWidget {
   final int? id;
   final BuildContext buildContext;
+  final bool? isHr;
   const EmployeeDetailView(
-      {super.key, required this.id, required this.buildContext});
+      {super.key, required this.id, required this.buildContext, this.isHr});
 
   void _showCalendar(
       BuildContext context, TextEditingController textEditingController) async {
@@ -132,6 +133,11 @@ class EmployeeDetailView extends StatelessWidget {
           switch (viewModel.departmentHistoriesDataState) {
             case DataState.READY:
               return DataGrid(
+                deleteFunction: (isHr == true)
+                    ? (id) {
+                        viewModel.deleteDepartmentHistory(id);
+                      }
+                    : null,
                 onRowTap: (id) {},
                 dataSourceList: viewModel.departmentHistories!,
                 titles: const [
@@ -163,21 +169,24 @@ class EmployeeDetailView extends StatelessWidget {
                   child: Text("Departman geçmişi bulunmamakta"));
           }
         }),
-        buildAddNewButton(context, viewModel, () {
-          showDialog(
-              context: context,
-              builder: (context) => Dialog(
-                    backgroundColor: Colors.transparent,
-                    child: DepartmentHistoryDetailView(
-                      buildContext: context,
-                      onSubmit: (departmenthistory) {
-                        viewModel.updateDepartmentHistories(departmenthistory);
-                      },
-                      shiftList: viewModel.shiftList!,
-                      departmentList: viewModel.departmentList!,
-                    ),
-                  )).then((value) => viewModel.updateAssetList());
-        })
+        //Yönetici ise yeni ekleme yapamaz.
+        if (isHr == true)
+          buildAddNewButton(context, viewModel, () {
+            showDialog(
+                context: context,
+                builder: (context) => Dialog(
+                      backgroundColor: Colors.transparent,
+                      child: DepartmentHistoryDetailView(
+                        buildContext: context,
+                        onSubmit: (departmenthistory) {
+                          viewModel
+                              .updateDepartmentHistories(departmenthistory);
+                        },
+                        shiftList: viewModel.shiftList!,
+                        departmentList: viewModel.departmentList!,
+                      ),
+                    )).then((value) => viewModel.updateAssetList());
+          })
       ],
     );
   }
@@ -201,21 +210,25 @@ class EmployeeDetailView extends StatelessWidget {
           switch (viewModel.productsDataState) {
             case DataState.READY:
               return DataGrid(
-                deleteFunction: (id) {
-                  viewModel.deleteAsset(id);
-                },
+                deleteFunction: (isHr == true)
+                    ? (id) {
+                        viewModel.deleteDepartmentHistory(id);
+                      }
+                    : null,
                 onRowTap: (id) {
-                  showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                          backgroundColor: Colors.transparent,
-                          child: AssetDetailView(
-                            buildContext: context,
-                            id: id,
-                            isEmployeeInputEnable: false,
-                          ))).then((value) {
-                    return viewModel.updateAssetList();
-                  });
+                  (isHr == true)
+                      ? showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                              backgroundColor: Colors.transparent,
+                              child: AssetDetailView(
+                                buildContext: context,
+                                id: id,
+                                isEmployeeInputEnable: false,
+                              ))).then((value) {
+                          return viewModel.updateAssetList();
+                        })
+                      : null;
                 },
                 dataSourceList: viewModel.assetList!,
                 titles: const ["Id", "İsim", "Veriliş Tarihi", "İade Bilgisi"],
@@ -233,14 +246,21 @@ class EmployeeDetailView extends StatelessWidget {
                   child: Text("Üzerine zimmetli ürün bulunmamakta"));
           }
         }),
-        buildAddNewButton(context, viewModel, () {
-          showDialog(
-              context: context,
-              builder: (context) => Dialog(
-                    backgroundColor: Colors.transparent,
-                    child: AssetDetailView(buildContext: context, id: null),
-                  )).then((value) => viewModel.updateAssetList());
-        })
+        if (isHr == true)
+          buildAddNewButton(context, viewModel, () {
+            showDialog(
+                context: context,
+                builder: (context) => Dialog(
+                      backgroundColor: Colors.transparent,
+                      child: AssetDetailView(
+                        buildContext: context,
+                        id: null,
+                        isEmployeeInputEnable: false,
+                        employeeName:
+                            "${viewModel.employeeDetail!.firstName ?? "Hata"} ${viewModel.employeeDetail!.lastName ?? ""}",
+                      ),
+                    )).then((value) => viewModel.updateAssetList());
+          })
       ],
     );
   }
@@ -260,8 +280,10 @@ class EmployeeDetailView extends StatelessWidget {
                   children: [
                     StepProgressIndicator(
                         padding: 0,
-                        previousSteps: viewModel.currentTimeOff!.signHistories!,
-                        futureSteps: viewModel.currentTimeOff!.managersToSign!),
+                        previousSteps:
+                            viewModel.currentTimeOff!.signHistories ?? [],
+                        futureSteps:
+                            viewModel.currentTimeOff!.managersToSign ?? []),
                   ],
                 ),
               ))
@@ -357,7 +379,8 @@ class EmployeeDetailView extends StatelessWidget {
           child: Column(
             children: [
               buildOtherInfos(viewModel, context),
-              buildButtons(context, viewModel),
+              // Yönetici ise çalışanı güncelleyemez
+              if (isHr == true) buildButtons(context, viewModel),
             ],
           ),
         ),
@@ -559,17 +582,18 @@ class EmployeeDetailView extends StatelessWidget {
             flex: 2,
             child: Row(
               children: [
-                Expanded(
-                  flex: 8,
-                  child: DropDownInputText(
-                    title: "İzinli Olduğu Alanlar",
-                    textEditingController: TextEditingController(),
-                    items: viewModel.siteList!.map((e) => e.name).toList(),
-                    onTap: (index) {
-                      viewModel.siteId = viewModel.siteList![index].id;
-                    },
+                if (isHr == true)
+                  Expanded(
+                    flex: 8,
+                    child: DropDownInputText(
+                      title: "İzinli Olduğu Alanlar",
+                      textEditingController: TextEditingController(),
+                      items: viewModel.siteList!.map((e) => e.name).toList(),
+                      onTap: (index) {
+                        viewModel.siteId = viewModel.siteList![index].id;
+                      },
+                    ),
                   ),
-                ),
                 Expanded(
                   flex: 2,
                   child: Column(
@@ -580,15 +604,16 @@ class EmployeeDetailView extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              TextButton(
-                                  onPressed: () =>
-                                      viewModel.addSite(viewModel.siteId!),
-                                  child: const Text("Ekle",
-                                      style: TextStyle(color: Colors.white)),
-                                  style: TextButton.styleFrom(
-                                      backgroundColor: Theme.of(buildContext)
-                                          .colorScheme
-                                          .primary)),
+                              if (isHr == true)
+                                TextButton(
+                                    onPressed: () =>
+                                        viewModel.addSite(viewModel.siteId!),
+                                    child: const Text("Ekle",
+                                        style: TextStyle(color: Colors.white)),
+                                    style: TextButton.styleFrom(
+                                        backgroundColor: Theme.of(buildContext)
+                                            .colorScheme
+                                            .primary)),
                             ],
                           ),
                         ),
@@ -741,45 +766,48 @@ class EmployeeDetailView extends StatelessWidget {
       EmployeeDetailViewModel viewModel, BuildContext context) {
     return Row(
       children: [
-        Expanded(
-          flex: 5,
-          child: DropDownInputText(
-            title: "Departman",
-            textEditingController: TextEditingController(
-                text: viewModel.employeeDetail!.departmentId != null
-                    ? viewModel.departmentList!
-                            .firstWhere((element) =>
-                                element.id ==
-                                viewModel.employeeDetail!.departmentId)
-                            .name ??
-                        ""
-                    : ""),
-            items: viewModel.departmentList!.map((e) => e.name).toList(),
-            onTap: (index) {
-              viewModel.employeeDetail!.departmentId =
-                  viewModel.departmentList![index].id;
-            },
+        if (isHr == true)
+          Expanded(
+            flex: 5,
+            child: DropDownInputText(
+              title: "Departman",
+              textEditingController: TextEditingController(
+                  text: viewModel.employeeDetail!.departmentId != null
+                      ? viewModel.departmentList!
+                              .firstWhere((element) =>
+                                  element.id ==
+                                  viewModel.employeeDetail!.departmentId)
+                              .name ??
+                          ""
+                      : ""),
+              items: viewModel.departmentList!.map((e) => e.name).toList(),
+              onTap: (index) {
+                viewModel.employeeDetail!.departmentId =
+                    viewModel.departmentList![index].id;
+              },
+            ),
           ),
-        ),
-        Expanded(
-          flex: 5,
-          child: DropDownInputText(
-            title: "Vardiya",
-            textEditingController: TextEditingController(
-                text: viewModel.employeeDetail!.shiftId != null
-                    ? viewModel.shiftList!
-                            .firstWhere((element) =>
-                                element.id == viewModel.employeeDetail!.shiftId)
-                            .name ??
-                        ""
-                    : ""),
-            items: viewModel.shiftList!.map((e) => e.name).toList(),
-            onTap: (index) {
-              viewModel.employeeDetail!.shiftId =
-                  viewModel.shiftList![index].id;
-            },
+        if (isHr == true)
+          Expanded(
+            flex: 5,
+            child: DropDownInputText(
+              title: "Vardiya",
+              textEditingController: TextEditingController(
+                  text: viewModel.employeeDetail!.shiftId != null
+                      ? viewModel.shiftList!
+                              .firstWhere((element) =>
+                                  element.id ==
+                                  viewModel.employeeDetail!.shiftId)
+                              .name ??
+                          ""
+                      : ""),
+              items: viewModel.shiftList!.map((e) => e.name).toList(),
+              onTap: (index) {
+                viewModel.employeeDetail!.shiftId =
+                    viewModel.shiftList![index].id;
+              },
+            ),
           ),
-        ),
       ],
     );
   }

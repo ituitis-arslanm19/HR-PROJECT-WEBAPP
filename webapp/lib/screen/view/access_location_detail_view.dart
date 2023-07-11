@@ -74,13 +74,16 @@ class AccessLocationDetailView extends StatelessWidget {
                           child: DropDownInputText(
                             title: "Alan",
                             textEditingController: TextEditingController(
-                                text: viewModel.accessLocationDetail!.siteId != null ? viewModel.siteList!
-                                        .firstWhere((element) =>
-                                            element.id ==
-                                            viewModel
-                                                .accessLocationDetail!.siteId)
-                                        .name ??
-                                    "" : ""),
+                                text: viewModel.accessLocationDetail!.siteId !=
+                                        null
+                                    ? viewModel.siteList!
+                                            .firstWhere((element) =>
+                                                element.id ==
+                                                viewModel.accessLocationDetail!
+                                                    .siteId)
+                                            .name ??
+                                        ""
+                                    : ""),
                             items:
                                 viewModel.siteList!.map((e) => e.name).toList(),
                             onTap: (index) {
@@ -105,8 +108,8 @@ class AccessLocationDetailView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          height: MediaQuery.of(context).size.height * 0.04,
-                          width: MediaQuery.of(context).size.width * 0.05,
+                          height: SizeConfig.screenHeight * 0.04,
+                          width: SizeConfig.screenWidth * 0.05,
                           child: TextButton(
                               onPressed: () async {
                                 if (await viewModel.updateAccessLocation()) {
@@ -124,8 +127,8 @@ class AccessLocationDetailView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          height: MediaQuery.of(context).size.height * 0.04,
-                          width: MediaQuery.of(context).size.width * 0.05,
+                          height: SizeConfig.screenHeight * 0.04,
+                          width: SizeConfig.screenWidth * 0.05,
                           child: TextButton(
                               onPressed: () => Navigator.of(buildContext).pop(),
                               child: const Text("İptal",

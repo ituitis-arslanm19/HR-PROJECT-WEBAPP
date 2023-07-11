@@ -4,7 +4,6 @@ import 'package:webapp/screen/model/department_history.dart';
 import 'package:webapp/screen/service/asset_service.dart';
 
 import '../../core/constant/enum/enums.dart';
-import '../../core/network/model/response_model.dart';
 import '../model/asset.dart';
 import '../model/department.dart';
 import '../model/employee_detail.dart';
@@ -40,7 +39,7 @@ abstract class _EmployeeDetailViewModelBase with Store {
   DataState pendingTimeOffsDataState = DataState.LOADING;
 
   @observable
-  TimeOff? currentTimeOff;
+  TimeOff? currentTimeOff = TimeOff();
 
   @observable
   DataState productsDataState = DataState.LOADING;
@@ -214,8 +213,12 @@ abstract class _EmployeeDetailViewModelBase with Store {
   }
 
   @action
-  deleteDepartmentHistory(int id) async {
-    var update = employeeDetail!.departmentHistories;
+  deleteDepartmentHistory(int id1) async {
+    var update = employeeDetail!;
+    update.departmentHistories?.removeWhere((element) => element.id == id1);
+    await employeeService.updateEmployee(update);
+    EmployeeDetail? x = await employeeService.getEmployeeDetail(id!);
+    departmentHistories = x?.departmentHistories;
   }
 
   @action
