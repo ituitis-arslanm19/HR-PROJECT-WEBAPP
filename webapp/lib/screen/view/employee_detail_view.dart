@@ -26,7 +26,10 @@ class EmployeeDetailView extends StatelessWidget {
   final BuildContext buildContext;
   final bool? isHr;
   const EmployeeDetailView(
-      {super.key, required this.id, required this.buildContext, this.isHr});
+      {super.key,
+      required this.id,
+      required this.buildContext,
+      this.isHr = true});
 
   void _showCalendar(
       BuildContext context, TextEditingController textEditingController) async {
@@ -54,7 +57,8 @@ class EmployeeDetailView extends StatelessWidget {
         SiteService(networkManager: NetworkManager()),
         context,
         ShiftService(networkManager: NetworkManager()),
-        AssetService(networkManager: NetworkManager()));
+        AssetService(networkManager: NetworkManager()),
+        isHr: isHr);
     viewModel.init();
     return SingleChildScrollView(
         child: SizedBox(
@@ -133,6 +137,8 @@ class EmployeeDetailView extends StatelessWidget {
           switch (viewModel.departmentHistoriesDataState) {
             case DataState.READY:
               return DataGrid(
+                filterEnable: false,
+                sortEnable: false,
                 deleteFunction: (isHr == true)
                     ? (id) {
                         viewModel.deleteDepartmentHistory(id);
@@ -145,8 +151,8 @@ class EmployeeDetailView extends StatelessWidget {
                   "Departman Adı",
                   "Vardiya",
                   "Pozisyon",
-                  "Başlangıç Tarihi",
-                  "Ayrılış Tarihi"
+                  "Başlangıç",
+                  "Ayrılış"
                 ],
                 columnNames: const [
                   "id",
@@ -346,6 +352,7 @@ class EmployeeDetailView extends StatelessWidget {
   DataGrid buildDataGrid(
       EmployeeDetailViewModel viewModel, List<TimeOff> timeOffList) {
     return DataGrid(
+      pagination: false,
       onRowTap: (startDate) {
         final DateFormat formatter = DateFormat('dd/MM/yyyy');
         final String formatted = formatter.format(startDate);
@@ -354,12 +361,7 @@ class EmployeeDetailView extends StatelessWidget {
       },
       dataSourceList: timeOffList,
       columnNames: const ["startDate", "endDate", "status", "type"],
-      titles: const [
-        "Başlangıç Tarihi",
-        "Bitiş Tarihi",
-        "Onay Durumu",
-        "İzin tipi"
-      ],
+      titles: const ["Başlangıç", "Bitiş", "Onay Durumu", "İzin tipi"],
     );
   }
 
@@ -448,6 +450,7 @@ class EmployeeDetailView extends StatelessWidget {
       children: [
         Expanded(
           child: InputText2(
+            enabled: isHr,
             textEditingController: viewModel.textEditingControllerList[11],
             icon: const Icon(Icons.location_city),
             hintText: "Adres",
@@ -462,6 +465,7 @@ class EmployeeDetailView extends StatelessWidget {
       children: [
         Expanded(
           child: InputText2(
+            enabled: isHr,
             textEditingController: viewModel.textEditingControllerList[9],
             icon: const Icon(Icons.person),
             hintText: "Acil Durum Yakın İsmi",
@@ -469,6 +473,7 @@ class EmployeeDetailView extends StatelessWidget {
         ),
         Expanded(
           child: InputText2(
+            enabled: isHr,
             textEditingController: viewModel.textEditingControllerList[10],
             icon: const Icon(Icons.phone),
             hintText: "Acil Durum Yakın Telefonu",
@@ -484,6 +489,7 @@ class EmployeeDetailView extends StatelessWidget {
         Expanded(
           flex: 4,
           child: InputText2(
+            enabled: isHr,
             textEditingController: viewModel.textEditingControllerList[7],
             icon: const Icon(Icons.phone),
             hintText: "Cep Telefonu",
@@ -540,11 +546,13 @@ class EmployeeDetailView extends StatelessWidget {
   Expanded buildGenderInput(
       EmployeeDetailViewModel viewModel, BuildContext context) {
     return Expanded(
+      flex: 5,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: DropDownInputText(
+              enabled: isHr,
               title: "Cinsiyet",
               textEditingController: TextEditingController(
                   text: viewModel.employeeDetail!.gender == "MALE"
@@ -567,6 +575,7 @@ class EmployeeDetailView extends StatelessWidget {
 
   InputText2 buildRemainingTimeOffDaysInput(EmployeeDetailViewModel viewModel) {
     return InputText2(
+        enabled: isHr,
         icon: const Icon(Icons.calendar_month),
         hintText: "Kalan İzin Günleri",
         textEditingController: viewModel.textEditingControllerList[6]);
@@ -582,18 +591,18 @@ class EmployeeDetailView extends StatelessWidget {
             flex: 2,
             child: Row(
               children: [
-                if (isHr == true)
-                  Expanded(
-                    flex: 8,
-                    child: DropDownInputText(
-                      title: "İzinli Olduğu Alanlar",
-                      textEditingController: TextEditingController(),
-                      items: viewModel.siteList!.map((e) => e.name).toList(),
-                      onTap: (index) {
-                        viewModel.siteId = viewModel.siteList![index].id;
-                      },
-                    ),
+                Expanded(
+                  flex: 8,
+                  child: DropDownInputText(
+                    enabled: isHr,
+                    title: "İzinli Olduğu Alanlar",
+                    textEditingController: TextEditingController(),
+                    items: viewModel.siteList!.map((e) => e.name).toList(),
+                    onTap: (index) {
+                      viewModel.siteId = viewModel.siteList![index].id;
+                    },
                   ),
+                ),
                 Expanded(
                   flex: 2,
                   child: Column(
@@ -770,16 +779,10 @@ class EmployeeDetailView extends StatelessWidget {
           Expanded(
             flex: 5,
             child: DropDownInputText(
+              enabled: isHr,
               title: "Departman",
               textEditingController: TextEditingController(
-                  text: viewModel.employeeDetail!.departmentId != null
-                      ? viewModel.departmentList!
-                              .firstWhere((element) =>
-                                  element.id ==
-                                  viewModel.employeeDetail!.departmentId)
-                              .name ??
-                          ""
-                      : ""),
+                  text: viewModel.employeeDetail?.departmentName ?? ""),
               items: viewModel.departmentList!.map((e) => e.name).toList(),
               onTap: (index) {
                 viewModel.employeeDetail!.departmentId =
@@ -791,16 +794,10 @@ class EmployeeDetailView extends StatelessWidget {
           Expanded(
             flex: 5,
             child: DropDownInputText(
+              enabled: isHr,
               title: "Vardiya",
               textEditingController: TextEditingController(
-                  text: viewModel.employeeDetail!.shiftId != null
-                      ? viewModel.shiftList!
-                              .firstWhere((element) =>
-                                  element.id ==
-                                  viewModel.employeeDetail!.shiftId)
-                              .name ??
-                          ""
-                      : ""),
+                  text: viewModel.employeeDetail!.shiftName ?? ""),
               items: viewModel.shiftList!.map((e) => e.name).toList(),
               onTap: (index) {
                 viewModel.employeeDetail!.shiftId =
@@ -818,6 +815,7 @@ class EmployeeDetailView extends StatelessWidget {
         Expanded(
             flex: 5,
             child: InputText2(
+                enabled: isHr,
                 onTap: () => _showCalendar(
                     buildContext, viewModel.textEditingControllerList[4]),
                 icon: const Icon(Icons.date_range),
@@ -826,10 +824,11 @@ class EmployeeDetailView extends StatelessWidget {
         Expanded(
             flex: 5,
             child: InputText2(
+                enabled: isHr,
                 onTap: () => _showCalendar(
                     buildContext, viewModel.textEditingControllerList[5]),
                 icon: const Icon(Icons.date_range),
-                hintText: "Başlangıç Tarihi",
+                hintText: "Başlangıç",
                 textEditingController: viewModel.textEditingControllerList[5])),
       ],
     );
@@ -841,12 +840,14 @@ class EmployeeDetailView extends StatelessWidget {
         Expanded(
             flex: 5,
             child: InputText2(
+                enabled: isHr,
                 icon: const Icon(Icons.mail),
                 hintText: "Email",
                 textEditingController: viewModel.textEditingControllerList[2])),
         Expanded(
             flex: 5,
             child: InputText2(
+                enabled: isHr,
                 icon: const Icon(Icons.credit_card),
                 hintText: "Kimlik Numarası",
                 textEditingController: viewModel.textEditingControllerList[3])),
@@ -860,12 +861,14 @@ class EmployeeDetailView extends StatelessWidget {
         Expanded(
             flex: 5,
             child: InputText2(
+                enabled: isHr,
                 icon: const Icon(Icons.person),
                 hintText: "Ad",
                 textEditingController: viewModel.textEditingControllerList[0])),
         Expanded(
             flex: 5,
             child: InputText2(
+                enabled: isHr,
                 icon: const Icon(Icons.person),
                 hintText: "Soyad",
                 textEditingController: viewModel.textEditingControllerList[1])),

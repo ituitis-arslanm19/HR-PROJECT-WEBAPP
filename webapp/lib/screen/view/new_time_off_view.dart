@@ -66,7 +66,7 @@ class NewTimeOffView extends StatelessWidget {
                     InputText(
                       icon: const Icon(Icons.calendar_month),
                       textEditingController: viewModel.controllers[1],
-                      hintText: "Bitiş Tarihi",
+                      hintText: "Bitiş",
                       enabled: true,
                       validator: viewModel.inputTextValidator,
                       onTap: () =>

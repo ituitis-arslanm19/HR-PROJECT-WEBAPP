@@ -145,7 +145,7 @@ class _DropDownInputTextState extends State<DropDownInputText> {
         child: Stack(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: widget.title != null ? 10 : 8),
+              padding: EdgeInsets.only(top: widget.title != null ? 10 : 4),
               child: CompositedTransformTarget(
                 link: layerLink,
                 child: TextFormField(

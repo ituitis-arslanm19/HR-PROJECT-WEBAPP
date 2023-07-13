@@ -24,6 +24,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
   List<Site>? siteList;
   String? identityNum;
   int? shiftId;
+  String? shiftName;
   String? seniorityDate;
   String? emergencyContactName;
   String? emergencyContactNumber;
@@ -34,32 +35,32 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
   List<Asset>? productList;
   List<DepartmentHistory>? departmentHistories;
 
-  EmployeeDetail({
-    this.id,
-    this.firstName,
-    this.lastName,
-    this.email,
-    this.birthDate,
-    this.startDate,
-    this.departmentId,
-    this.departmentName,
-    this.roles,
-    this.remainingTimeOffDays,
-    this.gender,
-    this.siteList,
-    this.identityNum,
-    this.shiftId,
-    this.phoneNumber,
-    this.seniorityDate,
-    this.emergencyContactName,
-    this.emergencyContactNumber,
-    this.address,
-    this.departmentHistory,
-    this.previousTimeOffs,
-    this.waitingTimeOffs,
-    this.productList,
-    this.departmentHistories
-  });
+  EmployeeDetail(
+      {this.id,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.birthDate,
+      this.startDate,
+      this.departmentId,
+      this.departmentName,
+      this.roles,
+      this.remainingTimeOffDays,
+      this.gender,
+      this.siteList,
+      this.identityNum,
+      this.shiftId,
+      this.shiftName,
+      this.phoneNumber,
+      this.seniorityDate,
+      this.emergencyContactName,
+      this.emergencyContactNumber,
+      this.address,
+      this.departmentHistory,
+      this.previousTimeOffs,
+      this.waitingTimeOffs,
+      this.productList,
+      this.departmentHistories});
 
   @override
   Map<String, dynamic> toJson() {
@@ -83,6 +84,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
       'siteIdList': siteList!.map((x) => x.id).toList(),
       'identityNum': identityNum,
       'shiftId': shiftId,
+      'shiftName': shiftName,
       'departmentHistory': departmentHistory ?? [],
       'previousTimeOffs': previousTimeOffs != null
           ? previousTimeOffs!.map((e) => e.toJson()).toList()
@@ -102,62 +104,65 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
   @override
   EmployeeDetail fromJson(Map<String, dynamic> map) {
     return EmployeeDetail(
-      id: map['id'] != null ? map['id'] as int : null,
-      firstName: map['firstName'] != null ? map['firstName'] as String : null,
-      lastName: map['lastName'] != null ? map['lastName'] as String : null,
-      email: map['email'] != null ? map['email'] as String : null,
-      birthDate: map['birthDate'] != null ? map['birthDate'] as String : null,
-      startDate: map['startDate'] != null ? map['startDate'] as String : null,
-      departmentId:
-          map['departmentId'] != null ? map['departmentId'] as int : null,
-      departmentName: map['departmentName'] != null
-          ? map['departmentName'] as String
-          : null,
-      roles: map['roles'] != null ? List<String>.from(map['roles']) : null,
-      remainingTimeOffDays: map['remainingTimeOffDays'] != null
-          ? map['remainingTimeOffDays'] as int
-          : null,
-      gender: map['gender'] != null ? map['gender'] as String : null,
-      siteList: map['siteList'] != null
-          ? List<Site>.from(
-              map['siteList'].map((json) => Site().fromJson(json)).toList())
-          : null,
-      identityNum:
-          map['identityNum'] != null ? map['identityNum'] as String : null,
-      shiftId: map['shiftId'] != null ? map['shiftId'] as int : null,
-      phoneNumber:
-          map['phoneNumber'] != null ? map['phoneNumber'] as String : null,
-      seniorityDate:
-          map['seniorityDate'] != null ? map['seniorityDate'] as String : null,
-      emergencyContactName: map['emergencyContactName'] != null
-          ? map['emergencyContactName'] as String
-          : null,
-      emergencyContactNumber: map['emergencyContactNumber'] != null
-          ? map['emergencyContactNumber'] as String
-          : null,
-      address: map['address'] != null ? map['address'] as String : null,
-      departmentHistory: map['departmentHistory'] != null
-          ? List<String>.from(map['departmentHistory'])
-          : null,
-      previousTimeOffs: map['previousTimeOffs'] != null
-          ? List<TimeOff>.from(map['previousTimeOffs']
-              .map((json) => TimeOff().fromJson(json))
-              .toList())
-          : null,
-      waitingTimeOffs: map['waitingTimeOffs'] != null
-          ? List<TimeOff>.from(map['waitingTimeOffs']
-              .map((json) => TimeOff().fromJson(json))
-              .toList())
-          : null,
-      productList: map['productList'] != null
-          ? List<Asset>.from(
-              map['productList'].map((json) => Asset().fromJson(json)).toList())
-          : null,
-      departmentHistories: map['departmentHistories'] != null
-          ? List<DepartmentHistory>.from(
-              map['departmentHistories'].map((json) => DepartmentHistory().fromJson(json)).toList())
-            : null
-    );
+        id: map['id'] != null ? map['id'] as int : null,
+        firstName: map['firstName'] != null ? map['firstName'] as String : null,
+        lastName: map['lastName'] != null ? map['lastName'] as String : null,
+        email: map['email'] != null ? map['email'] as String : null,
+        birthDate: map['birthDate'] != null ? map['birthDate'] as String : null,
+        startDate: map['startDate'] != null ? map['startDate'] as String : null,
+        departmentId:
+            map['departmentId'] != null ? map['departmentId'] as int : null,
+        departmentName: map['departmentName'] != null
+            ? map['departmentName'] as String
+            : null,
+        roles: map['roles'] != null ? List<String>.from(map['roles']) : null,
+        remainingTimeOffDays: map['remainingTimeOffDays'] != null
+            ? map['remainingTimeOffDays'] as int
+            : null,
+        gender: map['gender'] != null ? map['gender'] as String : null,
+        siteList: map['siteList'] != null
+            ? List<Site>.from(
+                map['siteList'].map((json) => Site().fromJson(json)).toList())
+            : null,
+        identityNum:
+            map['identityNum'] != null ? map['identityNum'] as String : null,
+        shiftId: map['shiftId'] != null ? map['shiftId'] as int : null,
+        shiftName: map['shiftName'] != null ? map['shiftName'] as String : null,
+        phoneNumber:
+            map['phoneNumber'] != null ? map['phoneNumber'] as String : null,
+        seniorityDate: map['seniorityDate'] != null
+            ? map['seniorityDate'] as String
+            : null,
+        emergencyContactName: map['emergencyContactName'] != null
+            ? map['emergencyContactName'] as String
+            : null,
+        emergencyContactNumber: map['emergencyContactNumber'] != null
+            ? map['emergencyContactNumber'] as String
+            : null,
+        address: map['address'] != null ? map['address'] as String : null,
+        departmentHistory: map['departmentHistory'] != null
+            ? List<String>.from(map['departmentHistory'])
+            : null,
+        previousTimeOffs: map['previousTimeOffs'] != null
+            ? List<TimeOff>.from(map['previousTimeOffs']
+                .map((json) => TimeOff().fromJson(json))
+                .toList())
+            : null,
+        waitingTimeOffs: map['waitingTimeOffs'] != null
+            ? List<TimeOff>.from(map['waitingTimeOffs']
+                .map((json) => TimeOff().fromJson(json))
+                .toList())
+            : null,
+        productList: map['productList'] != null
+            ? List<Asset>.from(map['productList']
+                .map((json) => Asset().fromJson(json))
+                .toList())
+            : null,
+        departmentHistories: map['departmentHistories'] != null
+            ? List<DepartmentHistory>.from(map['departmentHistories']
+                .map((json) => DepartmentHistory().fromJson(json))
+                .toList())
+            : null);
   }
 
   @override

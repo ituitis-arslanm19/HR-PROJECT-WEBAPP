@@ -136,12 +136,7 @@ class TimeOffView extends StatelessWidget {
       },
       dataSourceList: timeOffList,
       columnNames: const ["startDate", "endDate", "status", "type"],
-      titles: const [
-        "Başlangıç Tarihi",
-        "Bitiş Tarihi",
-        "Onay Durumu",
-        "İzin tipi"
-      ],
+      titles: const ["Başlangıç", "Bitiş", "Onay Durumu", "İzin tipi"],
     );
   }
 
@@ -217,7 +212,7 @@ class TimeOffView extends StatelessWidget {
                   InputText(
                     icon: const Icon(Icons.calendar_month),
                     textEditingController: timeOffViewModel.controllers[0],
-                    hintText: "Başlangıç tarihi",
+                    hintText: "Başlangıç",
                     enabled: true,
                     validator: timeOffViewModel.inputTextValidator,
                     onTap: () =>
@@ -226,7 +221,7 @@ class TimeOffView extends StatelessWidget {
                   InputText(
                     icon: const Icon(Icons.calendar_month),
                     textEditingController: timeOffViewModel.controllers[1],
-                    hintText: "Bitiş Tarihi",
+                    hintText: "Bitiş",
                     enabled: true,
                     validator: timeOffViewModel.inputTextValidator,
                     onTap: () =>

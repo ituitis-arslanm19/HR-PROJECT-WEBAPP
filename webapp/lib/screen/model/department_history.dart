@@ -57,8 +57,8 @@ class DepartmentHistory extends BaseModel<DepartmentHistory>
         DataGridCell<int>(columnName: 'id', value: id),
         DataGridCell<String>(
             columnName: 'departmentName', value: departmentName),
-        DataGridCell<String>(columnName: 'positionName', value: positionName),
         DataGridCell<String>(columnName: "shiftName", value: shiftName),
+        DataGridCell<String>(columnName: 'positionName', value: positionName),
         DataGridCell<DateTime>(
             columnName: 'startDate',
             value: DateFormat("dd/MM/yyyy").parse(startDate ?? "00/00/0000")),

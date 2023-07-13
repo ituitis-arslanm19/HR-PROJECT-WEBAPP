@@ -14,15 +14,22 @@ class DataGrid extends StatelessWidget {
   final List<String> columnNames;
   final Function(dynamic)? onRowTap;
   final void Function(dynamic)? deleteFunction;
+  final bool? pagination;
+  final bool? filterEnable;
+  final bool? sortEnable;
 
-  const DataGrid({
-    Key? key,
-    required this.dataSourceList,
-    required this.titles,
-    required this.columnNames,
-    this.onRowTap,
-    this.deleteFunction,
-  }) : super(key: key);
+  const DataGrid(
+      {Key? key,
+      required this.dataSourceList,
+      required this.titles,
+      required this.columnNames,
+      this.onRowTap,
+      this.deleteFunction,
+      this.pagination = true,
+      this.filterEnable = true,
+      b,
+      this.sortEnable = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,42 +42,68 @@ class DataGrid extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: SfDataGridTheme(
-        data: SfDataGridThemeData(),
-        child: SfDataGrid(
-            allowSorting: true,
-            allowMultiColumnSorting: true,
-            allowFiltering: true,
-            sortingGestureType: SortingGestureType.tap,
-            onCellTap: (details) {
-              if (details.rowColumnIndex.rowIndex != 0) {
-                int selectedRowIndex = details.rowColumnIndex.rowIndex - 1;
-                var row = source.effectiveRows.elementAt(selectedRowIndex);
-                onRowTap!(row.getCells().first.value);
-              }
-            },
-            columnWidthMode: ColumnWidthMode.fill,
-            source: source,
-            columns: [
-              ...titles.asMap().entries.map((entry) => GridColumn(
-                  columnName: columnNames[entry.key],
-                  label: Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          entry.value,
-                          style: theme.textTheme.bodyMedium!
-                              .copyWith(color: theme.colorScheme.primary),
-                        )),
-                  ))),
-              if (deleteFunction != null)
-                GridColumn(
-                    allowSorting: false,
-                    allowFiltering: false,
-                    columnName: "",
-                    label: const Text(""))
-            ]),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: SfDataGridTheme(
+              data: SfDataGridThemeData(),
+              child: SfDataGrid(
+                  allowSorting: sortEnable!,
+                  allowMultiColumnSorting: true,
+                  allowFiltering: filterEnable!,
+                  sortingGestureType: SortingGestureType.tap,
+                  onCellTap: (details) {
+                    if (details.rowColumnIndex.rowIndex != 0) {
+                      int selectedRowIndex =
+                          details.rowColumnIndex.rowIndex - 1;
+                      var row =
+                          source.effectiveRows.elementAt(selectedRowIndex);
+                      onRowTap!(row.getCells().first.value);
+                    }
+                  },
+                  columnWidthMode: ColumnWidthMode.fill,
+                  source: source,
+                  columns: [
+                    ...titles.asMap().entries.map((entry) => GridColumn(
+                        visible: entry.value == "Id" ? false : true,
+                        columnName: columnNames[entry.key],
+                        label: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                entry.value,
+                                style: theme.textTheme.bodyMedium!
+                                    .copyWith(color: theme.colorScheme.primary),
+                              )),
+                        ))),
+                    if (deleteFunction != null)
+                      GridColumn(
+                          allowSorting: false,
+                          allowFiltering: false,
+                          columnName: "",
+                          label: const Text(""))
+                  ]),
+            ),
+          ),
+          if (source._source.length >= 20 && pagination!)
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SfDataPagerTheme(
+                    data: SfDataPagerThemeData(),
+                    child: SfDataPager(
+                      delegate: source,
+                      pageCount: source._source.length / 20,
+                      direction: Axis.horizontal,
+                    ),
+                  ),
+                ],
+              ),
+            )
+        ],
       ),
     );
   }
@@ -79,6 +112,7 @@ class DataGrid extends StatelessWidget {
 class DataGridSourceAdapter extends DataGridSource {
   final List<DataGridRow> _source;
   final void Function(dynamic)? deleteFunction;
+
   DataGridSourceAdapter(
     this._source,
     this.deleteFunction,

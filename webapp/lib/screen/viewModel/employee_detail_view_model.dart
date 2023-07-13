@@ -26,6 +26,7 @@ abstract class _EmployeeDetailViewModelBase with Store {
   final ShiftService shiftService;
   final AssetService assetService;
   final int? id;
+  final bool? isHr;
   final BuildContext buildContext;
   List<TextEditingController> textEditingControllerList = [];
 
@@ -84,107 +85,117 @@ abstract class _EmployeeDetailViewModelBase with Store {
   int? siteId;
 
   _EmployeeDetailViewModelBase(
-    this.employeeService,
-    this.id,
-    this.departmentService,
-    this.siteService,
-    this.buildContext,
-    this.shiftService,
-    this.assetService,
-  );
+      this.employeeService,
+      this.id,
+      this.departmentService,
+      this.siteService,
+      this.buildContext,
+      this.shiftService,
+      this.assetService,
+      {this.isHr = true});
 
   @action
   init() async {
     if (textEditingControllerList == [])
       textEditingControllerList =
           List.generate(12, (i) => TextEditingController());
-    departmentList = await departmentService.getDepartments();
-    siteList = await siteService.getSites();
-    shiftList = await shiftService.getShifts();
+    //Hr değil ise bu bilgilere ulaşamaz
+    if (isHr!) {
+      departmentList = await departmentService.getDepartments();
+      siteList = await siteService.getSites();
+      shiftList = await shiftService.getShifts();
+    } else {
+      departmentList = [];
+      siteList = [];
+      shiftList = [];
+    }
 
     if (id == null) {
       employeeDetail = EmployeeDetail();
       employeeDetail!.siteList = <Site>[];
     } else {
       employeeDetail = await employeeService.getEmployeeDetail(id!);
-      if (employeeDetail!.previousTimeOffs!.isNotEmpty) {
-        previousTimeOffsDataState = DataState.READY;
-        currentTimeOff = employeeDetail!.previousTimeOffs!.first;
-      } else {
-        previousTimeOffsDataState = DataState.EMPTY;
-      }
+      if (employeeDetail != null) {
+        if (employeeDetail!.previousTimeOffs!.isNotEmpty) {
+          previousTimeOffsDataState = DataState.READY;
+          currentTimeOff = employeeDetail!.previousTimeOffs!.first;
+        } else {
+          previousTimeOffsDataState = DataState.EMPTY;
+        }
 
-      if (employeeDetail!.productList!.isNotEmpty) {
-        productsDataState = DataState.READY;
-        //print(employeeDetail!.productList![0].name);
-      } else {
-        productsDataState = DataState.EMPTY;
-      }
+        if (employeeDetail!.productList!.isNotEmpty) {
+          productsDataState = DataState.READY;
+          //print(employeeDetail!.productList![0].name);
+        } else {
+          productsDataState = DataState.EMPTY;
+        }
 
-      if (employeeDetail!.waitingTimeOffs!.isNotEmpty) {
-        pendingTimeOffsDataState = DataState.READY;
-        currentTimeOff = employeeDetail!.waitingTimeOffs!.first;
-      } else {
-        pendingTimeOffsDataState = DataState.EMPTY;
-      }
+        if (employeeDetail!.waitingTimeOffs!.isNotEmpty) {
+          pendingTimeOffsDataState = DataState.READY;
+          currentTimeOff = employeeDetail!.waitingTimeOffs!.first;
+        } else {
+          pendingTimeOffsDataState = DataState.EMPTY;
+        }
 
-      if (employeeDetail!.departmentHistories!.isNotEmpty) {
-        departmentHistoriesDataState = DataState.READY;
+        if (employeeDetail!.departmentHistories!.isNotEmpty) {
+          departmentHistoriesDataState = DataState.READY;
+        } else {
+          departmentHistoriesDataState = DataState.EMPTY;
+        }
+
+        assetList = employeeDetail!.productList;
+        departmentHistories = employeeDetail!.departmentHistories;
+        isManager = employeeDetail!.roles != null
+            ? employeeDetail!.roles!.contains("MANAGER")
+            : false;
+        isEmployee = employeeDetail!.roles != null
+            ? employeeDetail!.roles!.contains("EMPLOYEE")
+            : false;
+        isHR = employeeDetail!.roles != null
+            ? employeeDetail!.roles!.contains("HR")
+            : false;
+        isAdmin = employeeDetail!.roles != null
+            ? employeeDetail!.roles!.contains("ADMIN")
+            : false;
+        textEditingControllerList.insert(
+            0, TextEditingController(text: employeeDetail!.firstName));
+        textEditingControllerList.insert(
+            1, TextEditingController(text: employeeDetail!.lastName));
+        textEditingControllerList.insert(
+            2, TextEditingController(text: employeeDetail!.email));
+        textEditingControllerList.insert(
+            3,
+            TextEditingController(
+                text: employeeDetail!.identityNum != null
+                    ? employeeDetail!.identityNum.toString()
+                    : ""));
+        textEditingControllerList.insert(
+            4, TextEditingController(text: employeeDetail!.birthDate));
+        textEditingControllerList.insert(
+            5, TextEditingController(text: employeeDetail!.startDate));
+        textEditingControllerList.insert(
+            6,
+            TextEditingController(
+                text: employeeDetail!.remainingTimeOffDays != null
+                    ? employeeDetail!.remainingTimeOffDays.toString()
+                    : ""));
+        textEditingControllerList.insert(
+            7, TextEditingController(text: employeeDetail!.phoneNumber));
+        textEditingControllerList.insert(
+            8, TextEditingController(text: employeeDetail!.seniorityDate));
+        textEditingControllerList.insert(9,
+            TextEditingController(text: employeeDetail!.emergencyContactName));
+        textEditingControllerList.insert(
+            10,
+            TextEditingController(
+                text: employeeDetail!.emergencyContactNumber));
+        textEditingControllerList.insert(
+            11, TextEditingController(text: employeeDetail!.address));
+        dataState = DataState.READY;
       } else {
-        departmentHistoriesDataState = DataState.EMPTY;
+        dataState = previousTimeOffsDataState = pendingTimeOffsDataState =
+            departmentHistoriesDataState = DataState.ERROR;
       }
-    }
-    if (employeeDetail != null) {
-      assetList = employeeDetail!.productList;
-      departmentHistories = employeeDetail!.departmentHistories;
-      isManager = employeeDetail!.roles != null
-          ? employeeDetail!.roles!.contains("MANAGER")
-          : false;
-      isEmployee = employeeDetail!.roles != null
-          ? employeeDetail!.roles!.contains("EMPLOYEE")
-          : false;
-      isHR = employeeDetail!.roles != null
-          ? employeeDetail!.roles!.contains("HR")
-          : false;
-      isAdmin = employeeDetail!.roles != null
-          ? employeeDetail!.roles!.contains("ADMIN")
-          : false;
-      textEditingControllerList.insert(
-          0, TextEditingController(text: employeeDetail!.firstName));
-      textEditingControllerList.insert(
-          1, TextEditingController(text: employeeDetail!.lastName));
-      textEditingControllerList.insert(
-          2, TextEditingController(text: employeeDetail!.email));
-      textEditingControllerList.insert(
-          3,
-          TextEditingController(
-              text: employeeDetail!.identityNum != null
-                  ? employeeDetail!.identityNum.toString()
-                  : ""));
-      textEditingControllerList.insert(
-          4, TextEditingController(text: employeeDetail!.birthDate));
-      textEditingControllerList.insert(
-          5, TextEditingController(text: employeeDetail!.startDate));
-      textEditingControllerList.insert(
-          6,
-          TextEditingController(
-              text: employeeDetail!.remainingTimeOffDays != null
-                  ? employeeDetail!.remainingTimeOffDays.toString()
-                  : ""));
-      textEditingControllerList.insert(
-          7, TextEditingController(text: employeeDetail!.phoneNumber));
-      textEditingControllerList.insert(
-          8, TextEditingController(text: employeeDetail!.seniorityDate));
-      textEditingControllerList.insert(
-          9, TextEditingController(text: employeeDetail!.emergencyContactName));
-      textEditingControllerList.insert(10,
-          TextEditingController(text: employeeDetail!.emergencyContactNumber));
-      textEditingControllerList.insert(
-          11, TextEditingController(text: employeeDetail!.address));
-      dataState = DataState.READY;
-    } else {
-      dataState = previousTimeOffsDataState = pendingTimeOffsDataState =
-          departmentHistoriesDataState = DataState.ERROR;
     }
   }
 

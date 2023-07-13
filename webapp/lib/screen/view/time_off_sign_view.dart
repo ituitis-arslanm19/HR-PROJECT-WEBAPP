@@ -64,7 +64,7 @@ class TimeOffSignView extends StatelessWidget {
       ColorScheme colorScheme) {
     return Expanded(
       child: ListWidget(
-        titles: const ["Id", "Ad", "Başlangıç Tarihi", "Bitiş Tarihi", "", ""],
+        titles: const ["Id", "Ad", "Başlangıç", "Bitiş", "", ""],
         data: viewModel.timeOffList!
             .map((e) => [
                   Text(

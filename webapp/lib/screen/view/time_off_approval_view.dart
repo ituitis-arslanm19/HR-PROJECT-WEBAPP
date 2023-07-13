@@ -137,17 +137,7 @@ class TimeOffApprovalView extends StatelessWidget {
       ThemeData theme, BuildContext context) {
     return DataGrid(
         dataSourceList: timeOffApprovalViewModel.approvedTimeOffs!,
-        titles: const [
-          "İzin Alan",
-          "Başlangıç Tarihi",
-          "Bitiş Tarihi",
-          "İzin Türü"
-        ],
-        columnNames: const [
-          "name",
-          "startDate",
-          "endDate",
-          "TimeOffType"
-        ]);
+        titles: const ["İzin Alan", "Başlangıç", "Bitiş", "İzin Türü"],
+        columnNames: const ["name", "startDate", "endDate", "TimeOffType"]);
   }
 }

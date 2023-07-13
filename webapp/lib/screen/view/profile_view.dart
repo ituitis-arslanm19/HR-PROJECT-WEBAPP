@@ -78,7 +78,7 @@ class ProfileView extends StatelessWidget {
             value: viewModel.profile!.birthDate ?? "Error",
           ),
           ProfileCard(
-            title: "Başlangıç Tarihi",
+            title: "Başlangıç",
             value: viewModel.profile!.startDate ?? "Error",
           ),
           ProfileCard(

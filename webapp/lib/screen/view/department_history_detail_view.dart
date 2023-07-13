@@ -115,7 +115,7 @@ class DepartmentHistoryDetailView extends StatelessWidget {
                           onTap: () =>
                               _showCalendar(buildContext, controllerList[4]),
                           icon: const Icon(Icons.date_range),
-                          hintText: "Ayrılış Tarihi",
+                          hintText: "Ayrılış",
                           textEditingController: controllerList[4])),
                 ],
               ),

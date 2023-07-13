@@ -131,11 +131,7 @@ class EmployeeInfoView extends StatelessWidget {
                                   )
                                 ])
                             .toList(),
-                        titles: const [
-                          "Başlangıç Tarihi",
-                          "Bitiş Tarihi",
-                          "İzin tipi"
-                        ],
+                        titles: const ["Başlangıç", "Bitiş", "İzin tipi"],
                       ),
                     ),
                   ],
@@ -216,8 +212,8 @@ class EmployeeInfoView extends StatelessWidget {
                                 ])
                             .toList(),
                         titles: const [
-                          "Başlangıç Tarihi",
-                          "Bitiş Tarihi",
+                          "Başlangıç",
+                          "Bitiş",
                           "Onay Durumu",
                           "İzin tipi"
                         ],
@@ -243,7 +239,7 @@ class EmployeeInfoView extends StatelessWidget {
                 value: employeeInfo.departmentName,
               ),
               ProfileCard(
-                title: "Başlangıç Tarihi",
+                title: "Başlangıç",
                 value: employeeInfo.startDate,
               ),
               ProfileCard(
